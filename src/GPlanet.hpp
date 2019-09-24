@@ -1,0 +1,67 @@
+#ifndef GPlanet_hpp
+#define GPlanet_hpp
+
+#include "pch.h"
+#include <SFML/Window.hpp>
+#include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
+#include <SFML/Audio.hpp>
+#include <SFML/Network.hpp>
+#include <iostream>
+#include "Bunker.hpp"
+#include "Fuel.hpp"
+#include "Boss.hpp"
+#include "Transitions.hpp"
+
+using namespace sf;
+using namespace std;
+
+struct lista_schermate_pianeta {
+    lista_schermate_pianeta* next;
+    lista_schermate_pianeta* prev;
+    Bunker enemies;
+    Terreno terrain;
+    Fuel carb;
+    int nr_schermata;
+    lista_schermate_pianeta(Terreno terrain_n, int n,
+                        int totale_schermate, Risorse *src,
+                        lista_schermate_pianeta *next_n = NULL,
+                        lista_schermate_pianeta *prev_n = NULL);
+};
+
+typedef lista_schermate_pianeta* ptr_lista_schermate_pianeta;
+
+class GPlanet {
+    
+protected:
+    
+    bool boss_unlocked;
+    ptr_lista_schermate_pianeta current, head;
+    
+public:
+    
+    Boss boss;
+    
+    /// COSTRUTTORI /////////////////////////////////////////////////////
+    GPlanet();
+
+    ///  SETTERS E GETTERS  /////////////////////////////////////////////
+    bool getBoss_unlocked();
+    ptr_lista_schermate_pianeta getCurrent();
+    ptr_lista_schermate_pianeta getHead();
+    void setBoss_unlocked(bool boss_unlocked);
+    void setCurrent(ptr_lista_schermate_pianeta current);
+    void setHead(ptr_lista_schermate_pianeta head);
+    
+    ///  FUNZIONI  //////////////////////////////////////////////////////
+    ptr_lista_schermate_pianeta find(int n);
+    int checkCollisionBunkBullets(FloatRect obj);
+    void inizializza(int tot_schermate, Risorse *src);
+    void cambia_schermata(int n);
+    void checkCollision(RenderWindow *window, Nave *player);
+    void gestione(RenderWindow *window, Nave *player, Time perFrame);
+protected:
+    int random_height();
+};
+
+#endif /* GPlanet_hpp */
