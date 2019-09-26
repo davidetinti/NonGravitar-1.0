@@ -14,7 +14,8 @@ bunkerlist::bunkerlist(int type_n, int tempo_n, double x_n, double y_n, double l
                }
 
 Bunker::Bunker(){
-    
+    head = NULL;
+    last_checked = NULL;
 }
  
 Bunker::Bunker(Risorse *src, Terreno *terrain){
@@ -31,7 +32,7 @@ Bunker::Bunker(Risorse *src, Terreno *terrain){
                           Bullets(400, 100, 10, 14, 0, true, src));
     spriteSetup(head);
 
-    bunkerlist *tmp=head;
+    bunkerlist *tmp = head;
 
     for (int i = 1; i < 4 ; i++){
         x = partial_x[i] + rand() % 201; 
@@ -48,7 +49,7 @@ Bunker::Bunker(Risorse *src, Terreno *terrain){
 
 
 ptr_bunkerlist Bunker::getHead(){
-    return  this->head;
+    return  head;
 }
 
 

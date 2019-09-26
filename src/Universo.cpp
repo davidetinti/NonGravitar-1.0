@@ -142,12 +142,11 @@ void Universo::move(int x, int y, Risorse *src){
 }
 
 void Universo::disegnaPianeti(RenderWindow *window){
-    active->pianeti.setPP(active->pianeti.getHP());
-    while (active->pianeti.getPP() != NULL) {
-        if (active->pianeti.getPP()->exist) window->draw(active->pianeti.getPP()->planet);
-        active->pianeti.setPP(active->pianeti.getPP()->next);
+    Pianeta *planetIterator = active->pianeti.getHead();
+    while (planetIterator != NULL) {
+        if (planetIterator->exist) window->draw(planetIterator->planet);
+        planetIterator = planetIterator->next;
     }
-    active->pianeti.setPP(active->pianeti.getHP());
 }
 
 void Universo::movimentiNavetta(RenderWindow *window, Risorse *src, Transitions *transizioni, sf::Time timePerFrame){
@@ -196,40 +195,39 @@ void Universo::movimentiNavetta(RenderWindow *window, Risorse *src, Transitions 
         }
     }
     if (!player.getAtPlanet()){
-        while (active->pianeti.getPP() != NULL && !player.getAtPlanet()){
-            if (abs(player.nave.getPosition().x - (active->pianeti.getPP()->relative_x + active->pianeti.getPP()->grid_x))<32 &&
-                abs(player.nave.getPosition().y - (active->pianeti.getPP()->relative_y + active->pianeti.getPP()->grid_y))<32 &&
-                active->pianeti.getPP()->exist){
-                active->pianeti.getPP()->interno.inizializza(active->pianeti.getPP()->tot_schermate, src);
-                transizioni->inPlanet(window,&active->pianeti.getPP()->interno.getHead()->terrain,active->pianeti.getPP()->tot_schermate);
+        Pianeta *planetIterator = active->pianeti.getHead();
+        while (planetIterator != NULL && !player.getAtPlanet()){
+            if (contactPlanet(player.nave.getPosition(),planetIterator)){
+                active->pianeti.setCurrent(planetIterator);
+                planetIterator->interno.inizializza(planetIterator->tot_schermate, src);
+                transizioni->inPlanet(window,&planetIterator->interno.getHead()->terrain,planetIterator->tot_schermate);
                 player.setAtPlanet(true);
                 
-                bunkerlist *tmp = active->pianeti.getPP()->interno.getCurrent()->enemies.getHead();
+                bunkerlist *tmp = planetIterator->interno.getCurrent()->enemies.getHead();
                 while (tmp != NULL){
                     tmp->weapon.bullet_time.restart();
                     tmp = tmp->next;
                 }
-                //active->pianeti.getPP()->interno.getList()->enemies.setEnemies(active->pianeti.getPP()->interno.getList()->enemies.getHead());
                 player.nave.setPosition(larghezza/2, 0);
 				
-				player.setX_planet((double)player.nave.getPosition().x - 2*(player.nave.getPosition().x - active->pianeti.getPP()->planet.getPosition().x));
-				player.setY_planet((double)player.nave.getPosition().y - 2*(player.nave.getPosition().y - active->pianeti.getPP()->planet.getPosition().y));
+				player.setX_planet((double)player.nave.getPosition().x - 2*(player.nave.getPosition().x - planetIterator->planet.getPosition().x));
+				player.setY_planet((double)player.nave.getPosition().y - 2*(player.nave.getPosition().y - planetIterator->planet.getPosition().y));
 				player.setAnglePlanet(player.nave.getRotation());
 				player.nave.setRotation(0);
 				player.setDxDy(0, 0);
             }
-            if (!player.getAtPlanet()) active->pianeti.setPP(active->pianeti.getPP()->next);
+            //Ovviamente planetIterator non può mai essere NULL. Al più sarà l'ultimo della lista
+            planetIterator = planetIterator->next;
         }
-        if (!player.getAtPlanet()) active->pianeti.setPP(active->pianeti.getHP());
     }
     if (player.getAtPlanet()){
         if (player.nave.getPosition().x >= larghezza) {
 			player.nave.setPosition(0, player.nave.getPosition().y);
-			active->pianeti.getPP()->interno.cambia_schermata(1);
+			active->pianeti.getCurrent()->interno.cambia_schermata(1);
         }
         if (player.nave.getPosition().x < 0) {
 			player.nave.setPosition(larghezza, player.nave.getPosition().y);
-			active->pianeti.getPP()->interno.cambia_schermata(-1);
+			active->pianeti.getCurrent()->interno.cambia_schermata(-1);
         }
         if (player.nave.getPosition().y < 0) {
             player.nave.setPosition(player.getX_planet(), player.getY_planet());
@@ -241,7 +239,12 @@ void Universo::movimentiNavetta(RenderWindow *window, Risorse *src, Transitions 
 }
 
 void Universo::checkTerrain(RenderWindow *window){
-    if (player.nave.getPosition().y + 22 >= active->pianeti.getPP()->interno.getCurrent()->terrain.get_Y(player.nave.getPosition().x))
+    if (player.nave.getPosition().y + 22 >= active->pianeti.getCurrent()->interno.getCurrent()->terrain.get_Y(player.nave.getPosition().x))
         player.setIsDead(true);
 }
 
+bool Universo::contactPlanet(Vector2f pos, Pianeta* p){
+    return abs(pos.x - (p->relative_x + p->grid_x)) < p->diameter &&
+            abs(pos.y - (p->relative_y + p->grid_y)) < p->diameter &&
+             p->exist ;
+}

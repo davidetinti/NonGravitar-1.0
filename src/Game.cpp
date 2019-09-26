@@ -71,7 +71,7 @@ void Game::gestisci(RenderWindow *window, Risorse *src, Font *font, sf::Time tim
                 universe.getActive()->pianeti.gestione(window, &universe.player, &transizioni, timePerFrame);
                 //text.setString(to_string(universe.getActive()->pianeti.getPP()->interno.getCurrent()->nr_schermata));
                 if (universe.player.getAtPlanet()) {
-                    universe.player.armi(window, &universe.getActive()->pianeti.getPP()->interno.getCurrent()->terrain, timePerFrame);
+                    universe.player.armi(window, &universe.getActive()->pianeti.getCurrent()->interno.getCurrent()->terrain, timePerFrame);
                     universe.player.raggiotraente(window);
                     //window.draw(text);
                     universe.checkTerrain(window);
@@ -114,7 +114,7 @@ void Game::gestisci(RenderWindow *window, Risorse *src, Font *font, sf::Time tim
                 pausa.setAttiva(false);
                 partita.setAttiva(true);
                 if (universe.player.getAtPlanet()){
-                    ptr_bunkerlist tmp = universe.getActive()->pianeti.getPP()->interno.getCurrent()->enemies.getHead();
+                    ptr_bunkerlist tmp = universe.getActive()->pianeti.getCurrent()->interno.getCurrent()->enemies.getHead();
                     while (tmp != NULL){
                         tmp->weapon.bullet_time.restart();
                         tmp = tmp->next;

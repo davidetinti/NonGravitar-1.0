@@ -6,11 +6,18 @@ using namespace std;
 
 /// COSTRUTTORI /////////////////////////////////////////////////////
 
+Pianeta::Pianeta(bool ex, int rel_x, int rel_y, int gr_x, int gr_y, int screens, Pianeta *n)
+                : exist(ex), relative_x(rel_x), relative_y(rel_y), grid_x(gr_x), grid_y(gr_y),
+                  tot_schermate(screens), next(n){
+                      interno = GPlanet();
+                      diameter = 32;
+                  }
+
 uPlanets::uPlanets(){
     
 }
 
-uPlanets::uPlanets(Risorse *src){
+uPlanets::uPlanets(Risorse *s){
     str_l[0] = 50;
     str_l[1] = 50;
     str_l[2] = 360;
@@ -27,41 +34,21 @@ uPlanets::uPlanets(Risorse *src){
     str_h[5] = 410;
     str_h[6] = 60;
     str_h[7] = 410;
-    pp = new Pianeta;
-    pp->tot_schermate = 3 + rand() % 8;
-    pp->exist = (rand() % 6 > 2);
-    pp->relative_x = rand() % 251;
-    pp->relative_y = rand() % 251;
-    pp->grid_x = str_l[0];
-    pp->grid_y = str_h[0];
-    pp->interno = GPlanet();
-    pp->next = NULL;
-    pp->planet_tx = src->caricaTexture(pp->tot_schermate + 2);
-    pp->planet.setTexture(*pp->planet_tx);
-    pp->planet.setOrigin(Vector2f(pp->planet_tx->getSize().x/2, pp->planet_tx->getSize().y/2));
-    pp->planet.setPosition(pp->relative_x + pp->grid_x, pp->relative_y + pp->grid_y);
-    pp->planet.setTextureRect(IntRect(0, 0, pp->planet_tx->getSize().x, pp->planet_tx->getSize().y));
-    pp->planet.scale(0.2, 0.2);
-    hp = pp;
+    src = s;
+    head = new Pianeta(true, rand() % 251, rand() % 251, str_l[0], str_h[0], 3 + rand() % 8, NULL);
+    head->interno = GPlanet();
+    spriteSetup(head);
+    current = head;
+    Pianeta *pp = head;
+    bool exists = false;
     for (int i = 1; i < 8; i++) {
-        pp->next = new Pianeta;
-        pp = pp->next;
-        pp->interno = GPlanet();
-        pp->tot_schermate = 3 + rand() % 8;
-        pp->exist = (rand() % 6 > 2);
-        pp->relative_x = rand() % 251;
-        pp->relative_y = rand() % 251;
-        pp->grid_x = str_l[i];
-        pp->grid_y = str_h[i];
-        pp->next = NULL;
-        pp->planet_tx = src->caricaTexture(pp->tot_schermate + 2);
-        pp->planet.setTexture(*pp->planet_tx);
-        pp->planet.setOrigin(Vector2f(pp->planet_tx->getSize().x/2, pp->planet_tx->getSize().y/2));
-        pp->planet.setPosition(pp->relative_x + pp->grid_x, pp->relative_y + pp->grid_y);
-        pp->planet.setTextureRect(IntRect(0, 0, pp->planet_tx->getSize().x, pp->planet_tx->getSize().y));
-        pp->planet.scale(0.2, 0.2);
+        exists = rand() % 6 > 2;
+        if(exists){
+            pp->next = new Pianeta(true, rand() % 251, rand() % 251, str_l[i], str_h[i], 3 + rand() % 8, NULL);
+            pp = pp->next;
+            spriteSetup(pp);
+        }
     }
-    pp = hp;
     explosion_tx = src->caricaTexture(19);
     explosion.setTexture(*explosion_tx);
     //explosion.setOrigin(<#float x#>, <#float y#>)
@@ -69,29 +56,29 @@ uPlanets::uPlanets(Risorse *src){
 
 ///  SETTERS E GETTERS  /////////////////////////////////////////////
 
-ptr_Pianeta uPlanets::getPP(){
-    return this->pp;
+Pianeta* uPlanets::getHead(){
+    return head;
 }
 
-ptr_Pianeta uPlanets::getHP(){
-    return this->hp;
+void uPlanets::setHead(Pianeta* h){
+    head = h;
 }
 
-void uPlanets::setPP(ptr_Pianeta pp){
-    this->pp = pp;
+Pianeta* uPlanets::getCurrent(){
+    return current;
 }
 
-void uPlanets::setHP(ptr_Pianeta hp){
-    this->hp = hp;
+void uPlanets::setCurrent(Pianeta* h){
+    current = h;
 }
 
 ///  FUNZIONI  //////////////////////////////////////////////////////
 
 void uPlanets::gestione(RenderWindow *window, Nave *player, Transitions *transizioni, Time perFrame){
-    ptr_lista_schermate_pianeta iterator = pp->interno.getHead();
+    ptr_lista_schermate_pianeta iterator = current->interno.getHead();
     bool no_bunkers = true;
-    pp->interno.gestione(window, player, perFrame);
-    for (int i = 0; i < pp->tot_schermate; i++){
+    current->interno.gestione(window, player, perFrame);
+    for (int i = 0; i < current->tot_schermate; i++){
         if (iterator->enemies.getHead() == NULL){
             iterator = iterator->next;
         } else {
@@ -103,7 +90,30 @@ void uPlanets::gestione(RenderWindow *window, Nave *player, Transitions *transiz
         player->nave.setRotation(player->getAnglePlanet() + 180);
         player->setSpaceshipAcceleration(0);
         player->setAtPlanet(false);
-        pp->exist = false;
+        current->exist = false;
+        deletePlanet(current);
         transizioni->outPlanet(window);
+    }
+}
+
+void uPlanets::spriteSetup(Pianeta* p){
+    p->planet_tx = src->caricaTexture(p->tot_schermate + 2);
+    p->planet.setTexture(*p->planet_tx);
+    p->planet.setOrigin(Vector2f(p->planet_tx->getSize().x/2, p->planet_tx->getSize().y/2));
+    p->planet.setPosition(p->relative_x + p->grid_x, p->relative_y + p->grid_y);
+    p->planet.setTextureRect(IntRect(0, 0, p->planet_tx->getSize().x, p->planet_tx->getSize().y));
+    p->planet.scale(0.2, 0.2);
+}
+
+void uPlanets::deletePlanet(Pianeta* p){
+    if(p!=NULL){
+        Pianeta *tmp = getHead();
+        while(tmp != NULL){
+            if(tmp->next == p && !p->exist) {
+                tmp->next = p->next;
+                delete p;
+            }
+            if(tmp!=NULL) tmp = tmp->next;
+        }
     }
 }

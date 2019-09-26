@@ -67,6 +67,8 @@ public:
     void disegnaPianeti(RenderWindow *window);
     void checkTerrain(RenderWindow *window);
     void movimentiNavetta(RenderWindow *window, Risorse *src, Transitions *transizioni, sf::Time timePerFrame);
+private:
+    bool contactPlanet(Vector2f pos, Pianeta* p);
 };
 
 #endif /* Universo_hpp */
