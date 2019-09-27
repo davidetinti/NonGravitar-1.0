@@ -29,14 +29,14 @@ Terreno::Terreno(int sx_coord, int dx_coord, Risorse *src, int tot_schermate){
     int firstHeight = 700 - rand() % 100;   //altezza del terreno temporanea
     head = new soil(NULL);
     soil *tmp = head;
-    spriteSetup(tot_schermate,Vector2f(px*0,720),Vector2f(px*0,sx_coord),
-                Vector2f(px*1,firstHeight),Vector2f(px*1,720),tmp);
+    spriteSetup(tot_schermate,Vector2f(0,720),Vector2f(0,sx_coord),
+                Vector2f(px,firstHeight),Vector2f(px,720),tmp);
     int heightLeft = firstHeight;
     int heightRight = 700 - rand() % 100;
     for (int i = 2; i < nr ; i++){
         tmp->next = new soil(NULL);
         spriteSetup(tot_schermate,Vector2f(px*(i-1), 720),Vector2f(px*(i-1), heightLeft),
-                    Vector2f(px*i, heightRight),Vector2f(px*i, 720),tmp);
+                    Vector2f(px*i, heightRight),Vector2f(px*i, 720),tmp->next);
         heightLeft = heightRight;
         heightRight = 700 - rand() % 100;
         tmp = tmp->next;
@@ -102,7 +102,6 @@ void Terreno::gestisci(RenderWindow *window){
 double Terreno::get_Y(double x){
     soil *tmp = head;
 	if (tmp != NULL) {
-        Vector2f p = tmp->element.getPoint(2);
 		while (tmp->element.getPoint(2).x <= x && tmp->next != NULL) {//tmp->soil.getPoint(2).x < DxCoord){
 			tmp = tmp->next;
 		}
