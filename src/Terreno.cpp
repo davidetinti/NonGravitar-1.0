@@ -6,6 +6,11 @@ using namespace sf;
 
 /// COSTRUTTORI /////////////////////////////////////////////////////
 
+soil::soil(soil *n):
+        next(n){
+            element = ConvexShape(4);
+        }
+
 Terreno::Terreno(){
     
 }
@@ -21,41 +26,25 @@ Terreno::Terreno(int sx_coord, int dx_coord, Risorse *src, int tot_schermate){
     this->sx_coord = sx_coord;
     int nr = 4 + rand() % 20;   //elementi di soil
     float px = 1280/nr;         //partial x
-    int tmp = 700 - rand() % 100;   //altezza del terreno temporanea
-    current = new soil;
-    current->next = NULL;
-    current->soil.setPointCount(4);
-    current->soil.setPoint(0, Vector2f(px*0, 720));
-    current->soil.setPoint(1, Vector2f(px*0, sx_coord));
-    current->soil.setPoint(2, Vector2f(px*1, tmp));
-    current->soil.setPoint(3, Vector2f(px*1, 720));
-    current->soil.setTexture(terrain_tx);
-    current->soil.setFillColor(colore(tot_schermate,255));
-    head = current;
+    int firstHeight = 700 - rand() % 100;   //altezza del terreno temporanea
+    head = new soil(NULL);
+    soil *tmp = head;
+    spriteSetup(tot_schermate,Vector2f(px*0,720),Vector2f(px*0,sx_coord),
+                Vector2f(px*1,firstHeight),Vector2f(px*1,720),tmp);
+    int heightLeft = firstHeight;
+    int heightRight = 700 - rand() % 100;
     for (int i = 2; i < nr ; i++){
-        current->next = new soil;
-        current->next->next = NULL;
-        current->next->soil.setPointCount(4);
-        current->next->soil.setPoint(0, Vector2f(px*(i-1), 720));
-        current->next->soil.setPoint(1, Vector2f(px*(i-1), tmp));
-        tmp = 700 - rand() % 100;
-        current->next->soil.setPoint(2, Vector2f(px*i, tmp));
-        current->next->soil.setPoint(3, Vector2f(px*i, 720));
-        current->next->soil.setTexture(terrain_tx);
-        current->next->soil.setFillColor(colore(tot_schermate,255));
-        current = current->next;
+        tmp->next = new soil(NULL);
+        spriteSetup(tot_schermate,Vector2f(px*(i-1), 720),Vector2f(px*(i-1), heightLeft),
+                    Vector2f(px*i, heightRight),Vector2f(px*i, 720),tmp);
+        heightLeft = heightRight;
+        heightRight = 700 - rand() % 100;
+        tmp = tmp->next;
     }
-    current->next = new soil;
-    current->next->next = NULL;
-    current->next->soil.setPointCount(4);
-    current->next->soil.setPoint(0, Vector2f(px*(nr-1), 720));
-    current->next->soil.setPoint(1, Vector2f(px*(nr-1), tmp));
-    current->next->soil.setPoint(2, Vector2f(1280, dx_coord));
-    current->next->soil.setPoint(3, Vector2f(1280, 720));
-    current->next->soil.setTexture(terrain_tx);
-    current->next->soil.setFillColor(colore(tot_schermate,255));
-    current = head;
-    
+    tmp->next = new soil(NULL);
+    tmp = tmp->next;
+    spriteSetup(tot_schermate,Vector2f(px*(nr-1), 720),Vector2f(px*(nr-1), heightLeft),
+                Vector2f(1280, dx_coord),Vector2f(1280, 720),tmp);    
 }
 
 ///  SETTERS E GETTERS  /////////////////////////////////////////////
@@ -103,28 +92,36 @@ Color Terreno::colore(int tot_schermate, int transparency){
 
 void Terreno::gestisci(RenderWindow *window){
     window->draw(background);
-    current = head;
-    while (current != NULL){
-        window->draw(current->soil);
-        current = current->next;
+    soil *tmp = head;
+    while (tmp != NULL){
+        window->draw(tmp->element);
+        tmp = tmp->next;
     };
-    current = head;
 }
 
 double Terreno::get_Y(double x){
-    current = head;
-	if (current != NULL) {
-		while (current->soil.getPoint(2).x <= x && current->next != NULL) {//current->soil.getPoint(2).x < DxCoord){
-			current = current->next;
+    soil *tmp = head;
+	if (tmp != NULL) {
+        Vector2f p = tmp->element.getPoint(2);
+		while (tmp->element.getPoint(2).x <= x && tmp->next != NULL) {//tmp->soil.getPoint(2).x < DxCoord){
+			tmp = tmp->next;
 		}
-		double x1 = current->soil.getPoint(1).x;
-		double x2 = current->soil.getPoint(2).x;
-		double y1 = current->soil.getPoint(1).y;
-		double y2 = current->soil.getPoint(2).y;
+		double x1 = tmp->element.getPoint(1).x;
+		double x2 = tmp->element.getPoint(2).x;
+		double y1 = tmp->element.getPoint(1).y;
+		double y2 = tmp->element.getPoint(2).y;
 		double m = (y1 - y2) / (x1 - x2);
 		double q = (x1 * y2 - x2 * y1) / (x1 - x2);
-		current = head;
 		return (m * x + q);
 	}
 	else return 0;
+}
+
+void Terreno::spriteSetup(int tot_sch, Vector2f p0, Vector2f p1, Vector2f p2, Vector2f p3, soil *p){
+    p->element.setPoint(0,p0);
+    p->element.setPoint(1,p1);
+    p->element.setPoint(2,p2);
+    p->element.setPoint(3,p3);
+    p->element.setTexture(terrain_tx);
+    p->element.setFillColor(colore(tot_sch,255));
 }

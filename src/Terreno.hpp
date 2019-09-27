@@ -14,11 +14,10 @@ using namespace sf;
 using namespace std;
 
 struct soil{
-    ConvexShape soil;
+    ConvexShape element;
     struct soil *next;
+    soil(soil *n);
 };
-
-typedef soil* ptr_soil;
 
 class Terreno{
     
@@ -27,7 +26,7 @@ protected:
     int dx_coord,sx_coord;
     ptr_Texture terrain_tx;
     ptr_Texture background_tx;
-    ptr_soil head,current;
+    soil * head, *current;
     
 public:
     
@@ -47,6 +46,8 @@ public:
     Color colore(int tot_schermate, int transparency);
     void gestisci(RenderWindow *window);
     double get_Y(double x);
+private:
+    void spriteSetup(int tot_sch, Vector2f p0, Vector2f p1, Vector2f p2, Vector2f p3, soil *p);
 };
 
 #endif /* Terreno_hpp */

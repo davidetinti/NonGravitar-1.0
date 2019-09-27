@@ -158,7 +158,7 @@ void Universo::movimentiNavetta(RenderWindow *window, Risorse *src, Transitions 
     }
     if (Keyboard::isKeyPressed(Keyboard::Space)) {
 		player.addToDxDy(cos((player.nave.getRotation()-270) * M_PI / 180) * player.getSpaceshipAcceleration(), sin((player.nave.getRotation()-270) * M_PI / 180) * player.getSpaceshipAcceleration());
-		player.setThrustInt(255);
+		player.setThrustInt(255); 
 		if (player.getFuelbar() > 0)
             player.setFuelbar(player.getFuelbar() - player.getSpaceshipAcceleration()/800);
     } else {
