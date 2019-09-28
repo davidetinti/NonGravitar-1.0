@@ -6,11 +6,18 @@ using namespace std;
 
 /// COSTRUTTORI /////////////////////////////////////////////////////
 
+lista_schermate::lista_schermate(int x_n, int y_n, Risorse *src, lista_schermate *d, lista_schermate *s, 
+        lista_schermate *u, lista_schermate *down, lista_schermate *nxt) : dx(d), sx(s), up(u),
+        dw(down), x(x_n), y(y_n), next(nxt){
+            pianeti = uPlanets(src);
+        }
+
 Universo::Universo(){
     
-}
+} 
 
-Universo::Universo(int lenght, int heigth, Risorse *src, Font *font){
+Universo::Universo(int lenght, int heigth, Risorse *s, Font *font){
+    src = s;
     hud = HUD(lenght, heigth, src, font);
     player = Nave(lenght, heigth, src);
     universe_tx = src->caricaTexture(2);
@@ -18,127 +25,73 @@ Universo::Universo(int lenght, int heigth, Risorse *src, Font *font){
     universe.setTexture(*universe_tx);
     altezza = heigth;
     larghezza = lenght;
-    active = new schermata;
-    active->dx = NULL;
-    active->sx = NULL;
-    active->up = NULL;
-    active->dw = NULL;
-    active->pianeti = uPlanets(src);
-    active->x = 0;
-    active->y = 0;
-    list = new lista_schermate;
-    list->x = active->x;
-    list->y = active->y;
-    list->it = active;
-    list->next = NULL;
-    head_list = list;
+    active = new lista_schermate(0,0,src);
+    head_list = active;
+    tail = head_list;
 }
 
 ///  SETTERS E GETTERS  /////////////////////////////////////////////
 
-ptr_schermata Universo::getActive(){
-    return  this->active;
+lista_schermate *Universo::getActive(){
+    return  active;
 }
 
-ptr_lista_schermate Universo::getList(){
-    return  this->list;
+lista_schermate *Universo::getTail(){
+    return  tail;
 }
 
-ptr_lista_schermate Universo::getHeadList(){
-    return  this->head_list;
+lista_schermate *Universo::getHeadList(){
+    return  head_list;
 }
 
 ///  FUNZIONI  //////////////////////////////////////////////////////
 
-ptr_schermata Universo::find(int x, int y){
-    ptr_lista_schermate b = head_list;
-    ptr_schermata tmp = NULL;
-    while (b != NULL) {
+lista_schermate *Universo::find(int x, int y){
+    lista_schermate *b = head_list;
+    bool found = false;
+    while (b != NULL && !found) {
         if (x == b->x && y == b->y) {
-            tmp = b->it;
-        }
-        b = b->next;
+            found = true;
+        } else {
+            b = b->next;
+            }
     }
-    return tmp;
+    return b;
 }
 
 void Universo::move(int x, int y, Risorse *src){
     if (x == 1 && y == 0) {
         if (active->dx == NULL) {
-            active->dx = new schermata;
-            active->dx->x = active->x + x;
-            active->dx->y = active->y + y;
-            active->dx->pianeti = uPlanets(src);
-            list->next = new lista_schermate;
-            list = list->next;
-            list->x = active->dx->x;
-            list->y = active->dx->y;
-            list->it = active->dx;
-            list->next = NULL;
+            active->dx = new lista_schermate(active->x + x,active->y + y,src);
+            addToList(active->dx);
         };
         active = active->dx;
-        active->dx = find((active->x + 1), active->y);
-        active->sx = find((active->x - 1), active->y);
-        active->up = find(active->x, (active->y + 1));
-        active->dw = find(active->x, (active->y - 1));
     };
     if (x == 0 && y == 1) {
         if (active->up == NULL) {
-            active->up = new schermata;
-            active->up->x = active->x + x;
-            active->up->y = active->y + y;
-            active->up->pianeti = uPlanets(src);
-            list->next = new lista_schermate;
-            list = list->next;
-            list->x = active->up->x;
-            list->y = active->up->y;
-            list->it = active->up;
-            list->next = NULL;
+            active->up = new lista_schermate(active->x + x, active->y + y,src);
+            addToList(active->up);
         };
         active = active->up;
-        active->dx = find((active->x + 1), active->y);
-        active->sx = find((active->x - 1), active->y);
-        active->up = find(active->x, (active->y + 1));
-        active->dw = find(active->x, (active->y - 1));
     };
     if (x == -1 && y == 0) {
         if (active->sx == NULL) {
-            active->sx = new schermata;
-            active->sx->x = active->x + x;
-            active->sx->y = active->y + y;
-            active->sx->pianeti = uPlanets(src);
-            list->next = new lista_schermate;
-            list = list->next;
-            list->x = active->sx->x;
-            list->y = active->sx->y;
-            list->it = active->sx;
-            list->next = NULL;
+            active->sx = new lista_schermate(active->x+x,active->y+y,src);
+            addToList(active->sx);
         };
         active = active->sx;
-        active->dx = find((active->x + 1), active->y);
-        active->sx = find((active->x - 1), active->y);
-        active->up = find(active->x, (active->y + 1));
-        active->dw = find(active->x, (active->y - 1));
     };
     if (x == 0 && y == -1) {
         if (active->dw == NULL) {
-            active->dw = new schermata;
-            active->dw->x = active->x + x;
-            active->dw->y = active->y + y;
-            active->dw->pianeti = uPlanets(src);
-            list->next = new lista_schermate;
-            list = list->next;
-            list->x = active->dw->x;
-            list->y = active->dw->y;
-            list->it = active->dw;
-            list->next = NULL;
+            active->dw = new lista_schermate(active->x+x,active->y+y,src);
+            addToList(active->dw);
         };
         active = active->dw;
-        active->dx = find((active->x + 1), active->y);
-        active->sx = find((active->x - 1), active->y);
-        active->up = find(active->x, (active->y + 1));
-        active->dw = find(active->x, (active->y - 1));
     }
+    active->dx = find((active->x + 1), active->y);
+    active->sx = find((active->x - 1), active->y);
+    active->up = find(active->x, (active->y + 1));
+    active->dw = find(active->x, (active->y - 1));
 }
 
 void Universo::disegnaPianeti(RenderWindow *window){
@@ -247,4 +200,11 @@ bool Universo::contactPlanet(Vector2f pos, Pianeta* p){
     return abs(pos.x - (p->relative_x + p->grid_x)) < p->diameter &&
             abs(pos.y - (p->relative_y + p->grid_y)) < p->diameter &&
              p->exist ;
+}
+
+void Universo::addToList(lista_schermate *p){
+    if(p != NULL){
+        tail->next = p;
+        tail = p;
+    }
 }

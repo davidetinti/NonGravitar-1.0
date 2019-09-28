@@ -13,26 +13,19 @@
 using namespace sf;
 using namespace std;
 
-struct schermata {
-    schermata* dx;
-    schermata* sx;
-    schermata* up;
-    schermata* dw;
-    uPlanets pianeti;
-    int x;
-    int y;
-};
-
-typedef schermata* ptr_schermata;
-
 struct lista_schermate {
-    ptr_schermata it;
+    lista_schermate* dx;
+    lista_schermate* sx;
+    lista_schermate* up;
+    lista_schermate* dw;
     int x;
     int y;
+    uPlanets pianeti;
     lista_schermate* next;
+    lista_schermate(int x_n, int y_n, Risorse *src, lista_schermate *d=NULL, lista_schermate *s=NULL, 
+        lista_schermate *u=NULL, lista_schermate *down=NULL, lista_schermate *nxt=NULL);
 };
 
-typedef lista_schermate* ptr_lista_schermate;
 
 class Universo {
     
@@ -41,9 +34,10 @@ protected:
     ptr_Texture universe_tx;
     int altezza;
     int larghezza;
-    ptr_schermata active;
-    ptr_lista_schermate list;
-    ptr_lista_schermate head_list;
+    lista_schermate *active;
+    lista_schermate *tail;
+    lista_schermate *head_list;
+    Risorse *src;
     
 public:
     
@@ -57,18 +51,19 @@ public:
     Universo(int heigth, int lenght, Risorse *src, Font *font);
     
     ///  SETTERS E GETTERS  /////////////////////////////////////////////
-    ptr_schermata getActive();
-    ptr_lista_schermate getList();
-    ptr_lista_schermate getHeadList();
+    lista_schermate *getActive();
+    lista_schermate *getTail();
+    lista_schermate *getHeadList();
     
     ///  FUNZIONI  //////////////////////////////////////////////////////
-    ptr_schermata find(int x, int y);
+    lista_schermate *find(int x, int y);
     void move(int x, int y, Risorse *src);
     void disegnaPianeti(RenderWindow *window);
     void checkTerrain(RenderWindow *window);
     void movimentiNavetta(RenderWindow *window, Risorse *src, Transitions *transizioni, sf::Time timePerFrame);
 private:
     bool contactPlanet(Vector2f pos, Pianeta* p);
+    void addToList(lista_schermate *p);
 };
 
 #endif /* Universo_hpp */
