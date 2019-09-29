@@ -55,7 +55,7 @@ void Game::gestisci(RenderWindow *window, Risorse *src, Font *font, sf::Time tim
     if (partita.getAttiva()){
         if (!universe.player.getIsDead()){
             
-            universe.movimentiNavetta(window, src, &transizioni, timePerFrame);
+            universe.handle(window, src, &transizioni, timePerFrame);
             
             /// UNIVERSO
             

@@ -250,10 +250,10 @@ void Nave::movements(){
 
 void Nave::braceForEntry(Vector2f planetPos, int larghezza){
     nave.setPosition(larghezza/2, 0);
-    setX_planet(planetPos.x + 32);
-    setY_planet(planetPos.y + 32);
-    setAnglePlanet(nave.getRotation());
+    setAnglePlanet(0);
+    setX_planet(planetPos.x);
+    setY_planet(planetPos.y + 35);
     nave.setRotation(0);
-    setDxDy(0, 0.5);
+    setDxDy(0, 0.8);
     setCurrentSpeed(sqrt(getDx() * getDx() + getDy() * getDy()));
 }

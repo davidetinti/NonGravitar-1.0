@@ -99,6 +99,12 @@ void GPlanet::inizializza(int tot_schermate, Risorse *src){
         head->prev = tmp;
         boss = Boss(100, 3, src);
         current = head;
+    } else {
+        bunkerlist *tmp = getCurrent()->enemies.getHead();
+        while (tmp != NULL){
+            tmp->weapon.bullet_time.restart();
+            tmp = tmp->next;
+        }
     }
 }
 

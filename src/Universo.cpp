@@ -102,11 +102,12 @@ void Universo::disegnaPianeti(RenderWindow *window){
     }
 }
 
-void Universo::movimentiNavetta(RenderWindow *window, Risorse *src, Transitions *transizioni, sf::Time timePerFrame){
+void Universo::handle(RenderWindow *window, Risorse *src, Transitions *transizioni, sf::Time timePerFrame){
     player.movements();
     player.handleThrust();
 
     if (!player.getAtPlanet()){
+        //verify if out of bounds
         if (player.nave.getPosition().x >= larghezza) {
             player.nave.setPosition(0, player.nave.getPosition().y);
             move(1, 0, src);
@@ -133,11 +134,6 @@ void Universo::movimentiNavetta(RenderWindow *window, Risorse *src, Transitions 
                 transizioni->inPlanet(window,&planetIterator->interno.getHead()->terrain,planetIterator->tot_schermate);
                 player.setAtPlanet(true);
                 
-                bunkerlist *tmp = planetIterator->interno.getCurrent()->enemies.getHead();
-                while (tmp != NULL){
-                    tmp->weapon.bullet_time.restart();
-                    tmp = tmp->next;
-                }
                 player.braceForEntry(planetIterator->planet.getPosition(), larghezza);
             }
             //Ovviamente planetIterator non può mai essere NULL. Al più sarà l'ultimo della lista
@@ -155,8 +151,8 @@ void Universo::movimentiNavetta(RenderWindow *window, Risorse *src, Transitions 
         }
         if (player.nave.getPosition().y < 0) {
             player.nave.setPosition(player.getX_planet(), player.getY_planet());
-            player.nave.setRotation(player.getAnglePlanet() + 180);
-			player.setDxDy(0.1, 0.1);
+            player.nave.setRotation(player.getAnglePlanet());
+			player.setDxDy(0, 0.1);
             player.setAtPlanet(false);
         }
     }

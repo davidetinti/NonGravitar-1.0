@@ -60,7 +60,7 @@ public:
     void move(int x, int y, Risorse *src);
     void disegnaPianeti(RenderWindow *window);
     void checkTerrain(RenderWindow *window);
-    void movimentiNavetta(RenderWindow *window, Risorse *src, Transitions *transizioni, sf::Time timePerFrame);
+    void handle(RenderWindow *window, Risorse *src, Transitions *transizioni, sf::Time timePerFrame);
 private:
     bool contactPlanet(Vector2f pos, Pianeta* p);
     void addToList(lista_schermate *p);
