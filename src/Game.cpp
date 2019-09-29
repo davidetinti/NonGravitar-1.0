@@ -8,9 +8,9 @@ Game::Game(){
     
 }
 
-Game::Game(Risorse *src, Font *font){
+Game::Game(Risorse *src, Font *font, Time *time){
     pausa_bk = src->caricaTexture(28);
-    universe = Universo(1280, 720, src, font);
+    universe = Universo(1280, 720, src, font, time);
     schermata_principale = Finestra(src, 26);
     partita = Finestra(src, 2);
     crediti = Finestra(src, 2);
@@ -36,7 +36,7 @@ void Game::gestisci(RenderWindow *window, Risorse *src, Font *font, sf::Time tim
         ptr_lista_pulsanti tmp = schermata_principale.getIcone();
         while (tmp != NULL){
             if (!strcmp(tmp->name,"newgame") && tmp->current.gestisci(window)){
-                universe = Universo(1280, 720, src, font);
+                universe = Universo(1280, 720, src, font, &timePerFrame);
                 schermata_principale.setAttiva(false);
                 partita.setAttiva(true);
                 while (Mouse::isButtonPressed(Mouse::Left)){

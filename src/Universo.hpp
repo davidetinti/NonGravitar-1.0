@@ -48,7 +48,7 @@ public:
     
     /// COSTRUTTORI /////////////////////////////////////////////////////
     Universo();
-    Universo(int heigth, int lenght, Risorse *src, Font *font);
+    Universo(int heigth, int lenght, Risorse *src, Font *font, Time *time);
     
     ///  SETTERS E GETTERS  /////////////////////////////////////////////
     lista_schermate *getActive();

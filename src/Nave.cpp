@@ -10,7 +10,7 @@ Nave::Nave(){
     
 }
 
-Nave::Nave(int lenght, int heigth, Risorse *src){
+Nave::Nave(int lenght, int heigth, Risorse *src, Time *time){
     raggiox = 0;
     raggioy = 0;
     raggio_tx = src->caricaTexture(17);
@@ -44,6 +44,7 @@ Nave::Nave(int lenght, int heigth, Risorse *src){
 	thrust.setScale(0.04, 0.04);
 	thrust_int = 0;
 	thrust.setOrigin(Vector2f(thrust_tx->getSize().x/2, thrust_tx->getSize().y));
+    timePerFrame = *time;
 }
 
 ///  SETTERS E GETTERS  /////////////////////////////////////////////
@@ -192,7 +193,7 @@ void Nave::raggiotraente(RenderWindow *window){
         raggio.setOrigin(128, 0);
         window->draw(raggio);
     }
-}
+} 
 
 //call with 1 to ignore clock
 void Nave::getHit(int damage, int hitType){
@@ -214,4 +215,45 @@ void Nave::push_back(int distance){
 
 void Nave::gestisci(){
     //if (Lifebar <= 0 || Fuelbar <= 0) IsDead = true;
+}
+
+void Nave::handleThrust(){
+    thrust.setRotation(nave.getRotation());
+	thrust.setPosition(nave.getPosition());
+	thrust.setColor(Color(255, 255, 255, getThrustInt()));
+}
+
+void Nave::movements(){
+    if (Keyboard::isKeyPressed(Keyboard::Left)) {
+        nave.setRotation(nave.getRotation() - 3);
+    }
+    if (Keyboard::isKeyPressed(Keyboard::Right)) {
+        nave.setRotation(nave.getRotation() + 3);
+    }
+    if (Keyboard::isKeyPressed(Keyboard::Space)) {
+		addToDxDy(cos((nave.getRotation()-270) * M_PI / 180) * getSpaceshipAcceleration(), sin((nave.getRotation()-270) * M_PI / 180) * getSpaceshipAcceleration());
+		setThrustInt(255); 
+		if (getFuelbar() > 0)
+            setFuelbar(getFuelbar() - getSpaceshipAcceleration()/800);
+    } else {
+		decayThrustInt();
+		if(getAtPlanet())
+			setDxDy(getDx()*0.98, getDy()*0.98);
+    }
+	setCurrentSpeed(sqrt(getDx() * getDx() + getDy() * getDy()));
+	if (getCurrentSpeed() > getTopSpeed()) {
+		setDxDy(getDx() * getTopSpeed() / getCurrentSpeed(), getDy() * getTopSpeed() / getCurrentSpeed());
+	}
+
+	nave.move(getDx() * timePerFrame.asMilliseconds() * 0.1,getDy() * timePerFrame.asMilliseconds() * 0.1);
+}
+
+void Nave::braceForEntry(Vector2f planetPos, int larghezza){
+    nave.setPosition(larghezza/2, 0);
+    setX_planet(planetPos.x + 32);
+    setY_planet(planetPos.y + 32);
+    setAnglePlanet(nave.getRotation());
+    nave.setRotation(0);
+    setDxDy(0, 0.5);
+    setCurrentSpeed(sqrt(getDx() * getDx() + getDy() * getDy()));
 }

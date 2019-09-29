@@ -16,10 +16,10 @@ Universo::Universo(){
     
 } 
 
-Universo::Universo(int lenght, int heigth, Risorse *s, Font *font){
+Universo::Universo(int lenght, int heigth, Risorse *s, Font *font, Time *time){
     src = s;
     hud = HUD(lenght, heigth, src, font);
-    player = Nave(lenght, heigth, src);
+    player = Nave(lenght, heigth, src, time);
     universe_tx = src->caricaTexture(2);
     universe.setPosition(0, 0);
     universe.setTexture(*universe_tx);
@@ -64,28 +64,28 @@ void Universo::move(int x, int y, Risorse *src){
         if (active->dx == NULL) {
             active->dx = new lista_schermate(active->x + x,active->y + y,src);
             addToList(active->dx);
-        };
+        }
         active = active->dx;
-    };
+    }
     if (x == 0 && y == 1) {
         if (active->up == NULL) {
             active->up = new lista_schermate(active->x + x, active->y + y,src);
             addToList(active->up);
-        };
+        }
         active = active->up;
-    };
+    }
     if (x == -1 && y == 0) {
         if (active->sx == NULL) {
             active->sx = new lista_schermate(active->x+x,active->y+y,src);
             addToList(active->sx);
-        };
+        }
         active = active->sx;
-    };
+    }
     if (x == 0 && y == -1) {
         if (active->dw == NULL) {
             active->dw = new lista_schermate(active->x+x,active->y+y,src);
             addToList(active->dw);
-        };
+        }
         active = active->dw;
     }
     active->dx = find((active->x + 1), active->y);
@@ -103,31 +103,8 @@ void Universo::disegnaPianeti(RenderWindow *window){
 }
 
 void Universo::movimentiNavetta(RenderWindow *window, Risorse *src, Transitions *transizioni, sf::Time timePerFrame){
-    if (Keyboard::isKeyPressed(Keyboard::Left)) {
-        player.nave.setRotation(player.nave.getRotation() - 3);
-    }
-    if (Keyboard::isKeyPressed(Keyboard::Right)) {
-        player.nave.setRotation(player.nave.getRotation() + 3);
-    }
-    if (Keyboard::isKeyPressed(Keyboard::Space)) {
-		player.addToDxDy(cos((player.nave.getRotation()-270) * M_PI / 180) * player.getSpaceshipAcceleration(), sin((player.nave.getRotation()-270) * M_PI / 180) * player.getSpaceshipAcceleration());
-		player.setThrustInt(255); 
-		if (player.getFuelbar() > 0)
-            player.setFuelbar(player.getFuelbar() - player.getSpaceshipAcceleration()/800);
-    } else {
-		player.decayThrustInt();
-		if(player.getAtPlanet())
-			player.setDxDy(player.getDx()*0.98, player.getDy()*0.98);
-    }
-	player.setCurrentSpeed(sqrt(player.getDx() * player.getDx() + player.getDy() * player.getDy()));
-	if (player.getCurrentSpeed() > player.getTopSpeed()) {
-		player.setDxDy(player.getDx() * player.getTopSpeed() / player.getCurrentSpeed(), player.getDy() * player.getTopSpeed() / player.getCurrentSpeed());
-	}
-
-	player.nave.move(player.getDx() * timePerFrame.asMilliseconds() * 0.1,player.getDy() * timePerFrame.asMilliseconds() * 0.1);
-	player.thrust.setRotation(player.nave.getRotation());
-	player.thrust.setPosition(player.nave.getPosition());
-	player.thrust.setColor(Color(255, 255, 255, player.getThrustInt()));
+    player.movements();
+    player.handleThrust();
 
     if (!player.getAtPlanet()){
         if (player.nave.getPosition().x >= larghezza) {
@@ -161,13 +138,7 @@ void Universo::movimentiNavetta(RenderWindow *window, Risorse *src, Transitions 
                     tmp->weapon.bullet_time.restart();
                     tmp = tmp->next;
                 }
-                player.nave.setPosition(larghezza/2, 0);
-				
-				player.setX_planet((double)player.nave.getPosition().x - 2*(player.nave.getPosition().x - planetIterator->planet.getPosition().x));
-				player.setY_planet((double)player.nave.getPosition().y - 2*(player.nave.getPosition().y - planetIterator->planet.getPosition().y));
-				player.setAnglePlanet(player.nave.getRotation());
-				player.nave.setRotation(0);
-				player.setDxDy(0, 0);
+                player.braceForEntry(planetIterator->planet.getPosition(), larghezza);
             }
             //Ovviamente planetIterator non può mai essere NULL. Al più sarà l'ultimo della lista
             planetIterator = planetIterator->next;

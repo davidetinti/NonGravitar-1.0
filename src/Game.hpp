@@ -27,7 +27,7 @@ protected:
 public:
     
     Game();
-    Game(Risorse *src, Font *font);
+    Game(Risorse *src, Font *font, Time *time);
     void gestisci(RenderWindow *window, Risorse *src, Font *font, sf::Time timePerFrame);
     
 };

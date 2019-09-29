@@ -33,6 +33,7 @@ protected:
     int raggiox,raggioy;
     ptr_Texture Nave_tx,Bar_tx,raggio_tx,thrust_tx;
 	int thrust_int;
+    Time timePerFrame;
     
 public:
     
@@ -46,7 +47,7 @@ public:
     
     /// COSTRUTTORI /////////////////////////////////////////////////////
     Nave();
-    Nave(int lenght, int heigth, Risorse *src);
+    Nave(int lenght, int heigth, Risorse *src, Time *time);
     
     ///  SETTERS E GETTERS  /////////////////////////////////////////////
     bool getIsDead();
@@ -87,6 +88,9 @@ public:
 	void getHit(int damage, int hitType = 0);
 	void push_back(int distance);
     void gestisci();
+    void handleThrust();
+    void movements();
+    void braceForEntry(Vector2f planetPos, int larghezza);
 };
 
 #endif /* Nave_hpp */

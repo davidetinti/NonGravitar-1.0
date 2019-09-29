@@ -34,18 +34,18 @@ int main() {
             }
         }
     }
+    sf::Time timePerFrame = sf::seconds(1.0f / 60.0f); // 60 frames per second
+    sf::Clock deltaClock;  // This will track how much time has past since the last frame
+    sf::Time timeSinceLastUpdate = sf::Time::Zero;
+
     Text text;
     Clock utility_clock;
     Time utility_time;
-    Game gioco = Game(&src, &font);
+    Game gioco = Game(&src, &font, &timePerFrame);
     text.setFont(font);
     text.setCharacterSize(100);
     text.setFillColor(Color::Red);
     text.setPosition(lenght/2 , heigth/2);
-
-    sf::Time timePerFrame = sf::seconds(1.0f / 60.0f); // 60 frames per second
-    sf::Clock deltaClock;  // This will track how much time has past since the last frame
-    sf::Time timeSinceLastUpdate = sf::Time::Zero;
     
     /// FINESTRA
     
