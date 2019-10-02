@@ -16,6 +16,7 @@ Terreno::Terreno(){
 }
 
 Terreno::Terreno(int sx_coord, int dx_coord, Risorse *src, int tot_schermate){
+    this->src = src;
     terrain_tx = src->caricaTexture(29);
     terrain_tx->setRepeated(true);
     background_tx = src->caricaTexture(13);
@@ -25,26 +26,26 @@ Terreno::Terreno(int sx_coord, int dx_coord, Risorse *src, int tot_schermate){
     this->dx_coord = dx_coord;
     this->sx_coord = sx_coord;
     int nr = 4 + rand() % 20;   //elementi di soil
-    float px = 1280/nr;         //partial x
-    int firstHeight = 700 - rand() % 100;   //altezza del terreno temporanea
+    float px = src->getLength()/nr;         //partial x
+    int firstHeight = src->getHeight() - rand() % 100;   //altezza del terreno temporanea
     head = new soil(NULL);
     soil *tmp = head;
-    spriteSetup(tot_schermate,Vector2f(0,720),Vector2f(0,sx_coord),
-                Vector2f(px,firstHeight),Vector2f(px,720),tmp);
+    spriteSetup(tot_schermate,Vector2f(0,src->getHeight()),Vector2f(0,sx_coord),
+                Vector2f(px,firstHeight),Vector2f(px,src->getHeight()),tmp);
     int heightLeft = firstHeight;
-    int heightRight = 700 - rand() % 100;
+    int heightRight = src->getHeight() - rand() % 100;
     for (int i = 2; i < nr ; i++){
         tmp->next = new soil(NULL);
-        spriteSetup(tot_schermate,Vector2f(px*(i-1), 720),Vector2f(px*(i-1), heightLeft),
-                    Vector2f(px*i, heightRight),Vector2f(px*i, 720),tmp->next);
+        spriteSetup(tot_schermate,Vector2f(px*(i-1), src->getHeight()),Vector2f(px*(i-1), heightLeft),
+                    Vector2f(px*i, heightRight),Vector2f(px*i, src->getHeight()),tmp->next);
         heightLeft = heightRight;
-        heightRight = 700 - rand() % 100;
+        heightRight = src->getHeight() - rand() % 100;
         tmp = tmp->next;
     }
     tmp->next = new soil(NULL);
     tmp = tmp->next;
-    spriteSetup(tot_schermate,Vector2f(px*(nr-1), 720),Vector2f(px*(nr-1), heightLeft),
-                Vector2f(1280, dx_coord),Vector2f(1280, 720),tmp);    
+    spriteSetup(tot_schermate,Vector2f(px*(nr-1), src->getHeight()),Vector2f(px*(nr-1), heightLeft),
+                Vector2f(src->getLength(), dx_coord),Vector2f(src->getLength(), src->getHeight()),tmp);
 }
 
 ///  SETTERS E GETTERS  /////////////////////////////////////////////
@@ -90,11 +91,11 @@ Color Terreno::colore(int tot_schermate, int transparency){
     }
 }
 
-void Terreno::gestisci(RenderWindow *window){
-    window->draw(background);
+void Terreno::gestisci(){
+    src->getWindow()->draw(background);
     soil *tmp = head;
     while (tmp != NULL){
-        window->draw(tmp->element);
+            src->getWindow()->draw(tmp->element);
         tmp = tmp->next;
     };
 }

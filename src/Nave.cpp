@@ -10,7 +10,8 @@ Nave::Nave(){
     
 }
 
-Nave::Nave(int lenght, int heigth, Risorse *src, Time *time){
+Nave::Nave(Risorse* src, Time *time){
+    this->src = src;
     raggiox = 0;
     raggioy = 0;
     raggio_tx = src->caricaTexture(17);
@@ -18,19 +19,19 @@ Nave::Nave(int lenght, int heigth, Risorse *src, Time *time){
     raggio.setScale(0.2,0.4);
     raggio.setColor(Color(255,255,255,160));
     punti = 0;
-    X_planet = lenght/2;
-    Y_planet = heigth/2;
+    X_planet = src->getLength()/2;
+    Y_planet = src->getHeight()/2;
     Lifebar = 100;
     Fuelbar = 100;
-    TopSpeed = 5;
+    TopSpeed = 3;
 	CurrentSpeed = 0;
 	dx = 0; dy = 0;
-    SpaceshipAcceleration = 0.1;
+    SpaceshipAcceleration = 0.5;
     AtPlanet = false;
     IsDead = false;
     Nave_tx = src->caricaTexture(4);
     nave.setOrigin(Vector2f(Nave_tx->getSize().x/2, Nave_tx->getSize().y/2));
-    nave.setPosition(Vector2f(lenght / 2, heigth / 2));
+    nave.setPosition(Vector2f(src->getLength() / 2, src->getHeight() / 2));
     nave.setTexture(*Nave_tx);
     nave.scale(Vector2f(0.15, 0.15));
     nave.setRotation(0);
@@ -170,14 +171,14 @@ void Nave::decayThrustInt(){
 
 ///  FUNZIONI  //////////////////////////////////////////////////////
 
-void Nave::armi(RenderWindow *window, Terreno *terrain, Time perFrame){
+void Nave::armi(Terreno *terrain, Time perFrame){
     SingleShot.addSingleBullet(nave, Keyboard::Key::S, 0);
     Laser.addSingleBullet(nave, Keyboard::Key::L, 0);
-    SingleShot.renderBullet(window, terrain, perFrame);
-    Laser.renderBullet(window, terrain, perFrame);
+    SingleShot.renderBullet(terrain, perFrame);
+    Laser.renderBullet(terrain, perFrame);
 }
 
-void Nave::raggiotraente(RenderWindow *window){
+void Nave::raggioTraente(){
     if (Keyboard::isKeyPressed(Keyboard::F)){
         raggio.setTextureRect(IntRect(256*raggiox,256*raggioy,256,256));
         raggiox++;
@@ -191,7 +192,7 @@ void Nave::raggiotraente(RenderWindow *window){
         }
         raggio.setPosition(nave.getPosition());
         raggio.setOrigin(128, 0);
-        window->draw(raggio);
+        src->getWindow()->draw(raggio);
     }
 } 
 

@@ -1,4 +1,4 @@
-#include"pch.h"
+#include "pch.h"
 #include "Pulsante.hpp"
 
 using namespace sf;
@@ -9,6 +9,7 @@ Pulsante::Pulsante(){
 }
 
 Pulsante::Pulsante(Vector2f posizione, Risorse *src, int tx_nr, float scala){
+    this->src = src;
     original_scale = Vector2f(scala,scala);
     button_tx = src->caricaTexture(tx_nr);
     button.setTexture(*button_tx);
@@ -18,28 +19,28 @@ Pulsante::Pulsante(Vector2f posizione, Risorse *src, int tx_nr, float scala){
     button.setScale(original_scale);
 }
 
-bool Pulsante::isSelected(RenderWindow *window){
-    if (Mouse::getPosition(*window).x >= button.getPosition().x - original_scale.x*button_tx->getSize().x/2 && Mouse::getPosition(*window).x <= button.getPosition().x + original_scale.x*button_tx->getSize().x/2 &&
-        Mouse::getPosition(*window).y >= button.getPosition().y - original_scale.x*button_tx->getSize().y/2 && Mouse::getPosition(*window).y <= button.getPosition().y + original_scale.x*button_tx->getSize().y/2){
+bool Pulsante::isSelected(){
+    if (Mouse::getPosition(*src->getWindow()).x >= button.getPosition().x - original_scale.x*button_tx->getSize().x/2 && Mouse::getPosition(*src->getWindow()).x <= button.getPosition().x + original_scale.x*button_tx->getSize().x/2 &&
+        Mouse::getPosition(*src->getWindow()).y >= button.getPosition().y - original_scale.x*button_tx->getSize().y/2 && Mouse::getPosition(*src->getWindow()).y <= button.getPosition().y + original_scale.x*button_tx->getSize().y/2){
         return true;
     } else {
         return false;
     }
 }
 
-void Pulsante::disegna(RenderWindow *window){
-    if (isSelected(window)){
+void Pulsante::disegna(){
+    if (isSelected()){
         button.setScale(original_scale.x*1.2,original_scale.y*1.2);
-        window->draw(button);
+        src->getWindow()->draw(button);
     } else {
         button.setScale(original_scale);
-        window->draw(button);
+        src->getWindow()->draw(button);
     }
 }
 
-bool Pulsante::gestisci(RenderWindow *window){
-    disegna(window);
-    if (isSelected(window) && Mouse::isButtonPressed(Mouse::Left)){
+bool Pulsante::gestisci(){
+    disegna();
+    if (isSelected() && Mouse::isButtonPressed(Mouse::Left)){
         return true;
     } else {
         return false;
@@ -51,6 +52,7 @@ Finestra::Finestra(){
 }
 
 Finestra::Finestra(Risorse *src, int tx_sfondo){
+    this->src = src;
     sfondo_tx = src->caricaTexture(tx_sfondo);
     sfondo.setTexture(*sfondo_tx);
     sfondo.setTextureRect(IntRect(0,0,sfondo_tx->getSize().x,sfondo_tx->getSize().y));
@@ -58,19 +60,19 @@ Finestra::Finestra(Risorse *src, int tx_sfondo){
     attiva = false;
 }
 
-void Finestra::addButton(Vector2f posizione, Risorse *src, int tx_nr, float scala, char name[10]){
-    ptr_lista_pulsanti tmp = new lista_pulsanti;
+void Finestra::addButton(Vector2f posizione, int tx_nr, float scala, char name[10]){
+    lista_pulsanti *tmp = new lista_pulsanti;
     tmp->current = Pulsante(posizione, src, tx_nr, scala);
     strcpy(tmp->name, name);
     tmp->next = icone;
     icone = tmp;
 }
 
-void Finestra::disegna(RenderWindow *window){
-    window->draw(sfondo);
-    ptr_lista_pulsanti tmp = icone;
+void Finestra::disegna(){
+    src->getWindow()->draw(sfondo);
+    lista_pulsanti *tmp = icone;
     while (tmp != NULL){
-        tmp->current.gestisci(window);
+        tmp->current.gestisci();
         tmp = tmp->next;
     }
 }
@@ -83,6 +85,6 @@ void Finestra::setAttiva(bool attiva){
     this->attiva = attiva;
 }
 
-ptr_lista_pulsanti Finestra::getIcone(){
+lista_pulsanti *Finestra::getIcone(){
     return this->icone;
 }

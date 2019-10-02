@@ -7,11 +7,16 @@ using namespace std;
 /// COSTRUTTORI /////////////////////////////////////////////////////
 
 Transitions::Transitions(){
-    screen.setSize(Vector2f(1280,720));
-    screen.setPosition(0, 0);
-    trans.setSize(Vector2f(1280,720));
-    trans.setPosition(0, 0);
-    tempo_transizione = 0;
+    
+}
+
+Transitions::Transitions(Risorse *src){
+    this->src = src;
+    this->screen.setSize(Vector2f(1280,720));
+    this->screen.setPosition(0, 0);
+    this->trans.setSize(Vector2f(1280,720));
+    this->trans.setPosition(0, 0);
+    this->tempo_transizione = 0;
 }
 
 ///  SETTERS E GETTERS  /////////////////////////////////////////////
@@ -20,44 +25,46 @@ Transitions::Transitions(){
 
 ///  FUNZIONI  //////////////////////////////////////////////////////
 
-void Transitions::inPlanet(RenderWindow *window, Terreno *terrain, int tot_schermate){
+void Transitions::inPlanet(Terreno *terrain, int tot_schermate){
     tempo_transizione = 1000;
     cl1.restart();
     t1 = cl1.getElapsedTime();
     int n = (255*t1.asMilliseconds()/tempo_transizione);
     Texture a;
-    a.create(window->getSize().x, window->getSize().y);
-	a.update(*window);
+    a.create
+    (this->src->getWindow()->getSize().x,
+     this->src->getWindow()->getSize().y);
+	a.update(*this->src->getWindow());
     screen.setTexture(&a);
     trans.setFillColor(terrain->colore(tot_schermate, n));
     while (t1.asMilliseconds() < tempo_transizione){
         t1 = cl1.getElapsedTime();
         n = (255*t1.asMilliseconds())/tempo_transizione;
         trans.setFillColor(terrain->colore(tot_schermate, n));
-        window->clear();
-        window->draw(screen);
-        window->draw(trans);
-        window->display();
+        this->src->getWindow()->clear();
+        this->src->getWindow()->draw(screen);
+        this->src->getWindow()->draw(trans);
+        this->src->getWindow()->display();
     }
 }
 
-void Transitions::outPlanet(RenderWindow *window){
+void Transitions::outPlanet(){
     tempo_transizione = 1000;
     cl1.restart();
     t1 = cl1.getElapsedTime();
     int n = (255*t1.asMilliseconds()/tempo_transizione);
     Texture a;
-	a.create(window->getSize().x, window->getSize().y);
-	a.update(*window);
+	a.create(this->src->getWindow()->getSize().x, this->src->getWindow()->getSize().y);
+	a.update(*this->src->getWindow());
     screen.setTexture(&a);
     trans.setFillColor(Color(255,255,255,n));
     while (t1.asMilliseconds() < tempo_transizione){
         t1 = cl1.getElapsedTime();
         n = (255*t1.asMilliseconds())/tempo_transizione;
         trans.setFillColor(Color(255,255,255,n));
-        window->clear();
-        window->draw(screen);
-        window->draw(trans);
-        window->display();
+        this->src->getWindow()->clear();
+        this->src->getWindow()->draw(screen);
+        this->src->getWindow()->draw(trans);
+        this->src->getWindow()->display();
     }
 }

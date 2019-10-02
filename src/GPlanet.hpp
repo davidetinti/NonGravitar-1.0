@@ -2,12 +2,6 @@
 #define GPlanet_hpp
 
 #include "pch.h"
-#include <SFML/Window.hpp>
-#include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
-#include <SFML/Audio.hpp>
-#include <SFML/Network.hpp>
-#include <iostream>
 #include "Bunker.hpp"
 #include "Fuel.hpp"
 #include "Boss.hpp"
@@ -29,14 +23,13 @@ struct lista_schermate_pianeta {
                         lista_schermate_pianeta *prev_n = NULL);
 };
 
-typedef lista_schermate_pianeta* ptr_lista_schermate_pianeta;
-
 class GPlanet {
     
 protected:
     
+    Risorse *src;
     bool boss_unlocked;
-    ptr_lista_schermate_pianeta current, head;
+    lista_schermate_pianeta *current, *head;
     
 public:
     
@@ -47,19 +40,19 @@ public:
 
     ///  SETTERS E GETTERS  /////////////////////////////////////////////
     bool getBoss_unlocked();
-    ptr_lista_schermate_pianeta getCurrent();
-    ptr_lista_schermate_pianeta getHead();
+    lista_schermate_pianeta *getCurrent();
+    lista_schermate_pianeta *getHead();
     void setBoss_unlocked(bool boss_unlocked);
-    void setCurrent(ptr_lista_schermate_pianeta current);
-    void setHead(ptr_lista_schermate_pianeta head);
+    void setCurrent(lista_schermate_pianeta *current);
+    void setHead(lista_schermate_pianeta *head);
     
     ///  FUNZIONI  //////////////////////////////////////////////////////
-    ptr_lista_schermate_pianeta find(int n);
+    lista_schermate_pianeta *find(int n);
     int checkCollisionBunkBullets(FloatRect obj);
     void inizializza(int tot_schermate, Risorse *src);
     void cambia_schermata(int n);
-    void checkCollision(RenderWindow *window, Nave *player);
-    void gestione(RenderWindow *window, Nave *player, Time perFrame);
+    void checkCollision(Nave *player);
+    void gestione(Nave *player, Time perFrame);
 protected:
     int random_height();
 };

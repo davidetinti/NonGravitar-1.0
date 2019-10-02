@@ -1,12 +1,6 @@
 #ifndef Pianeta_hpp
 #define Pianeta_hpp
 
-#include <iostream>
-#include <SFML/Window.hpp>
-#include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
-#include <SFML/Audio.hpp>
-#include <SFML/Network.hpp>
 #include "GPlanet.hpp"
 
 using namespace sf;
@@ -33,7 +27,7 @@ protected:
     int str_h[8];
     Pianeta* head, *current;
     Sprite explosion;
-    ptr_Texture explosion_tx;
+    Texture* explosion_tx;
     Risorse *src;
     
 public:
@@ -49,7 +43,7 @@ public:
     void setCurrent(Pianeta* h);
     
     ///  FUNZIONI  //////////////////////////////////////////////////////
-    void gestione(RenderWindow *window, Nave *player, Transitions *transizioni, Time perFrame);
+    void gestione(Nave *player, Transitions *transizioni, Time perFrame);
 private:
     void spriteSetup(Pianeta* p);
     void deletePlanet(Pianeta* p);

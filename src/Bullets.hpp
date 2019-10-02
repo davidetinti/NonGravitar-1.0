@@ -1,15 +1,7 @@
 #ifndef Bullets_hpp
 #define Bullets_hpp
 
-#include <iostream>
-#include <SFML/Window.hpp>
-#include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
-#include <SFML/Audio.hpp>
-#include <SFML/Network.hpp>
 #include "Terreno.hpp"
-#include <cmath>
-#define _USE_MATH_DEFINES
 
 using namespace sf;
 using namespace std;
@@ -28,8 +20,8 @@ class Bullets{
     
 protected:
     
-
-    ptr_Texture bullet_tx;
+    Risorse *src;
+    Texture *bullet_tx;
     proiettile *head;
     int time_btw_shoot; //tempo tra i colpi
     int damage;
@@ -54,8 +46,8 @@ public:
 
     ///  FUNZIONI  //////////////////////////////////////////////////////
     void addSingleBullet(Sprite entity, Keyboard::Key pulsante, int tempo);
-    void renderBullet(RenderWindow *window, Terreno *terrain, Time perFrame);
-	void deleteBullet(proiettile *bullet_ptr);
+    void renderBullet(Terreno *terrain, Time perFrame);
+	void deleteBullet(proiettile *p);
 
 protected:
     void spriteSetup(proiettile *p, double x, double y, double rotation);

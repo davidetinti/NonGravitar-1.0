@@ -8,43 +8,38 @@ Game::Game(){
     
 }
 
-Game::Game(Risorse *src, Font *font, Time *time){
-    pausa_bk = src->caricaTexture(28);
-    universe = Universo(1280, 720, src, font, time);
-    schermata_principale = Finestra(src, 26);
-    partita = Finestra(src, 2);
-    crediti = Finestra(src, 2);
-    pausa = Finestra(src, 2);
-    char esci[] = "esci";
-    char newgame[] = "newgame";
-    char menu[] = "menu";
-    char indietro[] = "indietro";
-    char riprendi[] = "riprendi";
-    char tornaalmenu[] = "backmenu";
-    schermata_principale.addButton(Vector2f(640,400), src, 23, 1, newgame);
-    schermata_principale.addButton(Vector2f(640,480), src, 22, 1, esci);
-    partita.addButton(Vector2f(1200,30), src, 22, 0.35, menu);
-    crediti.addButton(Vector2f(640,400), src, 24, 1, indietro);
-    pausa.addButton(Vector2f(640,400), src, 23, 1, riprendi);
-    pausa.addButton(Vector2f(640,480), src, 24, 1, tornaalmenu);
+Game::Game(Risorse *src, Time *time){
+    this->src = src;
+    pausa_bk = this->src->caricaTexture(28);
+    universe = Universo(this->src, time);
+    schermata_principale = Finestra(this->src, 26);
+    partita = Finestra(this->src, 2);
+    crediti = Finestra(this->src, 2);
+    pausa = Finestra(this->src, 2);
+    schermata_principale.addButton(Vector2f(640,400), 23, 1, (char*)"newgame");
+    schermata_principale.addButton(Vector2f(640,480),22, 1, (char*)"esci");
+    partita.addButton(Vector2f(1200,30), 22, 0.35, (char*)"menu");
+    crediti.addButton(Vector2f(640,400), 24, 1, (char*)"indietro");
+    pausa.addButton(Vector2f(640,400), 23, 1, (char*)"riprendi");
+    pausa.addButton(Vector2f(640,480), 24, 1, (char*)"tornaalmenu");
     schermata_principale.setAttiva(true);
 }
 
-void Game::gestisci(RenderWindow *window, Risorse *src, Font *font, sf::Time timePerFrame){
+void Game::handle(Time timePerFrame){
     if (schermata_principale.getAttiva()){
-        schermata_principale.disegna(window);
-        ptr_lista_pulsanti tmp = schermata_principale.getIcone();
+        schermata_principale.disegna();
+        lista_pulsanti *tmp = schermata_principale.getIcone();
         while (tmp != NULL){
-            if (!strcmp(tmp->name,"newgame") && tmp->current.gestisci(window)){
-                universe = Universo(1280, 720, src, font, &timePerFrame);
+            if (!strcmp(tmp->name,"newgame") && tmp->current.gestisci()){
+                universe = Universo(this->src, &timePerFrame);
                 schermata_principale.setAttiva(false);
                 partita.setAttiva(true);
                 while (Mouse::isButtonPressed(Mouse::Left)){
                     
                 }
             }
-            if (!strcmp(tmp->name, "esci") && tmp->current.gestisci(window)){
-                window->close();
+            if (!strcmp(tmp->name, "esci") && tmp->current.gestisci()){
+                this->src->getWindow()->close();
                 while (Mouse::isButtonPressed(Mouse::Left)){
                     
                 }
@@ -55,43 +50,43 @@ void Game::gestisci(RenderWindow *window, Risorse *src, Font *font, sf::Time tim
     if (partita.getAttiva()){
         if (!universe.player.getIsDead()){
             
-            universe.handle(window, src, &transizioni, timePerFrame);
+            universe.handle(&transizioni, timePerFrame);
             
             /// UNIVERSO
             
             if (!universe.player.getAtPlanet()) {
-                window->draw(universe.universe);
-                universe.disegnaPianeti(window);
+                this->src->getWindow()->draw(universe.background);
+                universe.disegnaPianeti();
                 
             }
             
             /// PIANETA
             
             if (universe.player.getAtPlanet()){
-                universe.getActive()->pianeti.gestione(window, &universe.player, &transizioni, timePerFrame);
+                universe.getActive()->pianeti.gestione(&universe.player, &transizioni, timePerFrame);
                 //text.setString(to_string(universe.getActive()->pianeti.getPP()->interno.getCurrent()->nr_schermata));
                 if (universe.player.getAtPlanet()) {
-                    universe.player.armi(window, &universe.getActive()->pianeti.getCurrent()->interno.getCurrent()->terrain, timePerFrame);
-                    universe.player.raggiotraente(window);
+                    universe.player.armi(&universe.getActive()->pianeti.getCurrent()->interno.getCurrent()->terrain, timePerFrame);
+                    universe.player.raggioTraente();
                     //window.draw(text);
-                    universe.checkTerrain(window);
+                    universe.checkTerrain();
                 }
             }
-            window->draw(universe.player.thrust);
-            window->draw(universe.player.nave);
-            universe.hud.gestisci(window, universe.player.getPunti(), universe.player.getLifebar(), universe.player.getFuelbar());
+            src->getWindow()->draw(universe.player.thrust);
+            src->getWindow()->draw(universe.player.nave);
+            universe.hud.gestisci(universe.player.getPunti(), universe.player.getLifebar(), universe.player.getFuelbar());
             universe.player.gestisci();
         }
         Image a;
-        ptr_lista_pulsanti tmp = partita.getIcone();
+        lista_pulsanti *tmp = partita.getIcone();
         while (tmp != NULL){
-            tmp->current.disegna(window);
-            if (tmp->current.gestisci(window) || Keyboard::isKeyPressed(Keyboard::Escape)){
+            tmp->current.disegna();
+            if (tmp->current.gestisci() || Keyboard::isKeyPressed(Keyboard::Escape)){
                 partita.setAttiva(false);
                 pausa.setAttiva(true);
 				Texture tmp;
-				tmp.create(window->getSize().x, window->getSize().y);
-				tmp.update(*window);
+				tmp.create(src->getWindow()->getSize().x, src->getWindow()->getSize().y);
+				tmp.update(*src->getWindow());
                 a = tmp.copyToImage();
                 pausa_bk->update(a);
                 pausa.sfondo.setTexture(*pausa_bk);
@@ -104,17 +99,17 @@ void Game::gestisci(RenderWindow *window, Risorse *src, Font *font, sf::Time tim
         }
     }
     if (crediti.getAttiva()){
-        crediti.disegna(window);
+        crediti.disegna();
     }
     if (pausa.getAttiva()){
-        pausa.disegna(window);
-        ptr_lista_pulsanti tmp = pausa.getIcone();
+        pausa.disegna();
+        lista_pulsanti *tmp = pausa.getIcone();
         while (tmp != NULL){
-            if (!strcmp(tmp->name,"riprendi") && tmp->current.gestisci(window)){
+            if (!strcmp(tmp->name,"riprendi") && tmp->current.gestisci()){
                 pausa.setAttiva(false);
                 partita.setAttiva(true);
                 if (universe.player.getAtPlanet()){
-                    ptr_bunkerlist tmp = universe.getActive()->pianeti.getCurrent()->interno.getCurrent()->enemies.getHead();
+                    bunkerlist *tmp = universe.getActive()->pianeti.getCurrent()->interno.getCurrent()->enemies.getHead();
                     while (tmp != NULL){
                         tmp->weapon.bullet_time.restart();
                         tmp = tmp->next;
@@ -124,7 +119,7 @@ void Game::gestisci(RenderWindow *window, Risorse *src, Font *font, sf::Time tim
                     
                 }
             }
-            if (!strcmp(tmp->name, "backmenu") && tmp->current.gestisci(window)){
+            if (!strcmp(tmp->name, "backmenu") && tmp->current.gestisci()){
                 pausa.setAttiva(false);
                 schermata_principale.setAttiva(true);
                 while (Mouse::isButtonPressed(Mouse::Left)){

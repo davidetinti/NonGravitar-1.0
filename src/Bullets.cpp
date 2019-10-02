@@ -20,6 +20,7 @@ Bullets::Bullets(){
 }
 
 Bullets::Bullets(int time_btw_shoot,int damage, int speed, int tx_nr, int sd_nr, bool autoshoot, Risorse *src){
+    this->src = src;
     this->autoshoot = autoshoot;
     this->head = NULL;
     this->time_btw_shoot = time_btw_shoot;
@@ -55,7 +56,7 @@ void Bullets::addSingleBullet(Sprite entity, Keyboard::Key pulsante, int tempo){
     }
 }
 
-void Bullets::renderBullet(RenderWindow *window, Terreno *terrain, Time perFrame){
+void Bullets::renderBullet(Terreno *terrain, Time perFrame){
     proiettile *pointer = head;
     Time elapsed;
     while (pointer != NULL){
@@ -69,24 +70,23 @@ void Bullets::renderBullet(RenderWindow *window, Terreno *terrain, Time perFrame
             double angle = M_PI * pointer->bullet.getRotation() / 180;
             pointer->bullet.move(-sin(angle)*speed*perFrame.asSeconds()*100,
                              cos(angle)*speed*perFrame.asSeconds()*100);
-            window->draw(pointer->bullet);
+            src->getWindow()->draw(pointer->bullet);
             pointer = pointer->next;
         }
     }
 }
 
-void Bullets::deleteBullet(proiettile *bullet){
-	proiettile *iterator = head;
-    if(bullet->prev == NULL && bullet->next == NULL){
-        delete bullet;
+void Bullets::deleteBullet(proiettile *p){
+    if(p->prev == NULL && p->next == NULL){
+        delete p;
         head = NULL;
-    } else if(bullet->prev == NULL) {
-        head = bullet->next;
+    } else if(p->prev == NULL) {
+        head = p->next;
         head->prev = NULL;
-        delete bullet;
-    } else if(bullet->next == NULL) {
-        bullet->prev->next = NULL;
-        delete bullet;
+        delete p;
+    } else if(p->next == NULL) {
+        p->prev->next = NULL;
+        delete p;
     }
 }
 
@@ -100,10 +100,10 @@ void Bullets::spriteSetup(proiettile *p, double x, double y, double rotation){
     p->bullet_sound.setBuffer(bullet_sb);
 }
 
-bool Bullets::outsideBounds(proiettile *pointer, Terreno *terrain){
-    return pointer->bullet.getPosition().x < 0 ||
-     pointer->bullet.getPosition().x > 1280 ||
-      pointer->bullet.getPosition().y < 0 ||
-       pointer->bullet.getPosition().y >= terrain->get_Y(pointer->bullet.getPosition().x - 15);
+bool Bullets::outsideBounds(proiettile *p, Terreno *terrain){
+    return p->bullet.getPosition().x < 0 ||
+     p->bullet.getPosition().x > src->getLength() ||
+      p->bullet.getPosition().y < 0 ||
+       p->bullet.getPosition().y >= terrain->get_Y(p->bullet.getPosition().x - 15);
 
 }

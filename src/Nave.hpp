@@ -1,15 +1,7 @@
 #ifndef Nave_hpp
 #define Nave_hpp
 
-#include <iostream>
-#include <SFML/Window.hpp>
-#include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
-#include <SFML/Audio.hpp>
-#include <SFML/Network.hpp>
-#include <cmath>
 #include "Bullets.hpp"
-#define _USE_MATH_DEFINES
 
 using namespace sf;
 using namespace std;
@@ -18,6 +10,7 @@ class Nave{
     
 protected:
     
+    Risorse *src;
     bool IsDead;
     bool AtPlanet;
     float Lifebar;
@@ -31,7 +24,7 @@ protected:
     int punti;
 	double angle_entering_planet;
     int raggiox,raggioy;
-    ptr_Texture Nave_tx,Bar_tx,raggio_tx,thrust_tx;
+    Texture *Nave_tx,*Bar_tx,*raggio_tx,*thrust_tx;
 	int thrust_int;
     Time timePerFrame;
     
@@ -47,7 +40,7 @@ public:
     
     /// COSTRUTTORI /////////////////////////////////////////////////////
     Nave();
-    Nave(int lenght, int heigth, Risorse *src, Time *time);
+    Nave(Risorse *src, Time *time);
     
     ///  SETTERS E GETTERS  /////////////////////////////////////////////
     bool getIsDead();
@@ -83,8 +76,8 @@ public:
 	void decayThrustInt();
     
     ///  FUNZIONI  //////////////////////////////////////////////////////
-    void armi(RenderWindow *window, Terreno *terrain, Time perFrame);
-    void raggiotraente(RenderWindow *window);
+    void armi(Terreno *terrain, Time perFrame);
+    void raggioTraente();
 	void getHit(int damage, int hitType = 0);
 	void push_back(int distance);
     void gestisci();

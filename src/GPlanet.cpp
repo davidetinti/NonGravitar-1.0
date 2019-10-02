@@ -29,11 +29,11 @@ bool GPlanet::getBoss_unlocked(){
     return this->boss_unlocked;
 }
 
-ptr_lista_schermate_pianeta GPlanet::getCurrent(){
+lista_schermate_pianeta *GPlanet::getCurrent(){
     return  this->current;
 }
 
-ptr_lista_schermate_pianeta GPlanet::getHead(){
+lista_schermate_pianeta *GPlanet::getHead(){
     return  this->head;
 }
 
@@ -41,19 +41,19 @@ void GPlanet::setBoss_unlocked(bool boss_unlocked){
     this->boss_unlocked = boss_unlocked;
 }
 
-void GPlanet::setCurrent(ptr_lista_schermate_pianeta current){
+void GPlanet::setCurrent(lista_schermate_pianeta *current){
     this->current = current;
 }
 
-void GPlanet::setHead(ptr_lista_schermate_pianeta head){
+void GPlanet::setHead(lista_schermate_pianeta *head){
     this->head = head;
 }
 
 ///  FUNZIONI  //////////////////////////////////////////////////////
 
-ptr_lista_schermate_pianeta GPlanet::find(int n){
-    ptr_lista_schermate_pianeta tmp = head;
-    ptr_lista_schermate_pianeta a = NULL;
+lista_schermate_pianeta *GPlanet::find(int n){
+    lista_schermate_pianeta *tmp = head;
+    lista_schermate_pianeta *a = NULL;
     while (tmp != NULL && a == NULL){
         if (tmp->nr_schermata == n) a = tmp;
         tmp = tmp->next;
@@ -65,7 +65,7 @@ ptr_lista_schermate_pianeta GPlanet::find(int n){
 int GPlanet::checkCollisionBunkBullets(FloatRect obj){
     int hit_counter = 0;
     if (current != NULL) {
-        ptr_bunkerlist bunker_iterator = current->enemies.getHead();
+        bunkerlist *bunker_iterator = current->enemies.getHead();
         while (bunker_iterator != NULL) {
             proiettile* bullet_iterator = bunker_iterator->weapon.getHead();
             while (bullet_iterator != NULL) {
@@ -82,6 +82,7 @@ int GPlanet::checkCollisionBunkBullets(FloatRect obj){
 }
 
 void GPlanet::inizializza(int tot_schermate, Risorse *src){
+    this->src = src;
     lista_schermate_pianeta *tmp, *pre_tmp;
     if(head == NULL){
         head = new lista_schermate_pianeta(
@@ -121,7 +122,7 @@ void GPlanet::cambia_schermata(int n){
     }
 }
 
-void GPlanet::checkCollision(RenderWindow *window, Nave *player) {
+void GPlanet::checkCollision(Nave *player) {
     proiettile *bullet_ptr = player->SingleShot.getHead(), *laser_ptr = player->Laser.getHead();
     while (bullet_ptr != NULL) {
         if (bullet_ptr->exist) {
@@ -160,14 +161,14 @@ void GPlanet::checkCollision(RenderWindow *window, Nave *player) {
      }*/
 }
 
-void GPlanet::gestione(RenderWindow *window, Nave *player, Time perFrame){
-    checkCollision(window, player);
-    current->terrain.gestisci(window);
-    current->carb.gestisci(window);
-    current->enemies.gestisci(window,player, &current->terrain, perFrame);
+void GPlanet::gestione(Nave *player, Time perFrame){
+    checkCollision(player);
+    current->terrain.gestisci();
+    current->carb.gestisci();
+    current->enemies.gestisci(player, &current->terrain, perFrame);
     //boss.draw(window);
 }
 
 int GPlanet::random_height(){
-    return 720 - rand() % 100;
+    return src->getHeight() - rand() % 100;
 }

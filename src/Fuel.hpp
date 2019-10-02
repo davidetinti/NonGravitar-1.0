@@ -1,12 +1,6 @@
 #ifndef Fuel_hpp
 #define Fuel_hpp
 
-#include <SFML/Window.hpp>
-#include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
-#include <SFML/Audio.hpp>
-#include <SFML/Network.hpp>
-#include <iostream>
 #include "Terreno.hpp"
 
 using namespace sf;
@@ -18,17 +12,16 @@ struct fuel{
     int power;
     bool exist;
     Sprite fuel_sprite;
-    fuel* next;
+    fuel *next;
 };
-
-typedef fuel* ptr_fuel;
 
 class Fuel{
     
 protected:
     
-    ptr_Texture fuel_tx;
-    ptr_fuel current,head;
+    Risorse *src;
+    Texture *fuel_tx;
+    fuel *current,*head;
     double partial_x[3];
     
 public:
@@ -38,14 +31,14 @@ public:
     Fuel(Terreno *terrain,Risorse *src);
     
     ///  SETTERS E GETTERS  /////////////////////////////////////////////
-    ptr_fuel getCurrent();
-    ptr_fuel getHead();
-    void setCurrent(ptr_fuel current);
-    void setHead(ptr_fuel head);
+    fuel *getCurrent();
+    fuel *getHead();
+    void setCurrent(fuel *current);
+    void setHead(fuel *head);
     
     ///  FUNZIONI  //////////////////////////////////////////////////////
-    void delete_fuel(ptr_fuel selected);
-    void gestisci(RenderWindow *window);
+    void delete_fuel(fuel *selected);
+    void gestisci();
 };
 
 #endif /* Fuel_hpp */

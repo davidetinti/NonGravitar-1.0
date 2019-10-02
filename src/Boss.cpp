@@ -5,6 +5,7 @@
 /// COSTRUTTORI /////////////////////////////////////////////////////
 
 Boss::Boss(int life, int turrets, Risorse *src, double angolo, int vel, bool notdead){
+    this->src = src;
 	hp_total = life;
 	hp_left = hp_total;
 	turret_total = turrets;
@@ -78,7 +79,7 @@ void Boss::getHit(int shot){
 	hp_total = hp_total - shot;
 }
 
-void Boss::draw(RenderWindow * window){
-	window->draw(notBoss);
+void Boss::draw(){
+	src->getWindow()->draw(notBoss);
 }
 

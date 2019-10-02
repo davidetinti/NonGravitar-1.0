@@ -1,9 +1,4 @@
 #pragma once
-#include <SFML/Window.hpp>
-#include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
-#include <SFML/Audio.hpp>
-#include <iostream>
 #include "Bullets.hpp"
 
 using namespace sf;
@@ -12,6 +7,7 @@ class Boss{
     
 protected:
     
+    Risorse *src;
 	int hp_total;
 	int hp_left;
 	int turret_total;
@@ -21,7 +17,7 @@ protected:
     double radius;
 	bool alive;
 	Vector2f centre;
-    ptr_Texture boss_tx;
+    Texture *boss_tx;
     
 public:
     
@@ -41,6 +37,6 @@ public:
     ///  FUNZIONI  //////////////////////////////////////////////////////
 	bool checkCollisionBoss(Sprite *body);
 	void getHit(int shot);
-	void draw(RenderWindow *window);
+	void draw();
 };
 

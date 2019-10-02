@@ -9,6 +9,7 @@ Fuel::Fuel(){
 }
 
 Fuel::Fuel(Terreno *terrain, Risorse *src) {
+    this->src = src;
     fuel_tx = src->caricaTexture(18);
     partial_x[0] = 20;
     partial_x[1] = 620;
@@ -44,32 +45,32 @@ Fuel::Fuel(Terreno *terrain, Risorse *src) {
 
 ///  SETTERS E GETTERS  /////////////////////////////////////////////
 
-ptr_fuel Fuel::getCurrent(){
+fuel *Fuel::getCurrent(){
     return this->current;
 }
 
-ptr_fuel Fuel::getHead(){
+fuel *Fuel::getHead(){
     return this->head;
 }
 
-void Fuel::setCurrent(ptr_fuel current){
+void Fuel::setCurrent(fuel *current){
     this->current = current;
 }
 
-void Fuel::setHead(ptr_fuel head){
+void Fuel::setHead(fuel *head){
     this->head = head;
 }
 
 ///  FUNZIONI  //////////////////////////////////////////////////////
 
-void Fuel::delete_fuel(ptr_fuel selected){
+void Fuel::delete_fuel(fuel *selected){
     
 }
 
-void Fuel::gestisci(RenderWindow *window){
+void Fuel::gestisci(){
     current = head;
     while (current != NULL){
-        window->draw(current->fuel_sprite);
+        src->getWindow()->draw(current->fuel_sprite);
         current = current->next;
     }
     current = head;

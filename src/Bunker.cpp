@@ -19,6 +19,7 @@ Bunker::Bunker(){
 }
  
 Bunker::Bunker(Risorse *src, Terreno *terrain){
+    this->src = src;
     double x;
     explosion_tx = src->caricaTexture(20);
     partial_x[0] = 165;
@@ -48,7 +49,7 @@ Bunker::Bunker(Risorse *src, Terreno *terrain){
 ///  SETTERS E GETTERS  /////////////////////////////////////////////
 
 
-ptr_bunkerlist Bunker::getHead(){
+bunkerlist *Bunker::getHead(){
     return  head;
 }
 
@@ -59,14 +60,14 @@ bool Bunker::isEmpty(){
     return head == NULL;
 }
 
-void Bunker::armi(bunkerlist *tmp, RenderWindow *window, Terreno *terrain, Time perFrame){
+void Bunker::armi(bunkerlist *tmp, Terreno *terrain, Time perFrame){
     tmp->weapon.addSingleBullet(tmp->bunker, Keyboard::R, tmp->tempo);
-    tmp->weapon.renderBullet(window, terrain, perFrame);
+    tmp->weapon.renderBullet(terrain, perFrame);
 }
 
 //b-->bullet, l-->laser, s-->ship
-bool Bunker::checkCollisionBunker(Sprite * body, char type){
-	ptr_bunkerlist closest_bunker = head, bunker_iterator = head;
+bool Bunker::checkCollisionBunker(Sprite *body, char type){
+	bunkerlist *closest_bunker = head, *bunker_iterator = head;
 	if (closest_bunker != NULL) {
 		double min_distance_squared = pow(closest_bunker->bunker.getPosition().x - body->getPosition().x, 2) + pow(closest_bunker->bunker.getPosition().y - body->getPosition().y, 2);
 		double this_distance_squared = 0;
@@ -116,8 +117,8 @@ void Bunker::hitLastChecked(int damage){
 	}
 }
 
-void Bunker::deleteBunker(ptr_bunkerlist target){
-	ptr_bunkerlist iterator = head;
+void Bunker::deleteBunker(bunkerlist *target){
+	bunkerlist *iterator = head;
 	if (iterator != NULL && target != head) {
 		while (iterator->next != NULL) {
 			if (iterator->next == target) {
@@ -133,13 +134,13 @@ void Bunker::deleteBunker(ptr_bunkerlist target){
     }
 }
 
-void Bunker::esplodi(RenderWindow *window, ptr_bunkerlist target){
+void Bunker::esplodi(bunkerlist* target){
     target->explosion.setTextureRect(IntRect(50*(int)target->explosion_x,0,50,50));
     target->explosion_x ++;
-    window->draw(target->explosion);
+    src->getWindow()->draw(target->explosion);
 }
 
-void Bunker::gestisci(RenderWindow *window, Nave *player, Terreno *terrain, Time perFrame){
+void Bunker::gestisci(Nave *player, Terreno *terrain, Time perFrame){
     bunkerlist *tmp = head;
     while (tmp != NULL){
         //cout << enemies->x << endl;
@@ -147,15 +148,15 @@ void Bunker::gestisci(RenderWindow *window, Nave *player, Terreno *terrain, Time
             if (tmp->type == 1){
                 tmp->bunker.setRotation(180 - atan((player->nave.getPosition().x-tmp->bunker.getPosition().x)/(player->nave.getPosition().y-tmp->bunker.getPosition().y))*(180/M_PI));
             }
-            armi(tmp, window, terrain, perFrame);
-            window->draw(tmp->bunker);
+            armi(tmp, terrain, perFrame);
+            src->getWindow()->draw(tmp->bunker);
             
         }
         if (tmp->life <= 0) {
             tmp->exist = false;
             player->setPunti(player->getPunti()+100);
         }
-        if (tmp->exist == false) esplodi(window, tmp);
+        if (tmp->exist == false) esplodi(tmp);
         if (tmp->explosion_x >= 20){
             deleteBunker(tmp);
             tmp = NULL;

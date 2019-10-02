@@ -74,10 +74,10 @@ void uPlanets::setCurrent(Pianeta* h){
 
 ///  FUNZIONI  //////////////////////////////////////////////////////
 
-void uPlanets::gestione(RenderWindow *window, Nave *player, Transitions *transizioni, Time perFrame){
-    ptr_lista_schermate_pianeta iterator = current->interno.getHead();
+void uPlanets::gestione(Nave *player, Transitions *transizioni, Time perFrame){
+    lista_schermate_pianeta *iterator = current->interno.getHead();
     bool no_bunkers = true;
-    current->interno.gestione(window, player, perFrame);
+    current->interno.gestione(player, perFrame);
     for (int i = 0; i < current->tot_schermate; i++){
         if (iterator->enemies.getHead() == NULL){
             iterator = iterator->next;
@@ -88,11 +88,10 @@ void uPlanets::gestione(RenderWindow *window, Nave *player, Transitions *transiz
     if (no_bunkers) {
         player->nave.setPosition(player->getX_planet(), player->getY_planet());
         player->nave.setRotation(player->getAnglePlanet() + 180);
-        player->setSpaceshipAcceleration(0);
         player->setAtPlanet(false);
         current->exist = false;
         deletePlanet(current);
-        transizioni->outPlanet(window);
+        //transizioni->outPlanet();
     }
 }
 

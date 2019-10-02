@@ -1,13 +1,7 @@
 #ifndef Terreno_hpp
 #define Terreno_hpp
 
-#include <SFML/Window.hpp>
-#include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
-#include <SFML/Audio.hpp>
-#include <SFML/Network.hpp>
-#include <iostream>
-#include "cmath"
+#include <cmath>
 #include "Risorse.hpp"
 
 using namespace sf;
@@ -23,10 +17,11 @@ class Terreno{
     
 protected:
     
+    Risorse *src;
     int dx_coord,sx_coord;
-    ptr_Texture terrain_tx;
-    ptr_Texture background_tx;
-    soil * head, *current;
+    Texture* terrain_tx;
+    Texture* background_tx;
+    soil* head, *current;
     
 public:
     
@@ -44,7 +39,7 @@ public:
     
     ///  FUNZIONI  //////////////////////////////////////////////////////
     Color colore(int tot_schermate, int transparency);
-    void gestisci(RenderWindow *window);
+    void gestisci();
     double get_Y(double x);
 private:
     void spriteSetup(int tot_sch, Vector2f p0, Vector2f p1, Vector2f p2, Vector2f p3, soil *p);

@@ -1,12 +1,6 @@
 #ifndef Transitions_hpp
 #define Transitions_hpp
 
-#include <SFML/Window.hpp>
-#include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
-#include <SFML/Audio.hpp>
-#include <SFML/Network.hpp>
-#include <iostream>
 #include "Terreno.hpp"
 
 using namespace sf;
@@ -16,6 +10,7 @@ class Transitions{
     
 protected:
     
+    Risorse *src;
     int tempo_transizione;
     
 public:
@@ -26,13 +21,14 @@ public:
     
     /// COSTRUTTORI /////////////////////////////////////////////////////
     Transitions();
+    Transitions(Risorse *src);
     
     ///  SETTERS E GETTERS  /////////////////////////////////////////////
     
     
     ///  FUNZIONI  //////////////////////////////////////////////////////
-    void inPlanet(RenderWindow *window, Terreno *terrain, int tot_schermate);
-    void outPlanet(RenderWindow *window);
+    void inPlanet(Terreno *terrain, int tot_schermate);
+    void outPlanet();
 };
 
 #endif /* Transitions_hpp */
