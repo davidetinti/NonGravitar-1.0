@@ -44,36 +44,10 @@ void Bullets::setHead(proiettile *head){
 
 ///  FUNZIONI  //////////////////////////////////////////////////////
 
-void Bullets::addSingleBullet(Sprite entity, Keyboard::Key pulsante, int tempo){
-    double x = entity.getPosition().x;
-    double y = entity.getPosition().y;
-    double rotation = entity.getRotation();
-    if ((!autoshoot && Keyboard::isKeyPressed(pulsante) && bullet_time.getElapsedTime().asMilliseconds()>time_btw_shoot) || (autoshoot && bullet_time.getElapsedTime().asMilliseconds()>(time_btw_shoot + tempo))) {
-        proiettile *tmp = head;
-        head = new proiettile(tmp);
-        spriteSetup(head,x,y,rotation);
-        bullet_time.restart();
-    }
-}
 
 void Bullets::renderBullet(Terreno *terrain, Time perFrame){
-    proiettile *pointer = head;
-    Time elapsed;
-    while (pointer != NULL){
-		elapsed = pointer->invuln_clock.getElapsedTime();
-		if ((elapsed.asMilliseconds() > invuln_time || !autoshoot) &&
-			outsideBounds(pointer, terrain)){
-            proiettile *tmp = pointer;
-            pointer = pointer->next;
-            deleteBullet(tmp);
-        } else {
-            double angle = M_PI * pointer->bullet.getRotation() / 180;
-            pointer->bullet.move(-sin(angle)*speed*perFrame.asSeconds()*100,
-                             cos(angle)*speed*perFrame.asSeconds()*100);
-            src->getWindow()->draw(pointer->bullet);
-            pointer = pointer->next;
-        }
-    }
+    proiettile *tmp = head;
+    while (tmp != NULL) src->getWindow()->draw(tmp->bullet);
 }
 
 void Bullets::deleteBullet(proiettile *p){
@@ -88,6 +62,26 @@ void Bullets::deleteBullet(proiettile *p){
         p->prev->next = NULL;
         delete p;
     }
+}
+
+int Bullets::checkCollision(FloatRect p){
+    proiettile *tmp = head;
+    int hit_counter = 0;
+    while (tmp != NULL){
+        if (collidesWith(tmp,p)){
+            hit_counter++;
+            proiettile *target = tmp;
+            tmp = tmp->next;
+            deleteBullet(target);
+        } else {
+            tmp = tmp->next;
+        }
+    }
+    return hit_counter;
+}
+
+bool Bullets::collidesWith(proiettile *p, FloatRect obj){
+    return p->bullet.getGlobalBounds().intersects(obj);
 }
 
 void Bullets::spriteSetup(proiettile *p, double x, double y, double rotation){

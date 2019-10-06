@@ -1,4 +1,4 @@
-#include"pch.h"
+#include "pch.h"
 #include "Game.hpp"
 
 using namespace std;
@@ -111,7 +111,7 @@ void Game::handle(Time timePerFrame){
                 if (universe.player.getAtPlanet()){
                     bunkerlist *tmp = universe.getActive()->pianeti.getCurrent()->interno.getCurrent()->enemies.getHead();
                     while (tmp != NULL){
-                        tmp->weapon.bullet_time.restart();
+                        tmp->weapon->bullet_time.restart();
                         tmp = tmp->next;
                     }
                 }

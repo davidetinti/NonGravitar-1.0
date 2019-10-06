@@ -24,8 +24,8 @@ protected:
     Font font;
     void loadTextures();
     void loadSounds();
-    int height;
-    int length;
+    int height,length;
+    int primaryDamage, secondaryDamage;
     
 public:
     
@@ -36,6 +36,8 @@ public:
     int getHeight();
     int getLength();
     Font *getFont();
+    int getPrimaryDamage();
+    int getSecondaryDamage();
     
 };
 

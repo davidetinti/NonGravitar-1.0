@@ -20,6 +20,8 @@ Risorse::Risorse(){
             }
         }
     }
+    primaryDamage = 35;
+    secondaryDamage = 100;
 }
         
 void Risorse::loadTextures(){
@@ -60,4 +62,12 @@ int Risorse::getLength(){
 
 Font *Risorse::getFont(){
     return &font;
+}
+
+int Risorse::getPrimaryDamage(){
+    return primaryDamage;
+}
+
+int Risorse::getSecondaryDamage(){
+    return secondaryDamage;
 }
