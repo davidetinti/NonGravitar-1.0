@@ -11,12 +11,16 @@ soil::soil(soil *n):
             element = ConvexShape(4);
         }
 
-Terreno::Terreno(){
-    
+Terreno::Terreno(Risorse *s){
+    //TODO use this for boss background
+    background_tx = s->caricaTexture(33);
+    background.setTexture(*background_tx);
+    background.setColor(Color::Yellow);
 }
 
 Terreno::Terreno(int sx_coord, int dx_coord, Risorse *src, int tot_schermate){
     this->src = src;
+    nr_schermate = tot_schermate;
     terrain_tx = src->caricaTexture(29);
     terrain_tx->setRepeated(true);
     background_tx = src->caricaTexture(13);
@@ -124,4 +128,16 @@ void Terreno::spriteSetup(int tot_sch, Vector2f p0, Vector2f p1, Vector2f p2, Ve
     p->element.setPoint(3,p3);
     p->element.setTexture(terrain_tx);
     p->element.setFillColor(colore(tot_sch,255));
+}
+
+void Terreno::prepareForHole(){
+	soil *tmp = head;
+	if (head != NULL) {
+		//cout << "\nPREPARING FOR HOLE\n";
+		tmp->element.setPoint(1, Vector2f(0, 700));
+		double exTopRight = tmp->element.getPoint(2).x;
+		tmp->element.setPoint(2, Vector2f(exTopRight, 700));
+		current->element.setTexture(terrain_tx);
+		current->element.setFillColor(colore(nr_schermate, 255));
+	}
 }

@@ -30,9 +30,9 @@ Bunker::Bunker(Risorse *src, Terreno *terrain){
     p = rand() % 2;
     //TO BE MERGED WITH FOR PLS
     if(p) head = new bunkerlist(1,(rand() % 5000) + 2500,x,terrain->get_Y(x),
-                          100, NULL,new SingleStraightBullets(400, 100, 10, 14, 0, true, src),true, 0.0);
+                          100, NULL,new SingleStraightBullets(400, 100, 10, 14, 0, true, src));
     else  head = new bunkerlist(1,(rand() % 5000) + 2500,x,terrain->get_Y(x),
-                          100, NULL, new TripleBullets(400, 100, 10, 14, 0, true, src), true, 0.0);
+                          100, NULL, new TripleBullets(400, 100, 10, 14, 0, true, src));
     spriteSetup(head);
 
     bunkerlist *tmp = head;
@@ -41,9 +41,9 @@ Bunker::Bunker(Risorse *src, Terreno *terrain){
         p = rand() % 2;
         x = partial_x[i] + rand() % 201; 
         if(p) tmp->next = new bunkerlist(1,(rand() % 5000) + 2500,x, terrain->get_Y(x), 
-                                   100, NULL, new SingleStraightBullets(400, 100, 10, 14, 0, true, src), true, 0.0);
+                                   100, NULL, new SingleStraightBullets(400, 100, 10, 14, 0, true, src));
         else  tmp->next = new bunkerlist(1,(rand() % 5000) + 2500,x, terrain->get_Y(x), 
-                                   100, NULL, new TripleBullets(400, 100, 10, 14, 0, true, src), true, 0.0);
+                                   100, NULL, new TripleBullets(400, 100, 10, 14, 0, true, src));
         tmp = tmp->next;
         spriteSetup(tmp);
         tmp->next = NULL;
@@ -119,7 +119,7 @@ void Bunker::gestisci(Nave *player, Terreno *terrain, Time perFrame){
                 tmp->bunker.setRotation(180 - atan((player->nave.getPosition().x-tmp->bunker.getPosition().x)/(player->nave.getPosition().y-tmp->bunker.getPosition().y))*(180/M_PI));
             }
             armi(tmp, terrain, perFrame);
-            src->getWindow()->draw(tmp->bunker);
+            //src->getWindow()->draw(tmp->bunker);
             
         }
         if (tmp->life <= 0) {
@@ -134,6 +134,7 @@ void Bunker::gestisci(Nave *player, Terreno *terrain, Time perFrame){
         if (tmp != NULL) 
             tmp = tmp->next;
     }
+    drawAll();
 }
 
 int Bunker::checkCollisionBBullets(FloatRect obj){
@@ -160,4 +161,13 @@ void Bunker::spriteSetup(bunkerlist *p){
     p->explosion.setPosition(p->bunker.getPosition());
     p->explosion.scale(2, 2);
     p->explosion.setOrigin(25, 25);
+}
+
+void Bunker::drawAll(){
+    bunkerlist *tmp = head;
+    while (tmp != NULL){
+        if(tmp->exist)
+            src->getWindow()->draw(tmp->bunker);
+        tmp = tmp->next;
+    } 
 }

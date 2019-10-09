@@ -21,6 +21,7 @@ struct lista_schermate_pianeta {
                         int totale_schermate, Risorse *src,
                         lista_schermate_pianeta *next_n = NULL,
                         lista_schermate_pianeta *prev_n = NULL);
+    lista_schermate_pianeta(Risorse *src);
 };
 
 class GPlanet {
@@ -28,8 +29,10 @@ class GPlanet {
 protected:
     
     Risorse *src;
-    bool boss_unlocked;
-    lista_schermate_pianeta *current, *head;
+    bool boss_unlocked,in_boss;
+    lista_schermate_pianeta *current, *head, *boss_screen;
+    Texture *hole_tx;
+    Sprite hole;
     
 public:
     

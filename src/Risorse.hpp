@@ -20,7 +20,7 @@ protected:
     ContextSettings settings;
     String localPath[3];
     SoundBuffer sound[1];
-    Texture texture[31];
+    Texture texture[34];
     Font font;
     void loadTextures();
     void loadSounds();

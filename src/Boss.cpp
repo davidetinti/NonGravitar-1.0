@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Boss.hpp"
 
-
+ 
 /// COSTRUTTORI /////////////////////////////////////////////////////
 
 Boss::Boss(int life, int turrets, Risorse *src, double angolo, int vel, bool notdead){
@@ -10,16 +10,42 @@ Boss::Boss(int life, int turrets, Risorse *src, double angolo, int vel, bool not
 	hp_left = hp_total;
 	turret_total = turrets;
 	turret_left = turret_total;
-	boss_tx = src->caricaTexture(14);
 	alive = notdead;
 	angle = angolo;
-	radius = 200;
-	notBoss.setRadius(radius);
-	notBoss.setPointCount(40);
-	notBoss.setOrigin(Vector2f(radius, radius));
-	notBoss.setPosition(400, 400);
-	centre.x = notBoss.getOrigin().x + notBoss.getPosition().x - radius;
-	centre.y = notBoss.getOrigin().y + notBoss.getPosition().y - radius;
+	boss_tx = src->caricaTexture(32);
+	radius = boss_tx->getSize().x/2;
+	notBoss.setTexture(*boss_tx);
+	notBoss.setScale(3.5, 3.5);
+	notBoss.setOrigin(Vector2f(boss_tx->getSize().x/2, boss_tx->getSize().y/2));
+	notBoss.setPosition(620, 360);
+	//notBoss.setColor(Color(255, 0, 0, 255));
+	centre.x = notBoss.getPosition().x;
+	centre.y = notBoss.getPosition().y;
+	speed = 1;
+
+	//turrets = BossBunker(src, 4, radius, centre);
+
+
+	
+
+	CollisionBoundary = CircleShape(radius, 30);
+	VirtualCenter = CircleShape(2, 30);
+	CollisionBoundary.setOrigin(Vector2f(radius, radius));
+	CollisionBoundary.setPosition(centre.x, centre.y);
+	CollisionBoundary.setOutlineColor(Color(255, 0, 0, 255));
+	CollisionBoundary.setOutlineThickness(2);
+	CollisionBoundary.setFillColor(Color(0, 0, 0, 0));
+	VirtualCenter.setOrigin(1, 1);
+	VirtualCenter.setPosition(centre.x, centre.y);
+	VirtualCenter.setOutlineColor(Color(255, 0, 0, 255));
+	VirtualCenter.setOutlineThickness(4);
+	VirtualCenter.setFillColor(Color(0, 0, 0, 0));
+	bossSpriteBoundary = RectangleShape(Vector2f(notBoss.getGlobalBounds().width, notBoss.getGlobalBounds().height));
+	bossSpriteBoundary.setOrigin(bossSpriteBoundary.getGlobalBounds().width / 2, bossSpriteBoundary.getGlobalBounds().height / 2);
+	bossSpriteBoundary.setPosition(notBoss.getPosition());
+	bossSpriteBoundary.setFillColor(Color(0, 0, 0, 0));
+	bossSpriteBoundary.setOutlineColor(Color(255, 0, 0, 255));
+	bossSpriteBoundary.setOutlineThickness(4);
 }
 
 Boss::Boss() {
@@ -56,30 +82,54 @@ void Boss::setAngle(double a){
 	this->notBoss.setRotation(a);
 }
 
+bool Boss::isDead(){
+	return !alive;
+}
+
+
 ///  FUNZIONI  //////////////////////////////////////////////////////
 
 bool Boss::checkCollisionBoss(Sprite *body){
-	Vector2f closestPoint;
-	FloatRect bodyRect = body->getGlobalBounds();
-	double distanceSquared = 0; 
-	closestPoint = Vector2f(bodyRect.top, bodyRect.left);
-	if (pow(closestPoint.x - centre.x, 2) + pow(closestPoint.y - centre.y, 2) < pow(bodyRect.left + bodyRect.width, 2) + pow(bodyRect.top, 2)) closestPoint = Vector2f(bodyRect.left + bodyRect.width, bodyRect.top);
-	if (pow(closestPoint.x - centre.x, 2) + pow(closestPoint.y - centre.y, 2) < pow(bodyRect.left + bodyRect.width, 2) + pow(bodyRect.top + bodyRect.height, 2)) closestPoint = Vector2f(bodyRect.left + bodyRect.width, bodyRect.top + bodyRect.height);
-	if (pow(closestPoint.x - centre.x, 2) + pow(closestPoint.y - centre.y, 2) < pow(bodyRect.left, 2) + pow(bodyRect.top + bodyRect.height, 2)) closestPoint = Vector2f(bodyRect.left, bodyRect.top + bodyRect.height);
-
-	distanceSquared = pow(closestPoint.x-centre.x, 2) + pow(closestPoint.y-centre.y, 2);
-	if(distanceSquared < pow(radius, 2))	return false;
-	else {
+	if (pow(body->getPosition().x - centre.x, 2) + pow(body->getPosition().y - centre.y, 2) >= pow(radius, 2)) {
 		getHit(1);
 		return true;
 	}
+	else return false;
+}
+
+bool Boss::checkCollisionTurrets(Sprite* body, char source){
+	//if (turrets.checkCollisionBunker(body, source)) return true;
+	return false;
 }
 
 void Boss::getHit(int shot){
 	hp_total = hp_total - shot;
 }
 
-void Boss::draw(){
-	src->getWindow()->draw(notBoss);
+void Boss::draw(int type){
+	if (alive) {
+		src->getWindow()->draw(notBoss);
+		//turrets.drawAll();
+
+		if (type == 1) {
+			src->getWindow()->draw(VirtualCenter);
+			src->getWindow()->draw(CollisionBoundary);
+			bossSpriteBoundary.setRotation(notBoss.getRotation());
+			src->getWindow()->draw(bossSpriteBoundary);
+		}
+	}
 }
 
+void Boss::gestisci(){
+	//turrets.gestisci(window, player);
+	if (rotation.getElapsedTime().asMilliseconds() > 20) {
+		notBoss.setRotation(notBoss.getRotation() + 0.6);
+		//turrets.move(0.6);
+		rotation.restart();
+	}
+	if (hp_left <= 0) {
+		alive = false;
+	}
+}
+
+ 

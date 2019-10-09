@@ -15,12 +15,20 @@ lista_schermate_pianeta::lista_schermate_pianeta(Terreno terrain_n, int n,
                                 enemies = Bunker(src,&terrain);
                                 carb = Fuel(&terrain,src);
                             }
+lista_schermate_pianeta::lista_schermate_pianeta(Risorse *s) :
+                            next(NULL),prev(NULL),terrain(Terreno(s)),
+                            nr_schermata(666){
+                                //TODO
+                                //enemies = BossBunker(...);
+                                //carb = BossFuel(...);
+                            }
 
 GPlanet::GPlanet(){
     current = NULL;
     head = NULL;
 	boss = Boss();
 	boss_unlocked = false;
+    
 }
 
 ///  SETTERS E GETTERS  /////////////////////////////////////////////
@@ -51,7 +59,7 @@ void GPlanet::setHead(lista_schermate_pianeta *head){
 
 ///  FUNZIONI  //////////////////////////////////////////////////////
 
-lista_schermate_pianeta *GPlanet::find(int n){
+lista_schermate_pianeta *GPlanet::find(int n){///???
     lista_schermate_pianeta *tmp = head;
     lista_schermate_pianeta *a = NULL;
     while (tmp != NULL && a == NULL){
@@ -67,6 +75,9 @@ int GPlanet::checkCollisionBunkBullets(FloatRect obj){
 }
 
 void GPlanet::inizializza(int tot_schermate, Risorse *src){
+    hole_tx = src->caricaTexture(31);
+	hole.setTexture(*hole_tx);
+	hole.setOrigin(hole_tx->getSize().x / 2, hole_tx->getSize().y / 2);
     this->src = src;
     lista_schermate_pianeta *tmp, *pre_tmp;
     if(head == NULL){
@@ -84,6 +95,9 @@ void GPlanet::inizializza(int tot_schermate, Risorse *src){
         tmp->next = head;
         head->prev = tmp;
         boss = Boss(100, 3, src);
+        boss_unlocked = false;
+        in_boss = false;
+        boss_screen = new lista_schermate_pianeta(src);
         current = head;
     } else {
         bunkerlist *tmp = getCurrent()->enemies.getHead();
@@ -95,15 +109,19 @@ void GPlanet::inizializza(int tot_schermate, Risorse *src){
 }
 
 void GPlanet::cambia_schermata(int n){
-    if (n == 1){
-        current = current->next;
+    if (n != 666){ 
+        if (n == 1){
+            current = current->next;
+        } else {
+            current = current->prev;
+        }
+        bunkerlist *tmp = current->enemies.getHead();
+        while (tmp != NULL){
+            tmp->weapon->bullet_time.restart();
+            tmp = tmp->next;
+        }
     } else {
-        current = current->prev;
-    }
-    bunkerlist *tmp = current->enemies.getHead();
-    while (tmp != NULL){
-        tmp->weapon->bullet_time.restart();
-        tmp = tmp->next;
+        current = boss_screen;
     }
 }
 
@@ -121,21 +139,41 @@ void GPlanet::checkCollision(Nave *player) { //should this be moved into Bunker?
         }
         bunk_iterator = bunk_iterator->next;
     }
+    //TODO: add collision bullets from boss turrets to ship
+	//TODO: add collision laser from ship to turrets and boss
+
     int hit_n = checkCollisionBunkBullets(player->nave.getGlobalBounds());
     //getHit called with 1 so that it ignores clock
     player->getHit(30 * hit_n, 1);
-    /*if (universe_ptr->active->pianeti.pp->interno.boss.checkCollisionBoss(&ship_ptr->nave)) {
-     ship_ptr->getHit(5);
-     ship_ptr->push_back(4);
-     }*/
+    if (boss.checkCollisionBoss(&player->nave)){
+     player->getHit(5);
+     //TODO
+     //player->push_back(4);
+    }
 }
 
 void GPlanet::gestione(Nave *player, Time perFrame){
+    bool no_bunkers = false; lista_schermate_pianeta *iterator = head;
+    if (!boss_unlocked) {
+	    while (iterator != NULL && no_bunkers) {
+	        no_bunkers = no_bunkers && (iterator->enemies.isEmpty());
+	        iterator = iterator->next;
+	    }
+	    if (no_bunkers) {
+	        boss_unlocked = true;
+	        cout << "boss became true";
+	        //head_list->terrain.prepareForBoss();
+	    }
+	}
     checkCollision(player);
     current->terrain.gestisci();
-    current->carb.gestisci();
-    current->enemies.gestisci(player, &current->terrain, perFrame);
-    //boss.draw(window);
+    if (!in_boss) {
+		current->carb.gestisci();
+		current->enemies.gestisci(player, &current->terrain, perFrame);
+	}
+	if (boss_unlocked && current == head) src->getWindow()->draw(hole);
+	if (in_boss)
+		boss.draw();
 }
 
 int GPlanet::random_height(){

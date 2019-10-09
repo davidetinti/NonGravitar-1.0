@@ -52,6 +52,7 @@ public:
     void gestisci(Nave *player, Terreno *terrain, Time perFrame);
     int checkCollisionBBullets(FloatRect obj);
     bool collidesWith(bunkerlist *p, FloatRect q);
+    void drawAll();
 
 protected:
     void spriteSetup(bunkerlist *p);
