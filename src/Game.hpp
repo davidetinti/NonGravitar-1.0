@@ -1,31 +1,24 @@
 #ifndef Game_hpp
 #define Game_hpp
 
-#include "Universo.hpp"
-
-using namespace std;
-using namespace sf;
+#include "Universe.hpp"
+#include "Stage.hpp"
 
 class Game{
     
 protected:
     
-    Risorse *src;
-    Finestra schermata_principale;
-    Finestra crediti;
-    Finestra partita;
-    Finestra pausa;
-    Universo universe;
-    Transitions transizioni;
-    Texture *pausa_bk;
+    Resources *src;
+    Stage home, credits, game, pause, settings, game_over;
+    Universe universe;
+    Texture *tmp_background;
 
 public:
     
     Game();
-    Game(Risorse *src, Time *time);
-    void handle(sf::Time timePerFrame);
+    Game(Resources *src);
+    void handle();
     
 };
-
 
 #endif /* Game_hpp */

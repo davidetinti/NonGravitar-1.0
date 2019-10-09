@@ -1,16 +1,12 @@
-#include "pch.h"
 #include "Transitions.hpp"
 
-using namespace sf;
-using namespace std;
-
-/// COSTRUTTORI /////////////////////////////////////////////////////
+// COSTRUTTORI =======================================
 
 Transitions::Transitions(){
     
 }
 
-Transitions::Transitions(Risorse *src){
+Transitions::Transitions(Resources *src){
     this->src = src;
     this->screen.setSize(Vector2f(1280,720));
     this->screen.setPosition(0, 0);
@@ -19,11 +15,11 @@ Transitions::Transitions(Risorse *src){
     this->tempo_transizione = 0;
 }
 
-///  SETTERS E GETTERS  /////////////////////////////////////////////
+// SETTERS E GETTERS =================================
 
 
 
-///  FUNZIONI  //////////////////////////////////////////////////////
+// FUNZIONI ==========================================
 
 void Transitions::inPlanet(Terreno *terrain, int tot_schermate){
     tempo_transizione = 1000;

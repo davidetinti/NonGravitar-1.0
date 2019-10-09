@@ -3,9 +3,6 @@
 
 #include "Terreno.hpp"
 
-using namespace sf;
-using namespace std;
-
 struct fuel{
     double x;
     double y;
@@ -19,24 +16,24 @@ class Fuel{
     
 protected:
     
-    Risorse *src;
+    Resources *src;
     Texture *fuel_tx;
     fuel *current,*head;
     double partial_x[3];
     
 public:
     
-    /// COSTRUTTORI /////////////////////////////////////////////////////
+    // COSTRUTTORI ===================================
     Fuel();
-    Fuel(Terreno *terrain,Risorse *src);
+    Fuel(Terreno *terrain,Resources *src);
     
-    ///  SETTERS E GETTERS  /////////////////////////////////////////////
+    // SETTERS E GETTERS =============================
     fuel *getCurrent();
     fuel *getHead();
     void setCurrent(fuel *current);
     void setHead(fuel *head);
     
-    ///  FUNZIONI  //////////////////////////////////////////////////////
+    // FUNZIONI ======================================
     void delete_fuel(fuel *selected);
     void gestisci();
 };

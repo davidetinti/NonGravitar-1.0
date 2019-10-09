@@ -1,13 +1,9 @@
-#include "pch.h"
 #include "GPlanet.hpp"
 
-using namespace sf;
-using namespace std;
-
-/// COSTRUTTORI /////////////////////////////////////////////////////
+// COSTRUTTORI =======================================
 
 lista_schermate_pianeta::lista_schermate_pianeta(Terreno terrain_n, int n,
-                        int totale_schermate, Risorse *src,
+                        int totale_schermate, Resources *src,
                         lista_schermate_pianeta *next_n,
                         lista_schermate_pianeta *prev_n):
                             next(next_n),prev(prev_n),terrain(terrain_n),
@@ -23,7 +19,7 @@ GPlanet::GPlanet(){
 	boss_unlocked = false;
 }
 
-///  SETTERS E GETTERS  /////////////////////////////////////////////
+// SETTERS E GETTERS =================================
 
 bool GPlanet::getBoss_unlocked(){
     return this->boss_unlocked;
@@ -49,7 +45,7 @@ void GPlanet::setHead(lista_schermate_pianeta *head){
     this->head = head;
 }
 
-///  FUNZIONI  //////////////////////////////////////////////////////
+// FUNZIONI ==========================================
 
 lista_schermate_pianeta *GPlanet::find(int n){
     lista_schermate_pianeta *tmp = head;
@@ -81,7 +77,7 @@ int GPlanet::checkCollisionBunkBullets(FloatRect obj){
     return hit_counter;
 }
 
-void GPlanet::inizializza(int tot_schermate, Risorse *src){
+void GPlanet::inizializza(int tot_schermate, Resources *src){
     this->src = src;
     lista_schermate_pianeta *tmp, *pre_tmp;
     if(head == NULL){
@@ -161,11 +157,11 @@ void GPlanet::checkCollision(Nave *player) {
      }*/
 }
 
-void GPlanet::gestione(Nave *player, Time perFrame){
+void GPlanet::handle(Nave *player){
     checkCollision(player);
     current->terrain.gestisci();
     current->carb.gestisci();
-    current->enemies.gestisci(player, &current->terrain, perFrame);
+    current->enemies.handle(player, &current->terrain);
     //boss.draw(window);
 }
 

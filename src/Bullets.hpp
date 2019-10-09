@@ -3,9 +3,6 @@
 
 #include "Terreno.hpp"
 
-using namespace sf;
-using namespace std;
-
 struct proiettile{
     bool exist;
     Sprite bullet;
@@ -16,11 +13,12 @@ struct proiettile{
     proiettile(proiettile *next_n, proiettile *prev_n = NULL);
 };
 
+
 class Bullets{
     
 protected:
     
-    Risorse *src;
+    Resources *src;
     Texture *bullet_tx;
     proiettile *head;
     int time_btw_shoot; //tempo tra i colpi
@@ -28,29 +26,29 @@ protected:
     int speed;
     double invuln_time; //tempo di invulnerabilità
     bool autoshoot;
-
-
     
 public:
     
     SoundBuffer bullet_sb;
     Clock bullet_time;
     
-    /// COSTRUTTORI /////////////////////////////////////////////////////
+    // COSTRUTTORI ===================================
     Bullets();
-    Bullets(int time_btw_shoot, int damage, int speed, int tx_nr, int sd_nr, bool autoshoot, Risorse *src);
+    Bullets(int time_btw_shoot, int damage, int speed, int tx_nr, int sd_nr, bool autoshoot, Resources *src);
     
-    ///  SETTERS E GETTERS  /////////////////////////////////////////////
+    // SETTERS E GETTERS =============================
     proiettile* getHead();
     void setHead(proiettile *head);
 
-    ///  FUNZIONI  //////////////////////////////////////////////////////
+    // FUNZIONI ======================================
     void addSingleBullet(Sprite entity, Keyboard::Key pulsante, int tempo);
-    void renderBullet(Terreno *terrain, Time perFrame);
+    void renderBullet(Terreno *terrain);
 	void deleteBullet(proiettile *p);
 
 protected:
+    
     void spriteSetup(proiettile *p, double x, double y, double rotation);
     bool outsideBounds(proiettile *p, Terreno *terrain);
 };
+
 #endif /* Bullets_hpp */

@@ -3,9 +3,6 @@
 
 #include "Nave.hpp"
 
-using namespace sf;
-using namespace std;
-
 struct bunkerlist{
     int type;    // 0 = bunker spara fisso 1/2/3 colpi      1 = bunker segue il giocatore
     int tempo;
@@ -26,7 +23,7 @@ class Bunker{
 
 protected:
     
-    Risorse *src;
+    Resources *src;
     Texture *bunker_tx,*explosion_tx;
 	bunkerlist *head,*last_checked;
     double partial_x[4];        //coordinate per la griglia dei bunker
@@ -35,22 +32,22 @@ public:
     
     Clock bunkerDamage;
     
-    /// COSTRUTTORI /////////////////////////////////////////////////////
+    // COSTRUTTORI ===================================
     Bunker();
-    Bunker(Risorse *src, Terreno *terrain);
+    Bunker(Resources *src, Terreno *terrain);
     
-    ///  SETTERS E GETTERS  /////////////////////////////////////////////
+    // SETTERS E GETTERS =============================
     bunkerlist *getHead();
     void setEnemies(bunkerlist *enemies);
     
-    ///  FUNZIONI  //////////////////////////////////////////////////////
-    void armi(bunkerlist *tmp, Terreno *terrain, Time perFrame);
+    // FUNZIONI ======================================
+    void armi(bunkerlist *tmp, Terreno *terrain);
 	bool checkCollisionBunker(Sprite *body, char type);
 	void hitLastChecked(int damage);
 	void deleteBunker(bunkerlist *target);
-    void esplodi(bunkerlist *target);
+    void explode(bunkerlist *target);
 	bool isEmpty();
-    void gestisci(Nave *player, Terreno *terrain, Time perFrame);
+    void handle(Nave *player, Terreno *terrain);
 
 protected:
     void spriteSetup(bunkerlist *p);

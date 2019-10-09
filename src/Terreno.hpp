@@ -2,10 +2,7 @@
 #define Terreno_hpp
 
 #include <cmath>
-#include "Risorse.hpp"
-
-using namespace sf;
-using namespace std;
+#include "Resources.hpp"
 
 struct soil{
     ConvexShape element;
@@ -17,7 +14,7 @@ class Terreno{
     
 protected:
     
-    Risorse *src;
+    Resources *src;
     int dx_coord,sx_coord;
     Texture* terrain_tx;
     Texture* background_tx;
@@ -27,17 +24,17 @@ public:
     
     Sprite background;
     
-    /// COSTRUTTORI /////////////////////////////////////////////////////
+    // COSTRUTTORI ===================================
     Terreno();
-    Terreno(int sx_coord, int dx_coord, Risorse *src, int tot_schermate);
+    Terreno(int sx_coord, int dx_coord, Resources *src, int tot_schermate);
     
-    ///  SETTERS E GETTERS  /////////////////////////////////////////////
+    // SETTERS E GETTERS =============================
     int getDxCoord();
     int getSxCoord();
     void setDxCoord(int dx_coord);
     void setSxCoord(int sx_coord);
     
-    ///  FUNZIONI  //////////////////////////////////////////////////////
+    // FUNZIONI ======================================
     Color colore(int tot_schermate, int transparency);
     void gestisci();
     double get_Y(double x);

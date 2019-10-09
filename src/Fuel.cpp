@@ -1,14 +1,12 @@
-#include "pch.h"
 #include "Fuel.hpp"
 
-using namespace sf;
-using namespace std;
+// COSTRUTTORI =======================================
 
 Fuel::Fuel(){
     
 }
 
-Fuel::Fuel(Terreno *terrain, Risorse *src) {
+Fuel::Fuel(Terreno *terrain, Resources *src) {
     this->src = src;
     fuel_tx = src->caricaTexture(18);
     partial_x[0] = 20;
@@ -43,7 +41,7 @@ Fuel::Fuel(Terreno *terrain, Risorse *src) {
     }
 }
 
-///  SETTERS E GETTERS  /////////////////////////////////////////////
+// SETTERS E GETTERS =================================
 
 fuel *Fuel::getCurrent(){
     return this->current;
@@ -61,7 +59,7 @@ void Fuel::setHead(fuel *head){
     this->head = head;
 }
 
-///  FUNZIONI  //////////////////////////////////////////////////////
+// FUNZIONI ==========================================
 
 void Fuel::delete_fuel(fuel *selected){
     

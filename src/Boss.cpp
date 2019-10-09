@@ -1,39 +1,37 @@
-#include "pch.h"
 #include "Boss.hpp"
 
-
-/// COSTRUTTORI /////////////////////////////////////////////////////
-
-Boss::Boss(int life, int turrets, Risorse *src, double angolo, int vel, bool notdead){
-    this->src = src;
-	hp_total = life;
-	hp_left = hp_total;
-	turret_total = turrets;
-	turret_left = turret_total;
-	boss_tx = src->caricaTexture(14);
-	alive = notdead;
-	angle = angolo;
-	radius = 200;
-	notBoss.setRadius(radius);
-	notBoss.setPointCount(40);
-	notBoss.setOrigin(Vector2f(radius, radius));
-	notBoss.setPosition(400, 400);
-	centre.x = notBoss.getOrigin().x + notBoss.getPosition().x - radius;
-	centre.y = notBoss.getOrigin().y + notBoss.getPosition().y - radius;
-}
+// COSTRUTTORI =======================================
 
 Boss::Boss() {
-	hp_total = 1;
-	hp_left = 1;
-	turret_total = 1;
-	turret_left = turret_total;
-	angle = 0;
-	boss_tx = NULL;
-	alive = true;
-	radius = 200;
+    this->hp_total = 1;
+    this->hp_left = 1;
+    this->turret_total = 1;
+    this->turret_left = turret_total;
+    this->angle = 0;
+    this->boss_tx = NULL;
+    this->alive = true;
+    this->radius = 200;
 }
 
-///  SETTERS E GETTERS  /////////////////////////////////////////////
+Boss::Boss(int life, int turrets, Resources *src, double angolo, int vel, bool notdead){
+    this->src = src;
+	this->hp_total = life;
+	this->hp_left = hp_total;
+	this->turret_total = turrets;
+	this->turret_left = turret_total;
+	this->boss_tx = src->caricaTexture(14);
+	this->alive = notdead;
+	this->angle = angolo;
+	this->radius = 200;
+	this->notBoss.setRadius(radius);
+	this->notBoss.setPointCount(40);
+	this->notBoss.setOrigin(Vector2f(radius, radius));
+	this->notBoss.setPosition(400, 400);
+	this->centre.x = notBoss.getOrigin().x + notBoss.getPosition().x - radius;
+	this->centre.y = notBoss.getOrigin().y + notBoss.getPosition().y - radius;
+}
+
+/// SETTERS E GETTERS ================================
 
 int Boss::getHp(){
 	return this->hp_left;
@@ -56,7 +54,7 @@ void Boss::setAngle(double a){
 	this->notBoss.setRotation(a);
 }
 
-///  FUNZIONI  //////////////////////////////////////////////////////
+// FUNZIONI ==========================================
 
 bool Boss::checkCollisionBoss(Sprite *body){
 	Vector2f closestPoint;

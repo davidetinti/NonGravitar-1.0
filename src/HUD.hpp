@@ -3,24 +3,24 @@
 
 #include "Pulsante.hpp"
 
-using namespace std;
-using namespace sf;
+//TODO aggiungere testo fuel, life e score
 
 class HUD{
     
 protected:
     
-    Risorse *src;
+    Resources *src;
     Sprite lifebar_active, lifebar_back, fuelbar_active, fuelbar_back;
-    Texture* bars_tx;
-    Text life, fuel, score;
-    //Pulsante pausa;
+    Texture *bars_tx;
+    Text life;
+    Font font;
     
 public:
     
     HUD();
-    HUD(Risorse *src);
+    HUD(Resources *src);
     void gestisci(int point, float life, float fuel);
+    
 };
 
 #endif /* HUD_hpp */

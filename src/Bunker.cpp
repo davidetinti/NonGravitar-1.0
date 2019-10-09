@@ -1,10 +1,6 @@
-#include "pch.h"
 #include "Bunker.hpp"
 
-using namespace sf;
-using namespace std;
-
-/// COSTRUTTORI /////////////////////////////////////////////////////
+// COSTRUTTORI =======================================
 bunkerlist::bunkerlist(int type_n, int tempo_n, double x_n, double y_n, double life_n,
                 bunkerlist *next_n, bool exist_n, double explosion_x_n,
                 Bullets weapon_n) :
@@ -14,55 +10,50 @@ bunkerlist::bunkerlist(int type_n, int tempo_n, double x_n, double y_n, double l
                }
 
 Bunker::Bunker(){
-    head = NULL;
-    last_checked = NULL;
+    this->head = NULL;
+    this->last_checked = NULL;
 }
  
-Bunker::Bunker(Risorse *src, Terreno *terrain){
+Bunker::Bunker(Resources *src, Terreno *terrain){
     this->src = src;
-    double x;
     explosion_tx = src->caricaTexture(20);
     partial_x[0] = 165;
     partial_x[1] = 415;
     partial_x[2] = 665;
     partial_x[3] = 915;
     bunker_tx = src->caricaTexture(3);
-    x = partial_x[0] + rand() % 201;
-    head = new bunkerlist(1,(rand() % 5000) + 2500,x,terrain->get_Y(x),
-                          100, NULL,true, 0.0, 
-                          Bullets(400, 100, 10, 14, 0, true, src));
+    double x = partial_x[0] + rand() % 201;
+    head = new bunkerlist(1, (rand() % 5000) + 2500, x,terrain->get_Y(x), 100, NULL, true, 0.0, Bullets(400, 100, 10, 14, 0, true, src));
     spriteSetup(head);
 
     bunkerlist *tmp = head;
 
     for (int i = 1; i < 4 ; i++){
         x = partial_x[i] + rand() % 201; 
-        tmp->next = new bunkerlist(1,(rand() % 5000) + 2500,x, terrain->get_Y(x), 
-                                   100, NULL, true, 0.0,
-                                   Bullets(400, 100, 10, 14, 0, true, src));
+        tmp->next = new bunkerlist(1, (rand() % 5000) + 2500, x, terrain->get_Y(x), 100, NULL, true, 0.0, Bullets(400, 100, 10, 14, 0, true, src));
         tmp = tmp->next;
         spriteSetup(tmp);
         tmp->next = NULL;
     }
 }
 
-///  SETTERS E GETTERS  /////////////////////////////////////////////
+// SETTERS E GETTERS =================================
 
 
 bunkerlist *Bunker::getHead(){
-    return  head;
+    return  this->head;
 }
 
 
-///  FUNZIONI  //////////////////////////////////////////////////////
+// FUNZIONI ==========================================
 
 bool Bunker::isEmpty(){
     return head == NULL;
 }
 
-void Bunker::armi(bunkerlist *tmp, Terreno *terrain, Time perFrame){
+void Bunker::armi(bunkerlist *tmp, Terreno *terrain){
     tmp->weapon.addSingleBullet(tmp->bunker, Keyboard::R, tmp->tempo);
-    tmp->weapon.renderBullet(terrain, perFrame);
+    tmp->weapon.renderBullet(terrain);
 }
 
 //b-->bullet, l-->laser, s-->ship
@@ -134,13 +125,13 @@ void Bunker::deleteBunker(bunkerlist *target){
     }
 }
 
-void Bunker::esplodi(bunkerlist* target){
+void Bunker::explode(bunkerlist* target){
     target->explosion.setTextureRect(IntRect(50*(int)target->explosion_x,0,50,50));
     target->explosion_x ++;
     src->getWindow()->draw(target->explosion);
 }
 
-void Bunker::gestisci(Nave *player, Terreno *terrain, Time perFrame){
+void Bunker::handle(Nave *player, Terreno *terrain){
     bunkerlist *tmp = head;
     while (tmp != NULL){
         //cout << enemies->x << endl;
@@ -148,7 +139,7 @@ void Bunker::gestisci(Nave *player, Terreno *terrain, Time perFrame){
             if (tmp->type == 1){
                 tmp->bunker.setRotation(180 - atan((player->nave.getPosition().x-tmp->bunker.getPosition().x)/(player->nave.getPosition().y-tmp->bunker.getPosition().y))*(180/M_PI));
             }
-            armi(tmp, terrain, perFrame);
+            armi(tmp, terrain);
             src->getWindow()->draw(tmp->bunker);
             
         }
@@ -156,7 +147,7 @@ void Bunker::gestisci(Nave *player, Terreno *terrain, Time perFrame){
             tmp->exist = false;
             player->setPunti(player->getPunti()+100);
         }
-        if (tmp->exist == false) esplodi(tmp);
+        if (tmp->exist == false) explode(tmp);
         if (tmp->explosion_x >= 20){
             deleteBunker(tmp);
             tmp = NULL;

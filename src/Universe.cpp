@@ -1,50 +1,46 @@
-#include "pch.h"
-#include "Universo.hpp"
+#include "Universe.hpp"
 
-using namespace sf;
-using namespace std;
+// COSTRUTTORI =======================================
 
-/// COSTRUTTORI /////////////////////////////////////////////////////
-
-lista_schermate::lista_schermate(int x_n, int y_n, Risorse *src, lista_schermate *d, lista_schermate *s, 
+lista_schermate::lista_schermate(int x_n, int y_n, Resources *src, lista_schermate *d, lista_schermate *s, 
         lista_schermate *u, lista_schermate *down, lista_schermate *nxt) : dx(d), sx(s), up(u),
         dw(down), x(x_n), y(y_n), next(nxt){
             pianeti = uPlanets(src);
         }
 
-Universo::Universo(){
+Universe::Universe(){
     
 } 
 
-Universo::Universo(Risorse *src, Time *time){
+Universe::Universe(Resources *src){
     this->src = src;
-    hud = HUD(src);
-    player = Nave(src, time);
-    universe_tx = src->caricaTexture(2);
-    background.setPosition(0, 0);
-    background.setTexture(*universe_tx);
-    active = new lista_schermate(0,0,src);
-    head_list = active;
-    tail = head_list;
+    this->hud = HUD(this->src);
+    this->player = Nave(this->src);
+    this->universe_tx = this->src->caricaTexture(28);
+    this->background.setPosition(0, 0);
+    this->background.setTexture(*universe_tx);
+    this->active = new lista_schermate(0, 0, this->src);
+    this->head_list = active;
+    this->tail = head_list;
 }
 
-///  SETTERS E GETTERS  /////////////////////////////////////////////
+// SETTERS E GETTERS =================================
 
-lista_schermate *Universo::getActive(){
-    return  active;
+lista_schermate *Universe::getActive(){
+    return  this->active;
 }
 
-lista_schermate *Universo::getTail(){
-    return  tail;
+lista_schermate *Universe::getTail(){
+    return  this->tail;
 }
 
-lista_schermate *Universo::getHeadList(){
-    return  head_list;
+lista_schermate *Universe::getHeadList(){
+    return  this->head_list;
 }
 
-///  FUNZIONI  //////////////////////////////////////////////////////
+// FUNZIONI ==========================================
 
-lista_schermate *Universo::find(int x, int y){
+lista_schermate *Universe::find(int x, int y){
     lista_schermate *b = head_list;
     bool found = false;
     while (b != NULL && !found) {
@@ -57,7 +53,7 @@ lista_schermate *Universo::find(int x, int y){
     return b;
 }
 
-void Universo::move(int x, int y){
+void Universe::move(int x, int y){
     if (x == 1 && y == 0) {
         if (active->dx == NULL) {
             active->dx = new lista_schermate(active->x + x,active->y + y,src);
@@ -92,7 +88,7 @@ void Universo::move(int x, int y){
     active->dw = find(active->x, (active->y - 1));
 }
 
-void Universo::disegnaPianeti(){
+void Universe::disegnaPianeti(){
     Pianeta *planetIterator = active->pianeti.getHead();
     while (planetIterator != NULL) {
         if (planetIterator->exist) src->getWindow()->draw(planetIterator->planet);
@@ -100,7 +96,7 @@ void Universo::disegnaPianeti(){
     }
 }
 
-void Universo::handle(Transitions *transizioni, sf::Time timePerFrame){
+void Universe::handle(){
     player.movements();
     player.handleThrust();
 
@@ -155,18 +151,18 @@ void Universo::handle(Transitions *transizioni, sf::Time timePerFrame){
     }
 }
 
-void Universo::checkTerrain(){
+void Universe::checkTerrain(){
     if (player.nave.getPosition().y + 22 >= active->pianeti.getCurrent()->interno.getCurrent()->terrain.get_Y(player.nave.getPosition().x))
         player.setIsDead(true);
 }
 
-bool Universo::contactPlanet(Vector2f pos, Pianeta* p){
+bool Universe::contactPlanet(Vector2f pos, Pianeta* p){
     return abs(pos.x - (p->relative_x + p->grid_x)) < p->diameter &&
             abs(pos.y - (p->relative_y + p->grid_y)) < p->diameter &&
              p->exist ;
 }
 
-void Universo::addToList(lista_schermate *p){
+void Universe::addToList(lista_schermate *p){
     if(p != NULL){
         tail->next = p;
         tail = p;

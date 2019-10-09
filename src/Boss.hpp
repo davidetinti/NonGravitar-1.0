@@ -1,13 +1,12 @@
 #pragma once
-#include "Bullets.hpp"
 
-using namespace sf;
+#include "Bullets.hpp"
 
 class Boss{
     
 protected:
     
-    Risorse *src;
+    Resources *src;
 	int hp_total;
 	int hp_left;
 	int turret_total;
@@ -23,18 +22,18 @@ public:
     
     CircleShape notBoss;
     
-    /// COSTRUTTORI /////////////////////////////////////////////////////
-	Boss(int life, int turrets, Risorse *src, double angolo = 0, int vel = 1, bool notdead = true);
+    // COSTRUTTORI ===================================
+	Boss(int life, int turrets, Resources *src, double angolo = 0, int vel = 1, bool notdead = true);
 	Boss();
     
-    ///  SETTERS E GETTERS  /////////////////////////////////////////////
+    // SETTERS E GETTERS =============================
     int getHp();
     void setHp(int h_total, int h_left);
     void setHp(int h_left);
     double getAngle();
     void setAngle(double a);
     
-    ///  FUNZIONI  //////////////////////////////////////////////////////
+    // FUNZIONI ======================================
 	bool checkCollisionBoss(Sprite *body);
 	void getHit(int shot);
 	void draw();

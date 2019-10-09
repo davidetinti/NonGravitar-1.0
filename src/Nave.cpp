@@ -1,43 +1,39 @@
-#include "pch.h"
 #include "Nave.hpp"
 
-using namespace sf;
-using namespace std;
-
-/// COSTRUTTORI /////////////////////////////////////////////////////
+// COSTRUTTORI =======================================
 
 Nave::Nave(){
     
 }
 
-Nave::Nave(Risorse* src, Time *time){
+Nave::Nave(Resources* src){
     this->src = src;
     raggiox = 0;
     raggioy = 0;
-    raggio_tx = src->caricaTexture(17);
+    raggio_tx = this->src->caricaTexture(17);
     raggio.setTexture(*raggio_tx);
     raggio.setScale(0.2,0.4);
     raggio.setColor(Color(255,255,255,160));
     punti = 0;
-    X_planet = src->getLength()/2;
-    Y_planet = src->getHeight()/2;
+    X_planet = this->src->getLength()/2;
+    Y_planet = this->src->getHeight()/2;
     Lifebar = 100;
     Fuelbar = 100;
-    TopSpeed = 3;
+    TopSpeed = 5;
 	CurrentSpeed = 0;
 	dx = 0; dy = 0;
-    SpaceshipAcceleration = 0.5;
+    SpaceshipAcceleration = 0.1;
     AtPlanet = false;
     IsDead = false;
-    Nave_tx = src->caricaTexture(4);
+    Nave_tx = this->src->caricaTexture(4);
     nave.setOrigin(Vector2f(Nave_tx->getSize().x/2, Nave_tx->getSize().y/2));
-    nave.setPosition(Vector2f(src->getLength() / 2, src->getHeight() / 2));
+    nave.setPosition(Vector2f(this->src->getLength() / 2, this->src->getHeight() / 2));
     nave.setTexture(*Nave_tx);
     nave.scale(Vector2f(0.15, 0.15));
     nave.setRotation(0);
     nave.setTextureRect(IntRect(0, 0, Nave_tx->getSize().x, Nave_tx->getSize().y));
-    SingleShot = Bullets(100, 100, 10, 0, 0, false, src);
-    Laser = Bullets(5000, 200, 10, 1, 0, false, src);
+    SingleShot = Bullets(100, 100, 10, 0, 0, false, this->src);
+    Laser = Bullets(5000, 200, 10, 1, 0, false, this->src);
 	Time_btw_hitS = 0.75;
 	Time_btw_pushesMS = 500;
 	thrust_tx = src->caricaTexture(30);
@@ -45,10 +41,9 @@ Nave::Nave(Risorse* src, Time *time){
 	thrust.setScale(0.04, 0.04);
 	thrust_int = 0;
 	thrust.setOrigin(Vector2f(thrust_tx->getSize().x/2, thrust_tx->getSize().y));
-    timePerFrame = *time;
 }
 
-///  SETTERS E GETTERS  /////////////////////////////////////////////
+// SETTERS E GETTERS =================================
 
 bool Nave::getIsDead(){
     return this->IsDead;
@@ -90,11 +85,11 @@ void Nave::setTopSpeed(double speed){
     this->TopSpeed = speed;
 }
 
-double Nave::getSpaceshipAcceleration(){
+float Nave::getSpaceshipAcceleration(){
     return this->SpaceshipAcceleration;
 }
 
-void Nave::setSpaceshipAcceleration(double acceleration){
+void Nave::setSpaceshipAcceleration(float acceleration){
     this->SpaceshipAcceleration = acceleration;
 }
 
@@ -169,13 +164,13 @@ void Nave::decayThrustInt(){
 	if (thrust_int < 0) thrust_int = 0;
 }
 
-///  FUNZIONI  //////////////////////////////////////////////////////
+// FUNZIONI ==========================================
 
-void Nave::armi(Terreno *terrain, Time perFrame){
+void Nave::armi(Terreno *terrain){
     SingleShot.addSingleBullet(nave, Keyboard::Key::S, 0);
     Laser.addSingleBullet(nave, Keyboard::Key::L, 0);
-    SingleShot.renderBullet(terrain, perFrame);
-    Laser.renderBullet(terrain, perFrame);
+    SingleShot.renderBullet(terrain);
+    Laser.renderBullet(terrain);
 }
 
 void Nave::raggioTraente(){
@@ -246,7 +241,7 @@ void Nave::movements(){
 		setDxDy(getDx() * getTopSpeed() / getCurrentSpeed(), getDy() * getTopSpeed() / getCurrentSpeed());
 	}
 
-	nave.move(getDx() * timePerFrame.asMilliseconds() * 0.1,getDy() * timePerFrame.asMilliseconds() * 0.1);
+	nave.move(getDx() * src->getTimePerFrame()->asMilliseconds() * 0.1,getDy() * src->getTimePerFrame()->asMilliseconds() * 0.1);
 }
 
 void Nave::braceForEntry(Vector2f planetPos, int larghezza){

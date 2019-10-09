@@ -3,30 +3,26 @@
 
 #include "Bullets.hpp"
 
-using namespace sf;
-using namespace std;
-
 class Nave{
     
 protected:
     
-    Risorse *src;
+    Resources *src;
     bool IsDead;
     bool AtPlanet;
     float Lifebar;
     float Fuelbar;
     double TopSpeed;
 	double CurrentSpeed;
-    double SpaceshipAcceleration;
+    float SpaceshipAcceleration;
     double X_planet,Y_planet,dx,dy;
     double Time_btw_hitS;
     double Time_btw_pushesMS;
+    double angle_entering_planet;
     int punti;
-	double angle_entering_planet;
+    int thrust_int;
     int raggiox,raggioy;
     Texture *Nave_tx,*Bar_tx,*raggio_tx,*thrust_tx;
-	int thrust_int;
-    Time timePerFrame;
     
 public:
     
@@ -38,11 +34,11 @@ public:
     Bullets Laser;
 	Sprite thrust;
     
-    /// COSTRUTTORI /////////////////////////////////////////////////////
+    // COSTRUTTORI ===================================
     Nave();
-    Nave(Risorse *src, Time *time);
+    Nave(Resources *src);
     
-    ///  SETTERS E GETTERS  /////////////////////////////////////////////
+    // SETTERS E GETTERS =============================
     bool getIsDead();
     void setIsDead(bool a);
     bool getInGame();
@@ -55,8 +51,8 @@ public:
     void setFuelbar(double fuelbar);
     double getTopSpeed();
     void setTopSpeed(double speed);
-    double getSpaceshipAcceleration();
-    void setSpaceshipAcceleration(double acceleration);
+    float getSpaceshipAcceleration();
+    void setSpaceshipAcceleration(float acceleration);
     double getX_planet();
     void setX_planet(double x);
     double getY_planet();
@@ -75,8 +71,8 @@ public:
 	int getThrustInt();
 	void decayThrustInt();
     
-    ///  FUNZIONI  //////////////////////////////////////////////////////
-    void armi(Terreno *terrain, Time perFrame);
+    // FUNZIONI ======================================
+    void armi(Terreno *terrain);
     void raggioTraente();
 	void getHit(int damage, int hitType = 0);
 	void push_back(int distance);

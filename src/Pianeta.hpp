@@ -3,9 +3,6 @@
 
 #include "GPlanet.hpp"
 
-using namespace sf;
-using namespace std;
-
 struct Pianeta {
     int relative_x, relative_y, grid_x, grid_y, tot_schermate;
     double diameter;
@@ -28,22 +25,22 @@ protected:
     Pianeta* head, *current;
     Sprite explosion;
     Texture* explosion_tx;
-    Risorse *src;
+    Resources *src;
     
 public:
     
-    /// COSTRUTTORI /////////////////////////////////////////////////////
+    // COSTRUTTORI ===================================
     uPlanets();
-    uPlanets(Risorse *src);
+    uPlanets(Resources *src);
     
-    ///  SETTERS E GETTERS  /////////////////////////////////////////////
+    // SETTERS E GETTERS =============================
     Pianeta* getHead();
     void setHead(Pianeta* h);
     Pianeta* getCurrent();
     void setCurrent(Pianeta* h);
     
-    ///  FUNZIONI  //////////////////////////////////////////////////////
-    void gestione(Nave *player, Transitions *transizioni, Time perFrame);
+    // FUNZIONI ======================================
+    void handle(Nave *player);
 private:
     void spriteSetup(Pianeta* p);
     void deletePlanet(Pianeta* p);

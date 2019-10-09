@@ -1,10 +1,6 @@
-#include "pch.h"
 #include "Terreno.hpp"
 
-using namespace std;
-using namespace sf;
-
-/// COSTRUTTORI /////////////////////////////////////////////////////
+// COSTRUTTORI =======================================
 
 soil::soil(soil *n):
         next(n){
@@ -15,7 +11,7 @@ Terreno::Terreno(){
     
 }
 
-Terreno::Terreno(int sx_coord, int dx_coord, Risorse *src, int tot_schermate){
+Terreno::Terreno(int sx_coord, int dx_coord, Resources *src, int tot_schermate){
     this->src = src;
     terrain_tx = src->caricaTexture(29);
     terrain_tx->setRepeated(true);
@@ -48,7 +44,7 @@ Terreno::Terreno(int sx_coord, int dx_coord, Risorse *src, int tot_schermate){
                 Vector2f(src->getLength(), dx_coord),Vector2f(src->getLength(), src->getHeight()),tmp);
 }
 
-///  SETTERS E GETTERS  /////////////////////////////////////////////
+// SETTERS E GETTERS =================================
 
 int Terreno::getDxCoord(){
     return this->dx_coord;
@@ -66,8 +62,7 @@ void Terreno::setSxCoord(int sx_coord){
     this->sx_coord = sx_coord;
 }
 
-///  FUNZIONI  //////////////////////////////////////////////////////
-
+// FUNZIONI ==========================================
 Color Terreno::colore(int tot_schermate, int transparency){
     switch (tot_schermate) {
         case 3:

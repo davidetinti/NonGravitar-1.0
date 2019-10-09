@@ -1,10 +1,6 @@
-#include "pch.h"
 #include "Pianeta.hpp"
 
-using namespace sf;
-using namespace std;
-
-/// COSTRUTTORI /////////////////////////////////////////////////////
+// COSTRUTTORI =======================================
 
 Pianeta::Pianeta(bool ex, int rel_x, int rel_y, int gr_x, int gr_y, int screens, Pianeta *n)
                 : exist(ex), relative_x(rel_x), relative_y(rel_y), grid_x(gr_x), grid_y(gr_y),
@@ -17,7 +13,7 @@ uPlanets::uPlanets(){
     
 }
 
-uPlanets::uPlanets(Risorse *s){
+uPlanets::uPlanets(Resources *s){
     str_l[0] = 50;
     str_l[1] = 50;
     str_l[2] = 360;
@@ -54,7 +50,7 @@ uPlanets::uPlanets(Risorse *s){
     //explosion.setOrigin(<#float x#>, <#float y#>)
 }
 
-///  SETTERS E GETTERS  /////////////////////////////////////////////
+// SETTERS E GETTERS =================================
 
 Pianeta* uPlanets::getHead(){
     return head;
@@ -72,12 +68,12 @@ void uPlanets::setCurrent(Pianeta* h){
     current = h;
 }
 
-///  FUNZIONI  //////////////////////////////////////////////////////
+// FUNZIONI ==========================================
 
-void uPlanets::gestione(Nave *player, Transitions *transizioni, Time perFrame){
+void uPlanets::handle(Nave *player){
     lista_schermate_pianeta *iterator = current->interno.getHead();
     bool no_bunkers = true;
-    current->interno.gestione(player, perFrame);
+    current->interno.handle(player);
     for (int i = 0; i < current->tot_schermate; i++){
         if (iterator->enemies.getHead() == NULL){
             iterator = iterator->next;
@@ -91,7 +87,6 @@ void uPlanets::gestione(Nave *player, Transitions *transizioni, Time perFrame){
         player->setAtPlanet(false);
         current->exist = false;
         deletePlanet(current);
-        //transizioni->outPlanet();
     }
 }
 

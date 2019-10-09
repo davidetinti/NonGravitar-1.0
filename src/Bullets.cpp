@@ -1,10 +1,6 @@
-#include "pch.h"
 #include "Bullets.hpp"
 
-using namespace sf;
-using namespace std;
-
-///  COSTRUTTORI  /////////////////////////////////////////////////////
+// COSTRUTTORI =======================================
 
 proiettile::proiettile(proiettile *next_n, proiettile *prev_n)
                 : next(next_n), prev(prev_n) {
@@ -19,7 +15,7 @@ Bullets::Bullets(){
     
 }
 
-Bullets::Bullets(int time_btw_shoot,int damage, int speed, int tx_nr, int sd_nr, bool autoshoot, Risorse *src){
+Bullets::Bullets(int time_btw_shoot,int damage, int speed, int tx_nr, int sd_nr, bool autoshoot, Resources *src){
     this->src = src;
     this->autoshoot = autoshoot;
     this->head = NULL;
@@ -31,7 +27,7 @@ Bullets::Bullets(int time_btw_shoot,int damage, int speed, int tx_nr, int sd_nr,
 	this->invuln_time = 500;
 }
 
-///  SETTERS E GETTERS  /////////////////////////////////////////////
+// SETTERS E GETTERS =================================
 
 
 proiettile* Bullets::getHead(){
@@ -42,7 +38,7 @@ void Bullets::setHead(proiettile *head){
     this->head = head;
 }
 
-///  FUNZIONI  //////////////////////////////////////////////////////
+// FUNZIONI ==========================================
 
 void Bullets::addSingleBullet(Sprite entity, Keyboard::Key pulsante, int tempo){
     double x = entity.getPosition().x;
@@ -56,7 +52,7 @@ void Bullets::addSingleBullet(Sprite entity, Keyboard::Key pulsante, int tempo){
     }
 }
 
-void Bullets::renderBullet(Terreno *terrain, Time perFrame){
+void Bullets::renderBullet(Terreno *terrain){
     proiettile *pointer = head;
     Time elapsed;
     while (pointer != NULL){
@@ -68,8 +64,8 @@ void Bullets::renderBullet(Terreno *terrain, Time perFrame){
             deleteBullet(tmp);
         } else {
             double angle = M_PI * pointer->bullet.getRotation() / 180;
-            pointer->bullet.move(-sin(angle)*speed*perFrame.asSeconds()*100,
-                             cos(angle)*speed*perFrame.asSeconds()*100);
+            pointer->bullet.move(-sin(angle)*speed*src->getTimePerFrame()->asSeconds()*100,
+                             cos(angle)*speed*src->getTimePerFrame()->asSeconds()*100);
             src->getWindow()->draw(pointer->bullet);
             pointer = pointer->next;
         }

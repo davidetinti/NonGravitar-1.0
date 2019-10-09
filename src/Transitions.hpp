@@ -3,14 +3,11 @@
 
 #include "Terreno.hpp"
 
-using namespace sf;
-using namespace std;
-
 class Transitions{
     
 protected:
     
-    Risorse *src;
+    Resources *src;
     int tempo_transizione;
     
 public:
@@ -19,14 +16,14 @@ public:
     Clock cl1,cl2,c3;
     RectangleShape screen,trans;
     
-    /// COSTRUTTORI /////////////////////////////////////////////////////
+    // COSTRUTTORI ===================================
     Transitions();
-    Transitions(Risorse *src);
+    Transitions(Resources *src);
     
-    ///  SETTERS E GETTERS  /////////////////////////////////////////////
+    // SETTERS E GETTERS =============================
     
     
-    ///  FUNZIONI  //////////////////////////////////////////////////////
+    // FUNZIONI ======================================
     void inPlanet(Terreno *terrain, int tot_schermate);
     void outPlanet();
 };

@@ -1,5 +1,5 @@
-#ifndef Risorse_hpp
-#define Risorse_hpp
+#ifndef Resources_hpp
+#define Resources_hpp
 
 #include <iostream>
 #include <SFML/Window.hpp>
@@ -12,38 +12,46 @@
 using namespace std;
 using namespace sf;
 
-class Risorse{
+class Resources{
     
 protected:
     
+    int height;
+    int length;
+    Time timePerFrame;      // Determines how many fps
+    Time utility_time;      // For transitions
+    Clock utility_clock;    // For transitions
     RenderWindow window;
     ContextSettings settings;
     String localPath[3];
-    SoundBuffer sound[1];
-    Texture texture[31];
-    Font font;
+    SoundBuffer sound[3];
+    Texture texture[34];
+    Font font[2];
     void loadTextures();
     void loadSounds();
-    int height;
-    int length;
+    void loadFonts();
     
 public:
     
-    Risorse();
-    SoundBuffer caricaSuono(int n);
-    Texture *caricaTexture(int n);
-    RenderWindow *getWindow();
+    Resources();
     int getHeight();
     int getLength();
-    Font *getFont();
+    SoundBuffer caricaSuono(int n);
+    Texture *caricaTexture(int n);
+    Font getFont(int n);
+    RenderWindow *getWindow();
+    Time *getTimePerFrame();
     
 };
 
 /*
- SUONI:
+ 
+ SOUNDS:
  0.ogg - player bullet
+ 1.ogg - button pushed
+ 2.ogg - button selected
 
- TEXTURE:
+ TEXTURES:
  0.png - player bullet
  1.png - player laser
  2.png - main universe background
@@ -75,6 +83,14 @@ public:
  28.png - paused game backgroung
  29.png - planet soil
  30.png - thrust
- */
+ 31.png - settings button
+ 32.png - settings background
+ 33.png - temporarly background for pause/game over
+ 
+ FONTS:
+ 0.ttf - Text
+ 1.ttf - Demonized
+ 
+*/
 
 #endif /* Risorse_hpp */
