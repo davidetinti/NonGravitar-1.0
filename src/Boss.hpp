@@ -1,9 +1,9 @@
 #pragma once
-
+#include "BossBunker.hpp"
 #include "Bullets.hpp"
 
 class Boss{
-    
+     
 protected:
     
     Resources *src;
@@ -17,10 +17,16 @@ protected:
 	bool alive;
 	Vector2f centre;
     Texture *boss_tx;
+    //BossBunker turrets;
+	Clock rotation;
+	Texture *hole_tx;
     
-public:
+public: 
     
-    CircleShape notBoss;
+    Sprite notBoss;
+	RectangleShape bossSpriteBoundary;
+	CircleShape CollisionBoundary;
+	CircleShape VirtualCenter;
     
     // COSTRUTTORI ===================================
 	Boss(int life, int turrets, Resources *src, double angolo = 0, int vel = 1, bool notdead = true);
@@ -32,10 +38,14 @@ public:
     void setHp(int h_left);
     double getAngle();
     void setAngle(double a);
+    bool isDead();
     
     // FUNZIONI ======================================
 	bool checkCollisionBoss(Sprite *body);
+    bool checkCollisionTurrets(Sprite* body, char source);
 	void getHit(int shot);
-	void draw();
+	void draw(int type = 0);
+    void gestisci();
 };
 
+ 

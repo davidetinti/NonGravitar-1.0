@@ -17,6 +17,7 @@ struct lista_schermate_pianeta {
                         int totale_schermate, Resources *src,
                         lista_schermate_pianeta *next_n = NULL,
                         lista_schermate_pianeta *prev_n = NULL);
+    lista_schermate_pianeta(Resources *src);
 };
 
 class GPlanet {
@@ -24,8 +25,10 @@ class GPlanet {
 protected:
     
     Resources *src;
-    bool boss_unlocked;
-    lista_schermate_pianeta *current, *head;
+    bool boss_unlocked,in_boss;
+    lista_schermate_pianeta *current, *head, *boss_screen;
+    Texture *hole_tx;
+    Sprite hole;
     
 public:
     
@@ -49,7 +52,9 @@ public:
     void cambia_schermata(int n);
     void checkCollision(Nave *player);
     void handle(Nave *player);
+    
 protected:
+    
     int random_height();
 };
 

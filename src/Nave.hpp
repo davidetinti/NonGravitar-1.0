@@ -1,7 +1,7 @@
 #ifndef Nave_hpp
 #define Nave_hpp
 
-#include "Bullets.hpp"
+#include "TripleBullets.hpp"
 
 class Nave{
     
@@ -30,8 +30,8 @@ public:
     Clock PushClock;
     Sprite nave;
     Sprite raggio;
-    Bullets SingleShot;
-    Bullets Laser;
+    Bullets *SingleShot;
+    Bullets *Laser;
 	Sprite thrust;
     
     // COSTRUTTORI ===================================

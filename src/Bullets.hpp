@@ -40,13 +40,15 @@ public:
     proiettile* getHead();
     void setHead(proiettile *head);
 
-    // FUNZIONI ======================================
-    void addSingleBullet(Sprite entity, Keyboard::Key pulsante, int tempo);
-    void renderBullet(Terreno *terrain);
+    ///  FUNZIONI  //////////////////////////////////////////////////////
+    virtual void addSingleBullet(Sprite entity, Keyboard::Key pulsante, int tempo) = 0;
+    virtual void renderBullet(Terreno *terrain, Time perFrame);
 	void deleteBullet(proiettile *p);
+    virtual int checkCollision(FloatRect p);
 
 protected:
-    
+
+    bool collidesWith(proiettile *p, FloatRect obj);
     void spriteSetup(proiettile *p, double x, double y, double rotation);
     bool outsideBounds(proiettile *p, Terreno *terrain);
 };

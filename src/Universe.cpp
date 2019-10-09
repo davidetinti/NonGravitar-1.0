@@ -152,7 +152,9 @@ void Universe::handle(){
 }
 
 void Universe::checkTerrain(){
-    if (player.nave.getPosition().y + 22 >= active->pianeti.getCurrent()->interno.getCurrent()->terrain.get_Y(player.nave.getPosition().x))
+    if (player.nave.getPosition().y + 22 
+                >= 
+        active->pianeti.getCurrent()->interno.getCurrent()->terrain.get_Y(player.nave.getPosition().x))
         player.setIsDead(true);
 }
 

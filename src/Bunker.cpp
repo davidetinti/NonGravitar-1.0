@@ -2,19 +2,18 @@
 
 // COSTRUTTORI =======================================
 bunkerlist::bunkerlist(int type_n, int tempo_n, double x_n, double y_n, double life_n,
-                bunkerlist *next_n, bool exist_n, double explosion_x_n,
-                Bullets weapon_n) :
+                bunkerlist *next_n, Bullets *weapon_n, bool exist_n, double explosion_x_n) :
                type(type_n), x(x_n), y(y_n), life(life_n), weapon(weapon_n),
                exist(exist_n), explosion_x(explosion_x_n){
-
+                damage = 35;
                }
 
 Bunker::Bunker(){
-    this->head = NULL;
-    this->last_checked = NULL;
+    head = NULL;
 }
  
 Bunker::Bunker(Resources *src, Terreno *terrain){
+    int p;
     this->src = src;
     explosion_tx = src->caricaTexture(20);
     partial_x[0] = 165;
@@ -22,15 +21,25 @@ Bunker::Bunker(Resources *src, Terreno *terrain){
     partial_x[2] = 665;
     partial_x[3] = 915;
     bunker_tx = src->caricaTexture(3);
-    double x = partial_x[0] + rand() % 201;
-    head = new bunkerlist(1, (rand() % 5000) + 2500, x,terrain->get_Y(x), 100, NULL, true, 0.0, Bullets(400, 100, 10, 14, 0, true, src));
+    int x;
+    x = partial_x[0] + rand() % 201;
+    p = rand() % 2;
+    //TO BE MERGED WITH FOR PLS
+    if(p) head = new bunkerlist(1,(rand() % 5000) + 2500,x,terrain->get_Y(x),
+                          100, NULL,new SingleStraightBullets(400, 100, 10, 14, 0, true, src));
+    else  head = new bunkerlist(1,(rand() % 5000) + 2500,x,terrain->get_Y(x),
+                          100, NULL, new TripleBullets(400, 100, 10, 14, 0, true, src));
     spriteSetup(head);
 
     bunkerlist *tmp = head;
 
     for (int i = 1; i < 4 ; i++){
-        x = partial_x[i] + rand() % 201; 
-        tmp->next = new bunkerlist(1, (rand() % 5000) + 2500, x, terrain->get_Y(x), 100, NULL, true, 0.0, Bullets(400, 100, 10, 14, 0, true, src));
+        p = rand() % 2;
+        x = partial_x[i] + rand() % 201;
+        if(p) tmp->next = new bunkerlist(1,(rand() % 5000) + 2500,x, terrain->get_Y(x), 
+                                   100, NULL, new SingleStraightBullets(400, 100, 10, 14, 0, true, src));
+        else  tmp->next = new bunkerlist(1,(rand() % 5000) + 2500,x, terrain->get_Y(x),
+                                   100, NULL, new TripleBullets(400, 100, 10, 14, 0, true, src));
         tmp = tmp->next;
         spriteSetup(tmp);
         tmp->next = NULL;
@@ -51,49 +60,15 @@ bool Bunker::isEmpty(){
     return head == NULL;
 }
 
-void Bunker::armi(bunkerlist *tmp, Terreno *terrain){
-    tmp->weapon.addSingleBullet(tmp->bunker, Keyboard::R, tmp->tempo);
-    tmp->weapon.renderBullet(terrain);
+void Bunker::armi(bunkerlist *tmp, Terreno *terrain, Time perFrame){
+    tmp->weapon->addSingleBullet(tmp->bunker, Keyboard::R, tmp->tempo);
+    tmp->weapon->renderBullet(terrain, perFrame);
 }
 
-//b-->bullet, l-->laser, s-->ship
-bool Bunker::checkCollisionBunker(Sprite *body, char type){
-	bunkerlist *closest_bunker = head, *bunker_iterator = head;
-	if (closest_bunker != NULL) {
-		double min_distance_squared = pow(closest_bunker->bunker.getPosition().x - body->getPosition().x, 2) + pow(closest_bunker->bunker.getPosition().y - body->getPosition().y, 2);
-		double this_distance_squared = 0;
-		while (bunker_iterator != NULL) {
-			this_distance_squared = (pow(bunker_iterator->bunker.getPosition().x - body->getPosition().x, 2) + pow(bunker_iterator->bunker.getPosition().y - body->getPosition().y, 2));
-			if (min_distance_squared > this_distance_squared) {
-				min_distance_squared = this_distance_squared;
-				closest_bunker = bunker_iterator;
-			}
-			bunker_iterator = bunker_iterator->next;
-		}
-		Vector2f closest_point;
-		FloatRect body_rect = body->getGlobalBounds();
-		FloatRect bunker_rect = closest_bunker->bunker.getGlobalBounds();
-		Vector2f center;
-		center = Vector2f(bunker_rect.left + bunker_rect.width / 2, bunker_rect.top + bunker_rect.height / 2);
-		closest_point = Vector2f(body_rect.top, body_rect.left);
-		if (pow(closest_point.x - center.x, 2) + pow(closest_point.y - center.y, 2) < pow(body_rect.left + body_rect.width, 2) + pow(body_rect.top, 2)) closest_point = Vector2f(body_rect.left + body_rect.width, body_rect.top);
-		if (pow(closest_point.x - center.x, 2) + pow(closest_point.y - center.y, 2) < pow(body_rect.left + body_rect.width, 2) + pow(body_rect.top + body_rect.height, 2)) closest_point = Vector2f(body_rect.left + body_rect.width, body_rect.top + body_rect.height);
-		if (pow(closest_point.x - center.x, 2) + pow(closest_point.y - center.y, 2) < pow(body_rect.left, 2) + pow(body_rect.top + body_rect.height, 2)) closest_point = Vector2f(body_rect.left, body_rect.top + body_rect.height);
 
-		//if(pow(closestPoint.x - centre.x, 2) + pow(closestPoint.y - centre.y, 2) < )
-
-		if (bunker_rect.contains(closest_point)) {
-			if (type == 'b' || type == 'l') last_checked = closest_bunker;
-			return true;
-		}
-		else return false;
-	}
-	else return false;
-}
-
-void Bunker::hitLastChecked(int damage){
-	if (last_checked != NULL) {
-		last_checked->life = last_checked->life - damage;
+void Bunker::hitBunker(int damage, bunkerlist *p){
+	if (p != NULL) {
+		p->life = p->life - damage;
 		/*if (last_checked->life <= 0) {
 			cout << "entered if statement, life < 0";
 			ptr_bunkerlist iterator = head;
@@ -130,8 +105,8 @@ void Bunker::explode(bunkerlist* target){
     target->explosion_x ++;
     src->getWindow()->draw(target->explosion);
 }
-
-void Bunker::handle(Nave *player, Terreno *terrain){
+ 
+void Bunker::gestisci(Nave *player, Terreno *terrain){
     bunkerlist *tmp = head;
     while (tmp != NULL){
         //cout << enemies->x << endl;
@@ -139,9 +114,8 @@ void Bunker::handle(Nave *player, Terreno *terrain){
             if (tmp->type == 1){
                 tmp->bunker.setRotation(180 - atan((player->nave.getPosition().x-tmp->bunker.getPosition().x)/(player->nave.getPosition().y-tmp->bunker.getPosition().y))*(180/M_PI));
             }
-            armi(tmp, terrain);
-            src->getWindow()->draw(tmp->bunker);
-            
+            armi(tmp, terrain, *src->getTimePerFrame());
+            //src->getWindow()->draw(tmp->bunker);            
         }
         if (tmp->life <= 0) {
             tmp->exist = false;
@@ -152,8 +126,24 @@ void Bunker::handle(Nave *player, Terreno *terrain){
             deleteBunker(tmp);
             tmp = NULL;
         }
-        if (tmp != NULL) tmp = tmp->next;
+        if (tmp != NULL) 
+            tmp = tmp->next;
     }
+    drawAll();
+}
+
+int Bunker::checkCollisionBBullets(FloatRect obj){
+    bunkerlist *bunker_iterator = head;
+    int hit_counter = 0;
+    while (bunker_iterator != NULL){
+        hit_counter = hit_counter + bunker_iterator->weapon->checkCollision(obj);
+        bunker_iterator = bunker_iterator->next;
+    }
+    return hit_counter;
+}
+
+bool Bunker::collidesWith(bunkerlist *p, sf::FloatRect q){
+    return p->bunker.getGlobalBounds().intersects(q);
 }
 
 void Bunker::spriteSetup(bunkerlist *p){
@@ -166,4 +156,13 @@ void Bunker::spriteSetup(bunkerlist *p){
     p->explosion.setPosition(p->bunker.getPosition());
     p->explosion.scale(2, 2);
     p->explosion.setOrigin(25, 25);
+}
+
+void Bunker::drawAll(){
+    bunkerlist *tmp = head;
+    while (tmp != NULL){
+        if(tmp->exist)
+            src->getWindow()->draw(tmp->bunker);
+        tmp = tmp->next;
+    } 
 }

@@ -69,3 +69,11 @@ Font Resources::getFont(int n){
 Time *Resources::getTimePerFrame(){
     return &timePerFrame;
 }
+
+int Resources::getPrimaryDamage(){
+    return primaryDamage;
+}
+
+int Resources::getSecondaryDamage(){
+    return secondaryDamage;
+}

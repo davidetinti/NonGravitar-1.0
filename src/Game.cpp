@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Game.hpp"
 
 Game::Game(){
@@ -12,12 +13,12 @@ Game::Game(Resources *src){
     game = Stage(this->src, 28);
     credits = Stage(this->src, 28);
     pause = Stage(this->src, 28);
-    settings = Stage(this->src, 32);
+    settings = Stage(this->src, 35);
     game_over = Stage(this->src, 28);
     home.addButton(Vector2f(640,430), 23, 1, (char*)"game");
     home.addButton(Vector2f(640,560),22, 1, (char*)"exit");
     home.addButton(Vector2f(1200,680), 21, 0.40, (char*)"credits");
-    home.addButton(Vector2f(160,660), 31, 0.40, (char*)"settings");
+    home.addButton(Vector2f(160,660), 34, 0.40, (char*)"settings");
     settings.addButton(Vector2f(640,640), 24, 1, (char*)"back");
     settings.addSlider(340, 300, 0.025, 0.1, (char*)"acceleration");
     settings.addSlider(340, 430, 3, 7, (char*)"max_speed");
@@ -123,7 +124,7 @@ void Game::handle(){
                     if (universe.player.getAtPlanet()){
                         bunkerlist *tmp = universe.getActive()->pianeti.getCurrent()->interno.getCurrent()->enemies.getHead();
                         while (tmp != NULL){
-                            tmp->weapon.bullet_time.restart();
+                            tmp->weapon->bullet_time.restart();
                             tmp = tmp->next;
                         }
                     }

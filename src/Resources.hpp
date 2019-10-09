@@ -18,6 +18,7 @@ protected:
     
     int height;
     int length;
+    int primaryDamage, secondaryDamage;
     Time timePerFrame;      // Determines how many fps
     Time utility_time;      // For transitions
     Clock utility_clock;    // For transitions
@@ -25,7 +26,7 @@ protected:
     ContextSettings settings;
     String localPath[3];
     SoundBuffer sound[3];
-    Texture texture[34];
+    Texture texture[37];
     Font font[2];
     void loadTextures();
     void loadSounds();
@@ -41,6 +42,8 @@ public:
     Font getFont(int n);
     RenderWindow *getWindow();
     Time *getTimePerFrame();
+    int getPrimaryDamage();
+    int getSecondaryDamage();
     
 };
 
@@ -83,9 +86,12 @@ public:
  28.png - paused game backgroung
  29.png - planet soil
  30.png - thrust
- 31.png - settings button
- 32.png - settings background
- 33.png - temporarly background for pause/game over
+ 31.png - hole
+ 32.png - boss
+ 33.jpg - boss background
+ 34.png - settings button
+ 35.png - settings background
+ 36.png - credits background
  
  FONTS:
  0.ttf - Text

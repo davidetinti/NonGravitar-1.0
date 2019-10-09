@@ -32,8 +32,8 @@ Nave::Nave(Resources* src){
     nave.scale(Vector2f(0.15, 0.15));
     nave.setRotation(0);
     nave.setTextureRect(IntRect(0, 0, Nave_tx->getSize().x, Nave_tx->getSize().y));
-    SingleShot = Bullets(100, 100, 10, 0, 0, false, this->src);
-    Laser = Bullets(5000, 200, 10, 1, 0, false, this->src);
+    SingleShot = new SingleStraightBullets(100, 100, 10, 0, 0, false, src);
+    Laser = new SingleStraightBullets(5000, 200, 10, 1, 0, false, src);
 	Time_btw_hitS = 0.75;
 	Time_btw_pushesMS = 500;
 	thrust_tx = src->caricaTexture(30);
@@ -167,10 +167,10 @@ void Nave::decayThrustInt(){
 // FUNZIONI ==========================================
 
 void Nave::armi(Terreno *terrain){
-    SingleShot.addSingleBullet(nave, Keyboard::Key::S, 0);
-    Laser.addSingleBullet(nave, Keyboard::Key::L, 0);
-    SingleShot.renderBullet(terrain);
-    Laser.renderBullet(terrain);
+    SingleShot->addSingleBullet(nave, Keyboard::Key::S, 0);
+    Laser->addSingleBullet(nave, Keyboard::Key::L, 0);
+    SingleShot->renderBullet(terrain, *src->getTimePerFrame());
+    Laser->renderBullet(terrain, *src->getTimePerFrame());
 }
 
 void Nave::raggioTraente(){

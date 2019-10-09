@@ -15,6 +15,7 @@ class Terreno{
 protected:
     
     Resources *src;
+    int nr_schermate;
     int dx_coord,sx_coord;
     Texture* terrain_tx;
     Texture* background_tx;
@@ -26,6 +27,7 @@ public:
     
     // COSTRUTTORI ===================================
     Terreno();
+    Terreno(Resources *src);
     Terreno(int sx_coord, int dx_coord, Resources *src, int tot_schermate);
     
     // SETTERS E GETTERS =============================
@@ -40,6 +42,7 @@ public:
     double get_Y(double x);
 private:
     void spriteSetup(int tot_sch, Vector2f p0, Vector2f p1, Vector2f p2, Vector2f p3, soil *p);
+    void prepareForHole();
 };
 
 #endif /* Terreno_hpp */
