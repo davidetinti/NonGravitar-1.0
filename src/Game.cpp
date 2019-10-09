@@ -9,25 +9,25 @@ Game::Game(Resources *src){
     this->src = src;
     tmp_background = this->src->caricaTexture(33);
     universe = Universe(this->src);
-    home = Stage(this->src, 26);
+    home = Stage(this->src, 25);
     game = Stage(this->src, 28);
     credits = Stage(this->src, 28);
     pause = Stage(this->src, 28);
     settings = Stage(this->src, 35);
     game_over = Stage(this->src, 28);
-    home.addButton(Vector2f(640,430), 23, 1, (char*)"game");
-    home.addButton(Vector2f(640,560),22, 1, (char*)"exit");
-    home.addButton(Vector2f(1200,680), 21, 0.40, (char*)"credits");
-    home.addButton(Vector2f(160,660), 34, 0.40, (char*)"settings");
-    settings.addButton(Vector2f(640,640), 24, 1, (char*)"back");
+    home.addButton(Vector2f(330,450), 23, 0.45, (char*)"game");
+    home.addButton(Vector2f(950,450), 37, 0.45, (char*)"highscore");
+    home.addButton(Vector2f(170,650), 34, 0.25, (char*)"settings");
+    home.addButton(Vector2f(1110,650), 21, 0.25, (char*)"credits");
+    settings.addButton(Vector2f(640,650), 24, 0.25, (char*)"back");
     settings.addSlider(340, 300, 0.025, 0.1, (char*)"acceleration");
     settings.addSlider(340, 430, 3, 7, (char*)"max_speed");
     settings.addSlider(340, 560, 0, 0, (char*)"difficulty");
-    game.addButton(Vector2f(1200,30), 22, 0.35, (char*)"pause");
-    credits.addButton(Vector2f(640,640), 24, 1, (char*)"back");
-    pause.addButton(Vector2f(640,400), 23, 1, (char*)"resume");
-    pause.addButton(Vector2f(640,480), 24, 1, (char*)"back_to_menu");
-    game_over.addButton(Vector2f(640,640), 24, 1, (char*)"back");
+    game.addButton(Vector2f(1150,50), 39, 0.20, (char*)"pause");
+    credits.addButton(Vector2f(640,650), 24, 0.25, (char*)"back");
+    pause.addButton(Vector2f(330,450), 40, 0.45, (char*)"resume");
+    pause.addButton(Vector2f(950,450), 38, 0.45, (char*)"back_to_menu");
+    game_over.addButton(Vector2f(640,650), 24, 0.25, (char*)"back");
     home.setActive(true);
 }
 
@@ -209,6 +209,6 @@ void Game::handle(){
             tmp = tmp->next;
         }
     }
-    
+    src->handleAnimation();
 }
     

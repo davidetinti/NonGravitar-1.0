@@ -24,7 +24,6 @@ int main() {
             src.getWindow()->clear(Color::Black);
             timeSinceLastUpdate -= *src.getTimePerFrame();
             game.handle();
-            //prova.handle();
             src.getWindow()->display();
         }
     }

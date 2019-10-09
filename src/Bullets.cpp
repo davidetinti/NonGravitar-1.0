@@ -23,7 +23,7 @@ Bullets::Bullets(int time_btw_shoot,int damage, int speed, int tx_nr, int sd_nr,
     this->damage = damage;
     this->speed = speed;
     this->bullet_tx = src->caricaTexture(tx_nr);
-    this->bullet_sb = src->caricaSuono(sd_nr);
+    //this->bullet_sb = *src->caricaSuono(tx_nr);
 	this->invuln_time = 500;
 }
 

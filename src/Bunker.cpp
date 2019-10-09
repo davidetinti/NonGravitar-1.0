@@ -84,6 +84,7 @@ void Bunker::hitBunker(int damage, bunkerlist *p){
 }
 
 void Bunker::deleteBunker(bunkerlist *target){
+    src->addAnimation(target->bunker.getPosition().x, target->bunker.getPosition().y, 20, 1, 20, 2.5);
 	bunkerlist *iterator = head;
 	if (iterator != NULL && target != head) {
 		while (iterator->next != NULL) {
@@ -103,7 +104,7 @@ void Bunker::deleteBunker(bunkerlist *target){
 void Bunker::explode(bunkerlist* target){
     target->explosion.setTextureRect(IntRect(50*(int)target->explosion_x,0,50,50));
     target->explosion_x ++;
-    src->getWindow()->draw(target->explosion);
+    //src->getWindow()->draw(target->explosion);
 }
  
 void Bunker::gestisci(Nave *player, Terreno *terrain){

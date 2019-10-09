@@ -4,9 +4,9 @@ Animation::Animation(){
     
 }
 
-Animation::Animation(int x, int y, int tx_nr, int rows, int columns, Resources *src){
+Animation::Animation(int x, int y, int tx_nr, int rows, int columns, float scale, SourceLoader *src){
     this->src = src;
-    sprite.setTexture(*src->caricaTexture(tx_nr));
+    sprite.setTexture(*src->getTexture(tx_nr));
     frameWidth = sprite.getTexture()->getSize().x/columns;
     frameHeight = sprite.getTexture()->getSize().y/rows;
     currentX = 0;
@@ -14,19 +14,20 @@ Animation::Animation(int x, int y, int tx_nr, int rows, int columns, Resources *
     maxX = columns;
     maxY = rows;
     sprite.setPosition(x, y);
+    sprite.setScale(Vector2f(scale,scale));
     sprite.setOrigin(frameWidth/2, frameHeight/2);
 }
 
-void Animation::handle(){
-    sprite.setTextureRect(IntRect(frameWidth*currentX, frameHeight*currentY, frameWidth, frameHeight));
-    currentX++;
+bool Animation::handle(){
     if (currentX >= maxX){
         currentY++;
         currentX = 0;
     }
     if (currentY >= maxY){
-        currentY = 0;
-        currentX = 0;
+        return false;
     }
+    sprite.setTextureRect(IntRect(frameWidth*currentX, frameHeight*currentY, frameWidth, frameHeight));
     src->getWindow()->draw(sprite);
+    currentX++;
+    return true;
 }
