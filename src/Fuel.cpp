@@ -2,46 +2,73 @@
 
 // COSTRUTTORI =======================================
 
-Fuel::Fuel(){
+fuel::fuel(double x_n, double y_n, int power_n,fuel *next_n, bool exist_n) :
+x(x_n),y(y_n),power(power_n),exist(exist_n){
     
+}
+
+Fuel::Fuel(){
+    head=NULL;
 }
 
 Fuel::Fuel(Terreno *terrain, Resources *src) {
     this->src = src;
+    double x;
+    bool exist;
+    int power;
     fuel_tx = src->caricaTexture(18);
     partial_x[0] = 20;
     partial_x[1] = 620;
     partial_x[2] = 1140;
-    current = new fuel;
-    current->exist = ((rand() % 100)>70);
-    current->next = NULL;
-    head = current;
-    for (int i = 1; i<3; i++){
-        current->next = new fuel;
-        current->next->exist = ((rand() % 100)>70);
-        current->next->next = NULL;
-        current = current->next;
+    x = partial_x[0] + rand() % 140;
+    exist=((rand() % 100)>50);
+    
+    
+    if(rand() % 3 >1){
+        power = 25;
     }
+    else {
+        power=10;
+    }
+    
+    head = new fuel (x,terrain->get_Y(x),power,NULL,exist);
     current = head;
-    for (int i = 0; i<3; i++){
-        if (current->exist){
-            current->x = partial_x[i] + (rand() % 140);
-            current->y = terrain->get_Y(current->x);
-            current->power = 10;  ////////////////////////// DA CAMBIARE
-            current->fuel_sprite.setTexture(*fuel_tx);
-            current->fuel_sprite.setOrigin(fuel_tx->getSize().x/2, fuel_tx->getSize().y-10);
-            current->fuel_sprite.setPosition(current->x, current->y);
-            current->fuel_sprite.setTextureRect(IntRect(0,0,fuel_tx->getSize().x,fuel_tx->getSize().y));
-            current->fuel_sprite.setScale(0.5, 0.5);
+    head->next = NULL;
+    spriteSetup(current,power);
+    
+    if(!exist){
+        delete_fuel(current);
+        current=head;
+    }
+    
+    for (int i = 1; i < 3; i++){
+        
+        if(rand() % 3 > 1){
+            power = 25;
+        }else {
+            power = 10;
+        }
+        
+        exist = ((rand() % 100) > 50);
+        x = partial_x[i] + rand() % 140;
+        
+        if(current==NULL){
+            current = new fuel(x,terrain->get_Y(x),power,NULL,exist);
+            head=current;
+            spriteSetup(current,power);
+        }else{
+            current->next = new fuel(x,terrain->get_Y(x),power,NULL,exist);
             current = current->next;
-        } else {
+            spriteSetup(current,power);
+        }
+        current->next = NULL;
+        if(!exist){
             delete_fuel(current);
-            current = current->next;
         }
     }
+    current = head;
 }
-
-// SETTERS E GETTERS =================================
+///  SETTERS E GETTERS  /////////////////////////////////////////////
 
 fuel *Fuel::getCurrent(){
     return this->current;
@@ -59,11 +86,36 @@ void Fuel::setHead(fuel *head){
     this->head = head;
 }
 
-// FUNZIONI ==========================================
 
+
+
+///  FUNZIONI  //////////////////////////////////////////////////////
+
+/*
+ delete the fuel during the initializing and when the ship catches the fuel
+ 
+ @param A pointer at the fuel that mast be deleted
+ */
 void Fuel::delete_fuel(fuel *selected){
-    
+    fuel *tmp=head;
+    if(selected==head){
+        head = head->next;
+        delete selected;
+        cout <<"a ";
+    }else{
+        while(tmp!=NULL){
+            if(tmp->next==selected){
+                tmp->next=tmp->next->next;
+                delete selected;
+                current=head;
+                cout<<"b ";
+            }
+            tmp=tmp->next;
+        }
+        
+    }
 }
+
 
 void Fuel::gestisci(){
     current = head;
@@ -74,4 +126,19 @@ void Fuel::gestisci(){
     current = head;
 }
 
+/*
+ Set the texture at the sprite
+ 
+ @param the list of fuel and the power to change the color
+ */
+void Fuel::spriteSetup(fuel *tmp, int power){
+    tmp->fuel_sprite.setTexture(*fuel_tx);
+    tmp->fuel_sprite.setOrigin(fuel_tx->getSize().x/2, fuel_tx->getSize().y-10);
+    tmp->fuel_sprite.setPosition(tmp->x, tmp->y);
+    tmp->fuel_sprite.setTextureRect(IntRect(0,0,fuel_tx->getSize().x,fuel_tx->getSize().y));
+    tmp->fuel_sprite.setScale(0.5, 0.5);
+    if(power==25){
+        tmp->fuel_sprite.setColor(sf::Color::Green);
+    }
+}
 

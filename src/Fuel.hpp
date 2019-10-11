@@ -10,6 +10,7 @@ struct fuel{
     bool exist;
     Sprite fuel_sprite;
     fuel *next;
+    fuel(double x_n, double y_n, int power_n,fuel *next_n,bool exist_n);
 };
 
 class Fuel{
@@ -36,6 +37,10 @@ public:
     // FUNZIONI ======================================
     void delete_fuel(fuel *selected);
     void gestisci();
+    
+protected:
+    void spriteSetup(fuel *selected, int power);
+
 };
 
 #endif /* Fuel_hpp */
