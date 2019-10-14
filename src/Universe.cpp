@@ -97,10 +97,17 @@ void Universe::disegnaPianeti(){
 }
 
 void Universe::handle(){
-    player.movements();
-    player.handleThrust();
 
+    //TODO: throughout code, keep logic and drawing separate, maybe. i think it would look cleaner
+    player.gestisci();
+    player.handleThrust();
+    
+
+    //TODO: collapse these if's somehow. useless lines of code.
     if (!player.getAtPlanet()){
+        src->getWindow()->draw(background);
+        disegnaPianeti();
+
         //verify if out of bounds
         if (player.nave.getPosition().x >= src->getLength()) {
             player.nave.setPosition(0, player.nave.getPosition().y);
@@ -118,6 +125,7 @@ void Universe::handle(){
             player.nave.setPosition(player.nave.getPosition().x, src->getHeight());
             move(0, -1);
         }
+        
         Pianeta *planetIterator = active->pianeti.getHead();
         while (planetIterator != NULL && !player.getAtPlanet()){
             if (contactPlanet(player.nave.getPosition(),planetIterator)){
@@ -133,6 +141,10 @@ void Universe::handle(){
         }
     }
     if (player.getAtPlanet()){
+        getActive()->pianeti.handle(&player);
+        player.armi(&getActive()->pianeti.getCurrent()->interno.getCurrent()->terrain);
+        player.raggioTraente();
+
         if (player.nave.getPosition().x >= src->getLength()) {
 			player.nave.setPosition(0, player.nave.getPosition().y);
 			active->pianeti.getCurrent()->interno.cambia_schermata(1);
@@ -149,14 +161,10 @@ void Universe::handle(){
             active->pianeti.setCurrent(NULL);
         }
     }
+    src->getWindow()->draw(player.thrust);
+    src->getWindow()->draw(player.nave);
 }
 
-void Universe::checkTerrain(){
-    if (player.nave.getPosition().y + 22 
-                >= 
-        active->pianeti.getCurrent()->interno.getCurrent()->terrain.get_Y(player.nave.getPosition().x))
-        player.setIsDead(true);
-}
 
 bool Universe::contactPlanet(Vector2f pos, Pianeta* p){
     return abs(pos.x - (p->relative_x + p->grid_x)) < p->diameter &&
@@ -167,6 +175,6 @@ bool Universe::contactPlanet(Vector2f pos, Pianeta* p){
 void Universe::addToList(lista_schermate *p){
     if(p != NULL){
         tail->next = p;
-        tail = p;
+        tail = tail->next;
     }
 }
