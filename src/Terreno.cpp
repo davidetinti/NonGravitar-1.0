@@ -25,27 +25,30 @@ Terreno::Terreno(int sx_coord, int dx_coord, Resources *src, int tot_schermate){
     background.setColor(colore(tot_schermate,128));
     this->dx_coord = dx_coord;
     this->sx_coord = sx_coord;
-    int nr = 4 + rand() % 20;   //elementi di soil
+    int nr = src->rand(4,23);   //elementi di soil
     float px = src->getLength()/nr;         //partial x
-    int firstHeight = src->getHeight() - rand() % 100;   //altezza del terreno temporanea
+    int firstHeight = src->getHeight() - src->rand(0,99);   //altezza del terreno temporanea
     head = new soil(NULL);
     soil *tmp = head;
-    spriteSetup(tot_schermate,Vector2f(0,src->getHeight()),Vector2f(0,sx_coord),
+    spriteSetup(Vector2f(0,src->getHeight()),Vector2f(0,sx_coord),
                 Vector2f(px,firstHeight),Vector2f(px,src->getHeight()),tmp);
     int heightLeft = firstHeight;
-    int heightRight = src->getHeight() - rand() % 100;
+    int heightRight = src->getHeight() - src->rand(0,99);
     for (int i = 2; i < nr ; i++){
         tmp->next = new soil(NULL);
-        spriteSetup(tot_schermate,Vector2f(px*(i-1), src->getHeight()),Vector2f(px*(i-1), heightLeft),
+        spriteSetup(Vector2f(px*(i-1), src->getHeight()),Vector2f(px*(i-1), heightLeft),
                     Vector2f(px*i, heightRight),Vector2f(px*i, src->getHeight()),tmp->next);
         heightLeft = heightRight;
-        heightRight = src->getHeight() - rand() % 100;
+        heightRight = src->getHeight() - src->rand(0,99);
         tmp = tmp->next;
     }
     tmp->next = new soil(NULL);
     tmp = tmp->next;
-    spriteSetup(tot_schermate,Vector2f(px*(nr-1), src->getHeight()),Vector2f(px*(nr-1), heightLeft),
+    spriteSetup(Vector2f(px*(nr-1), src->getHeight()),Vector2f(px*(nr-1), heightLeft),
                 Vector2f(src->getLength(), dx_coord),Vector2f(src->getLength(), src->getHeight()),tmp);
+
+    minSizeHole = 400;
+    minSizeSoil = 30;
 }
 
 // SETTERS E GETTERS =================================
@@ -90,11 +93,11 @@ Color Terreno::colore(int tot_schermate, int transparency){
     }
 }
 
-void Terreno::gestisci(){
+void Terreno::drawAll(){
     src->getWindow()->draw(background);
     soil *tmp = head;
     while (tmp != NULL){
-            src->getWindow()->draw(tmp->element);
+        src->getWindow()->draw(tmp->element);
         tmp = tmp->next;
     };
 }
@@ -116,23 +119,38 @@ double Terreno::get_Y(double x){
 	else return 0;
 }
 
-void Terreno::spriteSetup(int tot_sch, Vector2f p0, Vector2f p1, Vector2f p2, Vector2f p3, soil *p){
+void Terreno::spriteSetup(Vector2f p0, Vector2f p1, Vector2f p2, Vector2f p3, soil *p){
     p->element.setPoint(0,p0);
     p->element.setPoint(1,p1);
     p->element.setPoint(2,p2);
     p->element.setPoint(3,p3);
     p->element.setTexture(terrain_tx);
-    p->element.setFillColor(colore(tot_sch,255));
+    p->element.setFillColor(colore(nr_schermate,255));
 }
 
-void Terreno::prepareForHole(){
-	soil *tmp = head;
-	if (head != NULL) {
-		//cout << "\nPREPARING FOR HOLE\n";
-		tmp->element.setPoint(1, Vector2f(0, 700));
-		double exTopRight = tmp->element.getPoint(2).x;
-		tmp->element.setPoint(2, Vector2f(exTopRight, 700));
-		current->element.setTexture(terrain_tx);
-		current->element.setFillColor(colore(nr_schermate, 255));
-	}
+int Terreno::prepareForHole(){
+	soil *tmp = head->next;
+    Vector2f topRight = tmp->element.getPoint(3);  
+    while (topRight.x < minSizeHole){ //delete all necessary soils until
+        tmp = tmp->next;              //hole can fit
+        delete head->next;
+        head->next = tmp;
+        topRight = tmp->element.getPoint(3);
+    }
+
+    head->element.setPoint(3,      //make head a fixed size
+        Vector2f(minSizeSoil,head->element.getPoint(3).y));
+    head->next = new soil(tmp);    //create first soil after hole
+    double last_x = tmp->element.getPoint(0).x - minSizeSoil;
+    spriteSetup(Vector2f(last_x,680),Vector2f(last_x,700),
+                tmp->element.getPoint(1),tmp->element.getPoint(0),
+                head->next);
+
+    return head->next->element.getPoint(2).x - last_x;
+    //cout << "\nPREPARING FOR HOLE\n";
+    
+}
+
+void Terreno::prepareForBoss(Sprite *hole){
+    //hole->setPosition(prepareForHole(),750);
 }

@@ -19,7 +19,9 @@ protected:
     int dx_coord,sx_coord;
     Texture* terrain_tx;
     Texture* background_tx;
-    soil* head, *current;
+    soil* head;
+    double minSizeHole;//minimum space needed for initial soil + bosshole
+    double minSizeSoil;//minimum size of soils to right and left
     
 public:
     
@@ -38,11 +40,12 @@ public:
     
     // FUNZIONI ======================================
     Color colore(int tot_schermate, int transparency);
-    void gestisci();
+    void drawAll();
     double get_Y(double x);
+    void prepareForBoss(Sprite *hole);
 private:
-    void spriteSetup(int tot_sch, Vector2f p0, Vector2f p1, Vector2f p2, Vector2f p3, soil *p);
-    void prepareForHole();
+    void spriteSetup(Vector2f p0, Vector2f p1, Vector2f p2, Vector2f p3, soil *p);
+    int prepareForHole();
 };
 
 #endif /* Terreno_hpp */
