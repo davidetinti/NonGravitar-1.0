@@ -210,6 +210,7 @@ void Nave::push_back(int distance){
 }
 
 void Nave::gestisci(){
+    movements();
     //if (Lifebar <= 0 || Fuelbar <= 0) IsDead = true;
 }
 

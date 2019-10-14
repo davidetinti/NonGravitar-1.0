@@ -113,7 +113,8 @@ void Bunker::gestisci(Nave *player, Terreno *terrain){
         //cout << enemies->x << endl;
         if (tmp->exist){
             if (tmp->type == 1){
-                tmp->bunker.setRotation(180 - atan((player->nave.getPosition().x-tmp->bunker.getPosition().x)/(player->nave.getPosition().y-tmp->bunker.getPosition().y))*(180/M_PI));
+                tmp->bunker.setRotation(180 - atan((player->nave.getPosition().x-tmp->bunker.getPosition().x) / 
+                                                   (player->nave.getPosition().y-tmp->bunker.getPosition().y)) * (180/M_PI));
             }
             armi(tmp, terrain, *src->getTimePerFrame());
             //src->getWindow()->draw(tmp->bunker);            

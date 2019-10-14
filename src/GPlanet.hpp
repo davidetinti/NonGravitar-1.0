@@ -29,6 +29,7 @@ protected:
     lista_schermate_pianeta *current, *head, *boss_screen;
     Texture *hole_tx;
     Sprite hole;
+    int nr_schermate;
     
 public:
     
@@ -44,6 +45,7 @@ public:
     void setBoss_unlocked(bool boss_unlocked);
     void setCurrent(lista_schermate_pianeta *current);
     void setHead(lista_schermate_pianeta *head);
+    bool getIn_boss();
     
     // FUNZIONI ======================================
     lista_schermate_pianeta *find(int n);
@@ -52,6 +54,9 @@ public:
     void cambia_schermata(int n);
     void checkCollision(Nave *player);
     void handle(Nave *player);
+    bool inHole(Sprite *body);
+    void enterBoss(Nave *player);
+    void checkTerrain(Nave *player);
     
 protected:
     

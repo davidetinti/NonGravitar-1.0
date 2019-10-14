@@ -14,22 +14,9 @@ uPlanets::uPlanets(){
 }
 
 uPlanets::uPlanets(Resources *s){
-    str_l[0] = 50;
-    str_l[1] = 50;
-    str_l[2] = 360;
-    str_l[3] = 360;
-    str_l[4] = 670;
-    str_l[5] = 670;
-    str_l[6] = 980;
-    str_l[7] = 980;
-    str_h[0] = 60;
-    str_h[1] = 410;
-    str_h[2] = 60;
-    str_h[3] = 410;
-    str_h[4] = 60;
-    str_h[5] = 410;
-    str_h[6] = 60;
-    str_h[7] = 410;
+    int str_l[] = {50,50,360,360,670,670,980,980};
+    int str_h[] = {60,410,60,410,60,410,60,410};
+
     src = s;
     head = new Pianeta(true, rand() % 251, rand() % 251, str_l[0], str_h[0], 3 + rand() % 8, NULL);
     head->interno = GPlanet();
@@ -74,6 +61,7 @@ void uPlanets::handle(Nave *player){
     lista_schermate_pianeta *iterator = current->interno.getHead();
     bool no_bunkers = true;
     current->interno.handle(player);
+    /*
     for (int i = 0; i < current->tot_schermate; i++){
         if (iterator->enemies.getHead() == NULL){
             iterator = iterator->next;
@@ -88,6 +76,7 @@ void uPlanets::handle(Nave *player){
         current->exist = false;
         deletePlanet(current);
     }
+    */
 }
 
 void uPlanets::spriteSetup(Pianeta* p){

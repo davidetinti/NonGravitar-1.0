@@ -162,28 +162,11 @@ void Game::handle(){
         if (!universe.player.getIsDead()){
             
             universe.handle();
-            
-            /// UNIVERSO
-            
-            if (!universe.player.getAtPlanet()) {
-                this->src->getWindow()->draw(universe.background);
-                universe.disegnaPianeti();
-            }
-            
-            /// PIANETA
-            
-            if (universe.player.getAtPlanet()){
-                universe.getActive()->pianeti.handle(&universe.player);
-                if (universe.player.getAtPlanet()) {
-                    universe.player.armi(&universe.getActive()->pianeti.getCurrent()->interno.getCurrent()->terrain);
-                    universe.player.raggioTraente();
-                    universe.checkTerrain();
-                }
-            }
-            src->getWindow()->draw(universe.player.thrust);
-            src->getWindow()->draw(universe.player.nave);
+
+            //TODO: move hud to game. why would it be in universe???
             universe.hud.gestisci(universe.player.getPunti(), universe.player.getLifebar(), universe.player.getFuelbar());
-            universe.player.gestisci();
+            
+
         } else {
             game_over.setActive(true);
             game.setActive(false);
