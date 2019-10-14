@@ -79,3 +79,11 @@ void Resources::handleAnimation(){
         }
     }
 }
+
+int Resources::rand(int min, int max){
+    static default_random_engine dre(chrono::steady_clock::now().time_since_epoch().count());
+    uniform_int_distribution<int> uid (min,max);
+    int returned = uid(dre);
+    cout << "returning this RANDOM number:" << returned << '\n';
+    return returned;
+}

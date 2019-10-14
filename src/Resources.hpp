@@ -1,6 +1,8 @@
 #ifndef Resources_hpp
 #define Resources_hpp
 
+#include <chrono>
+#include <random>
 #include "Animation.hpp"
 #include "SourceLoader.hpp"
 
@@ -28,6 +30,7 @@ public:
     AnimationList *getAnimationList();
     void addAnimation(int x, int y, int tx_nr, int rows, int columns, float scale);
     void handleAnimation();
+    int rand(int max, int min);
     
 };
 
