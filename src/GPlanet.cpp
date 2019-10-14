@@ -204,5 +204,5 @@ void GPlanet::checkTerrain(Nave *player){
 }
 
 int GPlanet::random_height(){
-    return src->getHeight() - rand() % 100;
+    return src->getHeight() - src->rand(0,99);
 }

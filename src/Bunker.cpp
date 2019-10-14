@@ -22,23 +22,23 @@ Bunker::Bunker(Resources *src, Terreno *terrain){
     partial_x[3] = 915;
     bunker_tx = src->caricaTexture(3);
     int x;
-    x = partial_x[0] + rand() % 201;
-    p = rand() % 2;
+    x = partial_x[0] + src->rand(0,201);
+    p = src->rand(0,2);
     //TO BE MERGED WITH FOR PLS
-    if(p) head = new bunkerlist(1,(rand() % 5000) + 2500,x,terrain->get_Y(x),
+    if(p) head = new bunkerlist(1,(src->rand(2500,7500)),x,terrain->get_Y(x),
                           100, NULL,new SingleStraightBullets(400, 100, 10, 14, 0, true, src));
-    else  head = new bunkerlist(1,(rand() % 5000) + 2500,x,terrain->get_Y(x),
+    else  head = new bunkerlist(1,(src->rand(2500,7500)),x,terrain->get_Y(x),
                           100, NULL, new TripleBullets(400, 100, 10, 14, 0, true, src));
     spriteSetup(head);
 
     bunkerlist *tmp = head;
 
     for (int i = 1; i < 4 ; i++){
-        p = rand() % 2;
-        x = partial_x[i] + rand() % 201;
-        if(p) tmp->next = new bunkerlist(1,(rand() % 5000) + 2500,x, terrain->get_Y(x), 
+        p = src->rand(0,2);
+        x = partial_x[i] + src->rand(0,201);
+        if(p) tmp->next = new bunkerlist(1,(src->rand(2500,7500)),x, terrain->get_Y(x), 
                                    100, NULL, new SingleStraightBullets(400, 100, 10, 14, 0, true, src));
-        else  tmp->next = new bunkerlist(1,(rand() % 5000) + 2500,x, terrain->get_Y(x),
+        else  tmp->next = new bunkerlist(1,(src->rand(2500,7500)),x, terrain->get_Y(x),
                                    100, NULL, new TripleBullets(400, 100, 10, 14, 0, true, src));
         tmp = tmp->next;
         spriteSetup(tmp);

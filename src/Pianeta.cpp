@@ -18,16 +18,16 @@ uPlanets::uPlanets(Resources *s){
     int str_h[] = {60,410,60,410,60,410,60,410};
 
     src = s;
-    head = new Pianeta(true, rand() % 251, rand() % 251, str_l[0], str_h[0], 3 + rand() % 8, NULL);
+    head = new Pianeta(true, src->rand(0,250), src->rand(0,250), str_l[0], str_h[0], src->rand(3,10), NULL);
     head->interno = GPlanet();
     spriteSetup(head);
     current = head;
     Pianeta *pp = head;
     bool exists = false;
     for (int i = 1; i < 8; i++) {
-        exists = rand() % 6 > 2;
+        exists = src->rand(0,2) > 0;
         if(exists){
-            pp->next = new Pianeta(true, rand() % 251, rand() % 251, str_l[i], str_h[i], 3 + rand() % 8, NULL);
+            pp->next = new Pianeta(true, src->rand(0,250), src->rand(0,250), str_l[i], str_h[i], src->rand(3,10), NULL);
             pp = pp->next;
             spriteSetup(pp);
         }
