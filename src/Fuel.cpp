@@ -64,6 +64,7 @@ Fuel::Fuel(Terreno *terrain, Resources *src) {
         current->next = NULL;
         if(!exist){
             delete_fuel(current);
+            current = head;
         }
     }
     current = head;
@@ -86,8 +87,10 @@ void Fuel::setHead(fuel *head){
     this->head = head;
 }
 
-
-
+int Fuel::getPower(fuel *current){
+    return(this->current->power);
+    
+}
 
 ///  FUNZIONI  //////////////////////////////////////////////////////
 
@@ -101,14 +104,12 @@ void Fuel::delete_fuel(fuel *selected){
     if(selected==head){
         head = head->next;
         delete selected;
-        cout <<"a ";
     }else{
         while(tmp!=NULL){
             if(tmp->next==selected){
                 tmp->next=tmp->next->next;
                 delete selected;
                 current=head;
-                cout<<"b ";
             }
             tmp=tmp->next;
         }

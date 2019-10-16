@@ -85,3 +85,11 @@ int Resources::rand(int min, int max){
     uniform_int_distribution<int> uid (min,max);
     return uid(dre);
 }
+
+bool Resources::intersecate(FloatRect object1, FloatRect object2){
+    if (object1.intersects(object2)){
+        return true;
+    } else {
+        return false;
+    }
+}

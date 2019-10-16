@@ -74,7 +74,11 @@ double Nave::getFuelbar(){
 }
 
 void Nave::setFuelbar(double fuelbar){
-    this->Fuelbar = fuelbar;
+    if (fuelbar >= 100){
+        this->Fuelbar = 100;
+    } else {
+        this->Fuelbar = fuelbar;
+    }
 }
 
 double Nave::getTopSpeed(){
@@ -173,7 +177,7 @@ void Nave::armi(Terreno *terrain){
     Laser->renderBullet(terrain, *src->getTimePerFrame());
 }
 
-void Nave::raggioTraente(){
+bool Nave::raggioTraente(){
     if (Keyboard::isKeyPressed(Keyboard::F)){
         raggio.setTextureRect(IntRect(256*raggiox,256*raggioy,256,256));
         raggiox++;
@@ -188,6 +192,9 @@ void Nave::raggioTraente(){
         raggio.setPosition(nave.getPosition());
         raggio.setOrigin(128, 0);
         src->getWindow()->draw(raggio);
+        return true;
+    } else {
+        return false;
     }
 } 
 
@@ -229,9 +236,9 @@ void Nave::movements(){
     }
     if (Keyboard::isKeyPressed(Keyboard::Space)) {
 		addToDxDy(cos((nave.getRotation()-270) * M_PI / 180) * getSpaceshipAcceleration(), sin((nave.getRotation()-270) * M_PI / 180) * getSpaceshipAcceleration());
-		setThrustInt(255); 
+		setThrustInt(255);
 		if (getFuelbar() > 0)
-            setFuelbar(getFuelbar() - getSpaceshipAcceleration()/800);
+            setFuelbar(getFuelbar() - getSpaceshipAcceleration()/2);
     } else {
 		decayThrustInt();
 		if(getAtPlanet())

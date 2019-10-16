@@ -36,6 +36,7 @@ public:
     
     // FUNZIONI ======================================
     void delete_fuel(fuel *selected);
+    int getPower(fuel *current);
     void gestisci();
     
 protected:

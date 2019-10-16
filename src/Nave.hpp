@@ -73,7 +73,7 @@ public:
     
     // FUNZIONI ======================================
     void armi(Terreno *terrain);
-    void raggioTraente();
+    bool raggioTraente();
 	void getHit(int damage, int hitType = 0);
 	void push_back(int distance);
     void gestisci();

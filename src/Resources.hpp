@@ -31,6 +31,7 @@ public:
     void addAnimation(int x, int y, int tx_nr, int rows, int columns, float scale);
     void handleAnimation();
     int rand(int max, int min);
+    bool intersecate(FloatRect object1, FloatRect object2);
     
 };
 

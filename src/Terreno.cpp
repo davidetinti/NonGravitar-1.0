@@ -152,5 +152,5 @@ int Terreno::prepareForHole(){
 }
 
 void Terreno::prepareForBoss(Sprite *hole){
-    //hole->setPosition(prepareForHole(),750);
+    hole->setPosition(prepareForHole(),700);
 }

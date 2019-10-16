@@ -173,6 +173,7 @@ void GPlanet::handle(Nave *player){
     checkTerrain(player);
     if (!in_boss) {
 		current->carb.gestisci();
+        raggiotraente(player);
 		current->enemies.gestisci(player, &current->terrain);
 	}
 	if (boss_unlocked && current == head) src->getWindow()->draw(hole);
@@ -205,4 +206,22 @@ void GPlanet::checkTerrain(Nave *player){
 
 int GPlanet::random_height(){
     return src->getHeight() - src->rand(0,99);
+}
+
+void GPlanet::raggiotraente(Nave *player){
+    if (player->raggioTraente()){
+        fuel *tmp = current->carb.getHead();
+        while(tmp!=NULL){
+            if(abs(player->nave.getPosition().x - tmp->x) <50 && (tmp->y - player->nave.getPosition().y <=150)){
+                fuel *tmp1 = tmp->next;
+                cout << player->getFuelbar() << "\n";
+                player->setFuelbar(player->getFuelbar() + current->carb.getPower(tmp));
+                cout << player->getFuelbar();
+                current->carb.delete_fuel(tmp);
+                tmp = tmp1;
+            } else {
+                tmp=tmp->next;
+            }
+        }
+    }
 }

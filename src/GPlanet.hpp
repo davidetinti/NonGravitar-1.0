@@ -57,6 +57,7 @@ public:
     bool inHole(Sprite *body);
     void enterBoss(Nave *player);
     void checkTerrain(Nave *player);
+    void raggiotraente(Nave *player);
     
 protected:
     
