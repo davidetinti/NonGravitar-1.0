@@ -169,16 +169,18 @@ void GPlanet::handle(Nave *player){
 	    }
 	}
     checkCollision(player);
-    current->terrain.drawAll();
-    checkTerrain(player);
     if (!in_boss) {
+        current->terrain.drawAll();
+        checkTerrain(player);
 		current->carb.gestisci();
         raggiotraente(player);
 		current->enemies.gestisci(player, &current->terrain);
 	}
 	if (boss_unlocked && current == head) src->getWindow()->draw(hole);
-	if (in_boss)
+	if (in_boss){
+        boss.gestisci();
 		boss.draw();
+    }
 }
 
 bool GPlanet::inHole(Sprite *body){

@@ -114,7 +114,7 @@ void Boss::draw(int type){
 void Boss::gestisci(){
 	//turrets.gestisci(window, player);
 	if (rotation.getElapsedTime().asMilliseconds() > 20) {
-		notBoss.setRotation(notBoss.getRotation() + 0.6);
+		notBoss.setRotation(notBoss.getRotation() + 0.6);	//make it dependent from timePerFrame
 		//turrets.move(0.6);
 		rotation.restart();
 	}

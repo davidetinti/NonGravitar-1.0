@@ -160,6 +160,10 @@ void Universe::handle(){
             player.setAtPlanet(false);
             active->pianeti.setCurrent(NULL);
         }
+        //only able to go down far enough after boss is unlocked
+        if (player.nave.getPosition().y > src->getHeight()){
+            active->pianeti.getCurrent()->interno.enterBoss(&player);
+        }
     }
     src->getWindow()->draw(player.thrust);
     src->getWindow()->draw(player.nave);

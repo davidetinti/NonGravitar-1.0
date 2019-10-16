@@ -131,26 +131,30 @@ void Terreno::spriteSetup(Vector2f p0, Vector2f p1, Vector2f p2, Vector2f p3, so
 int Terreno::prepareForHole(){
 	soil *tmp = head->next;
     Vector2f topRight = tmp->element.getPoint(3);  
-    while (topRight.x < minSizeHole){ //delete all necessary soils until
+    while ((topRight.x - head->element.getPoint(3).x) < minSizeHole + 2 * minSizeSoil){ //delete all necessary soils until
         tmp = tmp->next;              //hole can fit
         delete head->next;
         head->next = tmp;
         topRight = tmp->element.getPoint(3);
     }
 
-    head->element.setPoint(3,      //make head a fixed size
-        Vector2f(minSizeSoil,head->element.getPoint(3).y));
     head->next = new soil(tmp);    //create first soil after hole
     double last_x = tmp->element.getPoint(0).x - minSizeSoil;
-    spriteSetup(Vector2f(last_x,680),Vector2f(last_x,700),
+    spriteSetup(Vector2f(last_x,src->getHeight()),Vector2f(last_x,src->getHeight()),
                 tmp->element.getPoint(1),tmp->element.getPoint(0),
                 head->next);
+    tmp = head->next;
+    head->next = new soil(tmp);     //create first soil before hole
+    last_x = tmp->element.getPoint(1).x - minSizeHole;
+    spriteSetup(head->element.getPoint(3),head->element.getPoint(2),
+                Vector2f(last_x,src->getHeight()),Vector2f(last_x,src->getHeight()),
+                head->next);
 
-    return head->next->element.getPoint(2).x - last_x;
+    return head->next->element.getPoint(2).x;
     //cout << "\nPREPARING FOR HOLE\n";
     
 }
 
 void Terreno::prepareForBoss(Sprite *hole){
-    hole->setPosition(prepareForHole(),700);
+    hole->setPosition(prepareForHole() + minSizeHole / 2, 700);
 }
