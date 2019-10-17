@@ -147,11 +147,12 @@ void GPlanet::checkCollision(Nave *player) { //should this be moved into Bunker?
     int hit_n = checkCollisionBunkBullets(player->nave.getGlobalBounds());
     //getHit called with 1 so that it ignores clock
     player->getHit(30 * hit_n, 1);
+    /*
     if(in_boss && boss.checkCollisionBoss(&player->nave)){
        player->getHit(5);
        //TODO
        //player->push_back(4);
-    }
+    }*/
 }
  
 void GPlanet::handle(Nave *player){
@@ -169,9 +170,9 @@ void GPlanet::handle(Nave *player){
 	    }
 	}
     checkCollision(player);
+    checkTerrain(player);
     if (!in_boss) {
         current->terrain.drawAll();
-        checkTerrain(player);
 		current->carb.gestisci();
         raggiotraente(player);
 		current->enemies.gestisci(player, &current->terrain);
@@ -179,7 +180,7 @@ void GPlanet::handle(Nave *player){
 	if (boss_unlocked && current == head) src->getWindow()->draw(hole);
 	if (in_boss){
         boss.gestisci();
-		boss.draw();
+		boss.draw(1);
     }
 }
 
@@ -203,6 +204,9 @@ void GPlanet::checkTerrain(Nave *player){
                     >= 
                 getCurrent()->terrain.get_Y(player->nave.getPosition().x))
                 player->setIsDead(true);
+    } else {
+        if(boss.checkCollisionBoss(&player->nave))
+            player->push_back(4,1);
     }
 }
 

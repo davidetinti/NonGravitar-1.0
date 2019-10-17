@@ -75,7 +75,7 @@ public:
     void armi(Terreno *terrain);
     bool raggioTraente();
 	void getHit(int damage, int hitType = 0);
-	void push_back(int distance);
+	void push_back(int distance, int dir = 0);
     void gestisci();
     void handleThrust();
     void movements();

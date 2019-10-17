@@ -207,11 +207,24 @@ void Nave::getHit(int damage, int hitType){
 	}
 }
 
-void Nave::push_back(int distance){
+void Nave::push_back(int distance, int dir){
 	Time elapsed = PushClock.getElapsedTime();
+    static Vector2f centre = Vector2f(src->getLength()/2,src->getHeight()/2);
 	if (elapsed.asMilliseconds() > Time_btw_pushesMS) {
-		nave.setRotation(180);
-		dy = 10 * distance;
+        switch (dir){
+            case 0: 
+                nave.setRotation(180);
+		        dy = 10 * distance;
+                break;
+            case 1:
+                nave.setRotation(270 + atan2(centre.y-nave.getPosition().y, 
+                                        centre.x-nave.getPosition().x) * (180/M_PI));
+                dx = cos((nave.getRotation()-270) * M_PI / 180) * distance;
+                dy = sin((nave.getRotation()-270) * M_PI / 180) * distance;
+                
+                break;
+        }
+		
 		PushClock.restart();
 	}
 }
