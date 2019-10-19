@@ -6,8 +6,7 @@
 class Slider{
     
     Resources *src;
-    RectangleShape slider;
-    RectangleShape axis;
+    Sprite slider, axis;
     float minValue;
     float maxValue;
     int xCord;
@@ -17,26 +16,23 @@ class Slider{
     int sliderWidth;
     int sliderHeight;
     float sliderValue;
+    char name[20];
     
 public:
     
     Slider();
-    Slider(int x, int y, float min, float max, Resources *src);
+    Slider(Vector2f position, float min, float max, char name[], Resources *src);
     void create(float min, float max);
     void logic();
     float getSliderValue();
     void setSliderValue(float newValue);
     void setSliderPercentValue(float newPercentValue);
+    char *getName();
     void draw();
     void handle();
     bool mouseWasClicked;
+    bool isHandled;
     
-};
-
-struct sliderList{
-    char name[10];
-    Slider current;
-    sliderList *next;
 };
 
 #endif /* Controller_hpp */

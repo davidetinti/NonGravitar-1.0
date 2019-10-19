@@ -12,8 +12,7 @@ protected:
     Resources *src;
     Sprite lifebar_active, lifebar_back, fuelbar_active, fuelbar_back;
     Texture *bars_tx;
-    Text life;
-    Font font;
+    Text life,fuel,score;
     
 public:
     

@@ -4,26 +4,30 @@ Slider::Slider(){
     
 }
 
-Slider::Slider(int x, int y, float min, float max, Resources *src){
+Slider::Slider(Vector2f position, float min, float max, char nome[], Resources *src){
     this->src = src;
-    mouseWasClicked = false;
-    xCord = x;
-    yCord = y;
-    axisHeight = 15;
-    axisWidth = 600;
-    sliderWidth = 25;
-    sliderHeight = 50;
-    axis.setPosition(x, y);
-    axis.setOrigin(0, axisHeight / 2);
-    axis.setSize(Vector2f(axisWidth, axisHeight));
-    axis.setFillColor(Color::Red);
-    slider.setPosition(x, y);
+    Texture *slider_tx, *axis_tx;
+    slider_tx = src->caricaTexture(2);
+    slider.setTexture(*slider_tx);
+    sliderWidth = slider_tx->getSize().x;
+    sliderHeight = slider_tx->getSize().y;
+    slider.setPosition(position);
     slider.setOrigin(sliderWidth / 2, sliderHeight / 2);
-    slider.setSize(Vector2f(sliderWidth, sliderHeight));
-    slider.setFillColor(Color::Yellow);
+    axis_tx = src->caricaTexture(22);
+    axis.setTexture(*axis_tx);
+    axisWidth = axis_tx->getSize().x;
+    axisHeight = axis_tx->getSize().y ;
+    axis.setPosition(position);
+    axis.setOrigin(0, axisHeight / 2);
+    xCord = position.x;
+    yCord = position.y;
     sliderValue = min;
     minValue = min;
     maxValue = max;
+    strncpy(name, nome, 20);
+    mouseWasClicked = false;
+    isHandled = false;
+    this->setSliderPercentValue(50);
 }
 
 void Slider::create(float min, float max){
@@ -67,6 +71,10 @@ void Slider::setSliderPercentValue(float newPercentValue){
         sliderValue = newPercentValue / 100 * maxValue;
         slider.setPosition(xCord + (axisWidth*newPercentValue / 100), yCord);
     }
+}
+
+char *Slider::getName(){
+    return name;
 }
 
 void Slider::draw(){

@@ -84,7 +84,7 @@ void Bunker::hitBunker(int damage, bunkerlist *p){
 }
 
 void Bunker::deleteBunker(bunkerlist *target){
-    src->addAnimation(target->bunker.getPosition().x, target->bunker.getPosition().y, 20, 1, 20, 2.5);
+    src->addAnimation(target->bunker.getPosition().x, target->bunker.getPosition().y, 20, 1, 20, 3, 0.5);
 	bunkerlist *iterator = head;
 	if (iterator != NULL && target != head) {
 		while (iterator->next != NULL) {
@@ -100,31 +100,22 @@ void Bunker::deleteBunker(bunkerlist *target){
         delete target;
     }
 }
-
-void Bunker::explode(bunkerlist* target){
-    target->explosion.setTextureRect(IntRect(50*(int)target->explosion_x,0,50,50));
-    target->explosion_x ++;
-    //src->getWindow()->draw(target->explosion);
-}
  
 void Bunker::gestisci(Nave *player, Terreno *terrain){
     bunkerlist *tmp = head;
     while (tmp != NULL){
-        //cout << enemies->x << endl;
         if (tmp->exist){
             if (tmp->type == 1){
                 tmp->bunker.setRotation(180 - atan((player->nave.getPosition().x-tmp->bunker.getPosition().x) / 
                                                    (player->nave.getPosition().y-tmp->bunker.getPosition().y)) * (180/M_PI));
             }
             armi(tmp, terrain, *src->getTimePerFrame());
-            //src->getWindow()->draw(tmp->bunker);            
         }
         if (tmp->life <= 0) {
             tmp->exist = false;
             player->setPunti(player->getPunti()+100);
         }
-        if (tmp->exist == false) explode(tmp);
-        if (tmp->explosion_x >= 20){
+        if (tmp->exist == false){
             deleteBunker(tmp);
             tmp = NULL;
         }

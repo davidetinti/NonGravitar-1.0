@@ -16,9 +16,6 @@ Universe::Universe(Resources *src){
     this->src = src;
     this->hud = HUD(this->src);
     this->player = Nave(this->src);
-    this->universe_tx = this->src->caricaTexture(28);
-    this->background.setPosition(0, 0);
-    this->background.setTexture(*universe_tx);
     this->active = new lista_schermate(0, 0, this->src);
     this->head_list = active;
     this->tail = head_list;
@@ -105,7 +102,7 @@ void Universe::handle(){
 
     //TODO: collapse these if's somehow. useless lines of code.
     if (!player.getAtPlanet()){
-        src->getWindow()->draw(background);
+        //src->getWindow()->draw(background);
         disegnaPianeti();
 
         //verify if out of bounds

@@ -9,24 +9,32 @@ class Stage{
 protected:
     
     Resources *src;
-    lista_pulsanti *icone;
-    sliderList *slider;
+    Sprite background;
+    list<Pulsante*> buttonList;
+    list<Slider*> sliderList;
+    list<Text*> textList;
     bool attiva;
+    bool sliderSelected;
     
 public:
     
-    Sprite sfondo;
-    Texture *sfondo_tx;
-    
+    //CONSTRUCTORS
     Stage();
     Stage(Resources *src, int tx_sfondo);
-    void addButton(Vector2f posizione, int tx_nr, float scala, char name[10]);
-    void addSlider(int x, int y, float min, float max, char name[10]);
-    void draw();
+    
+    //GETTERS AND SETTERS
+    Sprite* getBackground();
+    list<Pulsante*> *getButtonsList();
+    list<Slider*> *getSliderList();
+    list<Text*> *getTextList();
     bool getActive();
     void setActive(bool attiva);
-    lista_pulsanti *getButtons();
-    sliderList *getSliders();
+    
+    //FUNCTIONS
+    void addButton(Vector2f position, int tx_nr, float scale, char name[]);
+    void addSlider(Vector2f position, float min, float max, char name[]);
+    void addText(Vector2f position, char* text, Color fillColor, Color outlineColor, int size, float border);
+    void draw();
 };
 
 #endif /* Stage_hpp */

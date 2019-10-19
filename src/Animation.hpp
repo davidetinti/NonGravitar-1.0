@@ -9,20 +9,15 @@ protected:
     
     SourceLoader *src;
     Sprite sprite;
-    int frameWidth, frameHeight, currentX, currentY, maxX, maxY;
+    int frameWidth, frameHeight, maxX, maxY;
+    double currentX, currentY, speed;
     
 public:
     
     Animation();
-    Animation(int x, int y, int tx_nr, int rows, int columns, float scale, SourceLoader *src);
+    Animation(int x, int y, int tx_nr, int rows, int columns, float scale, SourceLoader *src, double imagespeed = 1);
     bool handle();
     
-};
-
-struct AnimationList{
-    Animation *current;
-    AnimationList *next;
-    AnimationList *prev;
 };
 
 #endif /* Animation_hpp */

@@ -4,7 +4,7 @@ Pulsante::Pulsante(){
     
 }
 
-Pulsante::Pulsante(Vector2f posizione, Resources *src, int tx_nr, float scala){
+Pulsante::Pulsante(Vector2f posizione, int tx_nr, float scala, char nome[], Resources *src){
     this->src = src;
     original_scale = Vector2f(scala,scala);
     button_tx = src->caricaTexture(tx_nr);
@@ -13,11 +13,15 @@ Pulsante::Pulsante(Vector2f posizione, Resources *src, int tx_nr, float scala){
     button.setOrigin(button_tx->getSize().x/2,button_tx->getSize().y/2);
     button.setPosition(posizione);
     button.setScale(original_scale);
+    strncpy(name, nome, 20);
+}
+
+char* Pulsante::getName(){
+    return name;
 }
 
 bool Pulsante::isSelected(){
-    if (Mouse::getPosition(*src->getWindow()).x >= button.getPosition().x - original_scale.x*button_tx->getSize().x/2 && Mouse::getPosition(*src->getWindow()).x <= button.getPosition().x + original_scale.x*button_tx->getSize().x/2 &&
-        Mouse::getPosition(*src->getWindow()).y >= button.getPosition().y - original_scale.x*button_tx->getSize().y/2 && Mouse::getPosition(*src->getWindow()).y <= button.getPosition().y + original_scale.x*button_tx->getSize().y/2){
+    if (button.getGlobalBounds().contains(Mouse::getPosition(*src->getWindow()).x, Mouse::getPosition(*src->getWindow()).y)){
         return true;
     } else {
         return false;
@@ -36,7 +40,7 @@ void Pulsante::disegna(){
 
 bool Pulsante::handle(){
     disegna();
-    if (isSelected() && Mouse::isButtonPressed(Mouse::Left)){
+    if (isSelected()){
         return true;
     } else {
         return false;

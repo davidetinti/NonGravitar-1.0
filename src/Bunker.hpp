@@ -44,7 +44,6 @@ public:
     void armi(bunkerlist *tmp, Terreno *terrain, Time perFrame);
 	void hitBunker(int damage, bunkerlist *p);
 	void deleteBunker(bunkerlist *target);
-    void explode(bunkerlist *target);
 	bool isEmpty();
     void gestisci(Nave *player, Terreno *terrain);
     int checkCollisionBBullets(FloatRect obj);

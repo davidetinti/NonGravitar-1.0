@@ -6,43 +6,27 @@ Stage::Stage(){
 
 Stage::Stage(Resources *src, int tx_sfondo){
     this->src = src;
-    sfondo_tx = src->caricaTexture(tx_sfondo);
-    sfondo.setTexture(*sfondo_tx);
-    sfondo.setTextureRect(IntRect(0,0,sfondo_tx->getSize().x,sfondo_tx->getSize().y));
-    icone = NULL;
-    slider = NULL;
+    Texture* sfondo_tx = src->caricaTexture(tx_sfondo);
+    background.setTexture(*sfondo_tx);
+    background.setTextureRect(IntRect(0,0,sfondo_tx->getSize().x,sfondo_tx->getSize().y));
     attiva = false;
+    sliderSelected = false;
 }
 
-void Stage::addSlider(int x, int y, float min ,float max, char name[10]){
-    sliderList *tmp = new sliderList;
-    tmp->current = Slider(x,y,min,max,src);
-    tmp->current.setSliderPercentValue(50);
-    strcpy(tmp->name, name);
-    tmp->next = slider;
-    slider = tmp;
+Sprite* Stage::getBackground(){
+    return &background;
 }
 
-void Stage::addButton(Vector2f posizione, int tx_nr, float scala, char name[10]){
-    lista_pulsanti *tmp = new lista_pulsanti;
-    tmp->current = Pulsante(posizione, src, tx_nr, scala);
-    strcpy(tmp->name, name);
-    tmp->next = icone;
-    icone = tmp;
+list<Slider*> *Stage::getSliderList(){
+    return &sliderList;
 }
 
-void Stage::draw(){
-    src->getWindow()->draw(sfondo);
-    lista_pulsanti *tmp1 = icone;
-    while (tmp1 != NULL){
-        tmp1->current.handle();
-        tmp1 = tmp1->next;
-    }
-    sliderList *tmp2 = slider;
-    while (tmp2 != NULL){
-        tmp2->current.handle();
-        tmp2 = tmp2->next;
-    }
+list<Pulsante*> *Stage::getButtonsList(){
+    return &buttonList;
+}
+
+list<Text*> *Stage::getTextList(){
+    return &textList;
 }
 
 bool Stage::getActive(){
@@ -53,10 +37,35 @@ void Stage::setActive(bool attiva){
     this->attiva = attiva;
 }
 
-lista_pulsanti *Stage::getButtons(){
-    return this->icone;
+void Stage::addSlider(Vector2f position, float min ,float max, char name[]){
+    Slider* tmp = new Slider(position, min, max, name, src);
+    sliderList.push_back(tmp);
 }
 
-sliderList *Stage::getSliders(){
-    return this->slider;
+void Stage::addButton(Vector2f position, int tx_nr, float scala, char name[]){
+    Pulsante* tmp = new Pulsante(position, tx_nr, scala, name, src);
+    buttonList.push_back(tmp);
+}
+
+void Stage::addText(Vector2f position, char* text, Color fillColor, Color outlineColor, int size, float border){
+    Text* tmp = new Text(text, *src->getFont(1));
+    tmp->setPosition(position);
+    tmp->setFillColor(fillColor);
+    tmp->setOutlineColor(outlineColor);
+    tmp->setCharacterSize(size);
+    tmp->setOutlineThickness(border);
+    textList.push_back(tmp);
+}
+
+void Stage::draw(){
+    src->getWindow()->draw(background);
+    for (Pulsante* button : buttonList){
+        button->disegna();
+    }
+    for (Slider* slider : sliderList){
+        slider->draw();
+    }
+    for (Text* text : textList){
+        src->getWindow()->draw(*text);
+    }
 }

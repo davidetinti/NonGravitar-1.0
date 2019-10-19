@@ -9,10 +9,10 @@ class Game{
 protected:
     
     Resources *src;
-    Stage home, credits, game, pause, settings, game_over;
-    Universe universe;
+    Stage *home, *credits, *game, *pause, *settings, *game_over, *highscore;
+    Universe *universe;
     Texture *tmp_background;
-
+    
 public:
     
     Game();

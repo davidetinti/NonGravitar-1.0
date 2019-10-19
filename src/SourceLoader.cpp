@@ -10,10 +10,10 @@ SourceLoader::SourceLoader(){
     secondaryDamage = 100;
     timePerFrame = seconds(1.0f / 120.0f); // 120 frames per second
     settings.antialiasingLevel = 8;
-    window.create(VideoMode(length, height), "Non Gravitar", (Style::Titlebar | Style::Close), settings);
-    localPath[2] = "./../resources/";
-    localPath[0] = "/Users/davidetinti/Desktop/NonGravitar-1.0/resources/";
-    localPath[1] = "/Users/mlvp2t/Desktop/NonGravitar-1.0/resources/";
+    window.create(VideoMode(length, height), "Non Gravitar", (Style::Titlebar | Style::Close | Style::Resize), settings);
+    localPath[0] = "./../resources/";
+    localPath[1] = "/Users/davidetinti/Desktop/NonGravitar-1.0/resources/";
+    localPath[2] = "/Users/mlvp2t/Desktop/NonGravitar-1.0/resources/";
     loadTextures();
     loadSounds();
     loadFonts();
@@ -37,8 +37,12 @@ void SourceLoader::loadSounds(){
 
 void SourceLoader::loadFonts(){
     for (int i = 0; i < sizeof(font)/sizeof(font[0]); i++){
-        for (String userPath: localPath){
-            font[i].loadFromFile(userPath + to_string(i) + ".ttf");
+        if (!font[i].loadFromFile("./../resources/" + to_string(i) + ".ttf")){
+            if (!font[i].loadFromFile("/Users/davidetinti/Desktop/NonGravitar-1.0/resources/" + to_string(i) + ".ttf")){
+                if (!font[i].loadFromFile("/Users/mlvp2t/Desktop/NonGravitar-1.0/resources/" + to_string(i) + ".ttf")){
+                    cout << "ERROR";
+                }
+            }
         }
     }
 }

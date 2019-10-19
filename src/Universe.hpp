@@ -22,7 +22,6 @@ class Universe {
     
 protected:
     
-    Texture *universe_tx;
     lista_schermate *active;
     lista_schermate *tail;
     lista_schermate *head_list;
@@ -31,7 +30,6 @@ protected:
 public:
     
     Nave player;
-    Sprite background;
     HUD hud;
     
     

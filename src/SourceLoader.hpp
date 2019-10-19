@@ -2,6 +2,7 @@
 #define SourceLoader_hpp
 
 #include <iostream>
+#include <list>
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
@@ -22,7 +23,7 @@ protected:
     int secondaryDamage;
     String localPath[3];
     SoundBuffer sound[3];
-    Texture texture[41];
+    Texture texture[42];
     Font font[2];
     ContextSettings settings;
     RenderWindow window;
@@ -61,7 +62,7 @@ public:
  TEXTURES:
  0.png - player bullet
  1.png - player laser
- 2.png - main universe background
+ 2.png - slider
  3.png - bunker
  4.png - spaceship
  5.png - planet type 1
@@ -81,13 +82,13 @@ public:
  19.png - explosion type 1
  20.png - explosion type 2
  21.png - credits button
- 22.png - exit button
- 23.png - play button
- 24.png - play button
- 25.png - main menu type 1
- 26.png - main menu type 2
- 27.png - main menu type 3
- 28.png - paused game backgroung
+ 22.png - slider axis
+ 23.png - new game button
+ 24.png - back button
+ 25.png - main menu background
+ 26.png - credits background
+ 27.png - highscore background
+ 28.png - universe background
  29.png - planet soil
  30.png - thrust
  31.png - hole
@@ -95,11 +96,12 @@ public:
  33.jpg - boss background
  34.png - settings button
  35.png - settings background
- 36.png - credits background
+ 36.png - pause background (need to be overwritten)
  37.png - highscore button
  38.png - main menu button
  39.png - pause button
  40.png - resume button
+ 41.png - game over background
  
  FONTS:
  0.ttf - Text

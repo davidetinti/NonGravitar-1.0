@@ -1,16 +1,23 @@
 #include <ctime>
 #include "Game.hpp"
-//#include "Animation.hpp"
+#include <unistd.h>
+#include <stdio.h>
+
+void showCurrentWorkingDirectory(void)
+{
+    char path[1024];
+    getcwd(path, sizeof(path));
+    puts(path);
+}
 
 int main() {
     
     // INIZIALIZZAZIONE ==============================
     Resources src;
     Game game = Game(&src);
-    //Animation prova = Animation(200, 200, 20, 1, 19, &src);
     Time timeSinceLastUpdate = Time::Zero;
     Clock deltaClock;       // This will track how much time has past since the last frame
-    
+    showCurrentWorkingDirectory();
     // FINESTRA ======================================
 	while (src.getWindow()->isOpen()) {
 		Event event1;
