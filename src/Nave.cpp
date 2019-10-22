@@ -7,12 +7,13 @@ Nave::Nave(){
 }
 
 Nave::Nave(Resources* src){
+    tractor_beam = NULL;
     this->src = src;
     raggiox = 0;
     raggioy = 0;
     raggio_tx = this->src->caricaTexture(17);
+    raggio.setScale(0.35, 0.6);
     raggio.setTexture(*raggio_tx);
-    raggio.setScale(0.2,0.4);
     raggio.setColor(Color(255,255,255,160));
     punti = 0;
     X_planet = this->src->getLength()/2;
@@ -29,7 +30,7 @@ Nave::Nave(Resources* src){
     nave.setOrigin(Vector2f(Nave_tx->getSize().x/2, Nave_tx->getSize().y/2));
     nave.setPosition(Vector2f(this->src->getLength() / 2, this->src->getHeight() / 2));
     nave.setTexture(*Nave_tx);
-    nave.scale(Vector2f(0.15, 0.15));
+    nave.scale(Vector2f(0.2, 0.2));
     nave.setRotation(0);
     nave.setTextureRect(IntRect(0, 0, Nave_tx->getSize().x, Nave_tx->getSize().y));
     SingleShot = new SingleStraightBullets(100, 100, 10, 0, 0, false, src);
@@ -179,18 +180,18 @@ void Nave::armi(Terreno *terrain){
 
 bool Nave::raggioTraente(){
     if (Keyboard::isKeyPressed(Keyboard::F)){
-        raggio.setTextureRect(IntRect(256*raggiox,256*raggioy,256,256));
-        raggiox++;
-        if (raggiox >= 5){
+        if (raggiox > 8){
             raggioy++;
             raggiox = 0;
         }
-        if (raggioy >= 4){
+        if (raggioy > 8){
             raggiox = 0;
             raggioy = 0;
         }
+        raggio.setTextureRect(IntRect(500*(int)raggiox,500*(int)raggioy,500,500));
         raggio.setPosition(nave.getPosition());
-        raggio.setOrigin(128, 0);
+        raggio.setOrigin(250, 0);
+        raggiox = raggiox+0.2;
         src->getWindow()->draw(raggio);
         return true;
     } else {

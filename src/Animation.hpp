@@ -16,7 +16,9 @@ public:
     
     Animation();
     Animation(int x, int y, int tx_nr, int rows, int columns, float scale, SourceLoader *src, double imagespeed = 1);
-    bool handle();
+    Sprite* getSprite();
+    bool isTerminated();
+    void handle();
     
 };
 

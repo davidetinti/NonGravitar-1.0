@@ -17,19 +17,25 @@ Animation::Animation(int x, int y, int tx_nr, int rows, int columns, float scale
     sprite.setPosition(x, y);
     sprite.setScale(Vector2f(scale,scale));
     sprite.setOrigin(frameWidth/2, frameHeight/2);
-    
 }
 
-bool Animation::handle(){
+Sprite* Animation::getSprite(){
+    return &sprite;
+}
+
+bool Animation::isTerminated(){
+    if (currentY >= maxY){
+        return true;
+    }
+    return false;
+}
+
+void Animation::handle(){
     if (currentX >= maxX){
         currentY++;
         currentX = 0;
     }
-    if (currentY >= maxY){
-        return false;
-    }
     sprite.setTextureRect(IntRect(frameWidth*(int)currentX, frameHeight*(int)currentY, frameWidth, frameHeight));
     src->getWindow()->draw(sprite);
     currentX = currentX + 1*speed;
-    return true;
 }

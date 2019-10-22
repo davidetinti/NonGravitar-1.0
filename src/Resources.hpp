@@ -11,7 +11,7 @@ class Resources {
 protected:
     
     SourceLoader *sourceLoader;
-    list<Animation*>* animationList;
+    list<Animation*> animationList;
     
 public:
     
@@ -28,7 +28,7 @@ public:
     Texture *caricaTexture(int n);
     Font *getFont(int n);
     list<Animation*>* getAnimationList();
-    void addAnimation(int x, int y, int tx_nr, int rows, int columns, float scale, double speed = 1);
+    Animation* addAnimation(int x, int y, int tx_nr, int rows, int columns, float scale, double speed = 1);
     void handleAnimation();
     int rand(int max, int min);
     bool intersecate(FloatRect object1, FloatRect object2);

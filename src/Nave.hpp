@@ -21,8 +21,9 @@ protected:
     double angle_entering_planet;
     int punti;
     int thrust_int;
-    int raggiox,raggioy;
+    double raggiox,raggioy;
     Texture *Nave_tx,*Bar_tx,*raggio_tx,*thrust_tx;
+    Animation* tractor_beam;
     
 public:
     

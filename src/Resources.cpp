@@ -2,7 +2,7 @@
 
 Resources::Resources(){
     sourceLoader = new SourceLoader();
-    animationList = new list<Animation*>;
+    animationList = list<Animation*>();
 }
 
 int Resources::getHeight(){
@@ -50,18 +50,23 @@ Font* Resources::getFont(int n){
 }
 
 list<Animation*>* Resources::getAnimationList(){
-    return animationList;
+    return &animationList;
 }
 
-void Resources::addAnimation(int x, int y, int tx_nr, int rows, int columns, float scale, double speed){
+Animation* Resources::addAnimation(int x, int y, int tx_nr, int rows, int columns, float scale, double speed){
     Animation* tmp = new Animation(x, y, tx_nr, rows, columns, scale, sourceLoader, speed);
-    animationList->push_back(tmp);
+    animationList.push_front(tmp);
+    return tmp;
 }
 
 void Resources::handleAnimation(){
-    for (Animation* animation : *animationList){
-        if (!animation->handle()){
-            animationList->clear();
+    for (Animation* animation : animationList){
+        if (animation->isTerminated()){
+            delete animation;
+            animationList.remove(animation);
+            break;
+        } else {
+            animation->handle();
         }
     }
 }

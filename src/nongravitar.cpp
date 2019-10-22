@@ -17,7 +17,7 @@ int main() {
     Game game = Game(&src);
     Time timeSinceLastUpdate = Time::Zero;
     Clock deltaClock;       // This will track how much time has past since the last frame
-    showCurrentWorkingDirectory();
+
     // FINESTRA ======================================
 	while (src.getWindow()->isOpen()) {
 		Event event1;
