@@ -60,13 +60,16 @@ Animation* Resources::addAnimation(int x, int y, int tx_nr, int rows, int column
 }
 
 void Resources::handleAnimation(){
-    for (Animation* animation : animationList){
-        if (animation->isTerminated()){
-            delete animation;
-            animationList.remove(animation);
-            break;
+    list<Animation*>::iterator it = animationList.begin();
+    list<Animation*>::iterator end = animationList.end();
+    while (it != end){
+        Animation *item = *it;
+        if (item->isTerminated()){
+            delete item;
+            it = animationList.erase(it);
         } else {
-            animation->handle();
+            item->handle();
+            it++;
         }
     }
 }

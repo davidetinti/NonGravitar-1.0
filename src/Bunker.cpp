@@ -68,18 +68,7 @@ void Bunker::armi(bunkerlist *tmp, Terreno *terrain, Time perFrame){
 
 void Bunker::hitBunker(int damage, bunkerlist *p){
 	if (p != NULL) {
-		p->life = p->life - damage;
-		/*if (last_checked->life <= 0) {
-			cout << "entered if statement, life < 0";
-			ptr_bunkerlist iterator = head;
-			while (iterator->next != last_checked && iterator != NULL) iterator = iterator->next;
-			if (iterator->next == last_checked) {
-				iterator->next = last_checked->next;
-				delete last_checked;
-				last_checked = NULL;
-			}
-		}*/
-		
+		p->life = p->life - damage;		
 	}
 }
 
