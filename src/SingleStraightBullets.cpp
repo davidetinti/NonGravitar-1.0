@@ -26,7 +26,7 @@ void SingleStraightBullets::renderBullet(Terreno *terrain, Time perFrame){
     while (pointer != NULL){
 		elapsed = pointer->invuln_clock.getElapsedTime();
 		if ((elapsed.asMilliseconds() > invuln_time) &&
-			outsideBounds(pointer, terrain)){
+			outsideBounds(pointer, terrain)){ //TODO this should probably be in GPlanet::checkcollision, no?
             proiettile *tmp = pointer;
             pointer = pointer->next;
             deleteBullet(tmp);
