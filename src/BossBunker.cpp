@@ -5,13 +5,13 @@ BossBunker::BossBunker(){
 }
 
 BossBunker::BossBunker(Resources *s, double r, Vector2f c){
+    src = s;
     explosion_tx = src->caricaTexture(20);
     bunker_tx = src->caricaTexture(3);
     double angle = 0;
     double offset = 360 / N_BUNKER;
     Vector2f newPos;
     bunkerlist *tmp;
-    src = s;
     radius = r;
     centre = Vector2f(src->getLength()/2, src->getHeight()/2);
     head = new bunkerlist(0,100,centre.x + radius, centre.y,10,NULL,
