@@ -179,8 +179,8 @@ void GPlanet::handle(Nave *player){
 	}
 	if (boss_unlocked && current == head) src->getWindow()->draw(hole);
 	if (in_boss){
-        boss.gestisci();
-		boss.draw(1);
+        boss.gestisci(player);
+		boss.draw(0);
     }
 }
 

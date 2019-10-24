@@ -40,10 +40,6 @@ void Bullets::setHead(proiettile *head){
 
 // FUNZIONI ==========================================
 
-void Bullets::renderBullet(Terreno *terrain, Time perFrame){
-    proiettile *tmp = head;
-    while (tmp != NULL) src->getWindow()->draw(tmp->bullet);
-}
 
 void Bullets::deleteBullet(proiettile *p){
     if(p->prev == NULL && p->next == NULL){
@@ -86,7 +82,7 @@ void Bullets::spriteSetup(proiettile *p, double x, double y, double rotation){
     p->bullet.setRotation(rotation);
     p->bullet.setTextureRect(IntRect(0, 0, bullet_tx->getSize().x, bullet_tx->getSize().y));
     p->bullet.scale(1,1);
-    p->bullet_sound.setBuffer(bullet_sb);
+    //p->bullet_sound.setBuffer(bullet_sb);
 }
 
 bool Bullets::outsideBounds(proiettile *p, Terreno *terrain){

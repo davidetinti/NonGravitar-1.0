@@ -17,7 +17,7 @@ protected:
 	bool alive;
 	Vector2f centre;
     Texture *boss_tx;
-    //BossBunker turrets;
+    BossBunker *turrets;
 	Clock rotation;
 	Texture *hole_tx;
     
@@ -45,7 +45,7 @@ public:
     bool checkCollisionTurrets(Sprite* body, char source);
 	void getHit(int shot);
 	void draw(int type = 0);
-    void gestisci();
+    void gestisci(Nave *player);
 };
 
  

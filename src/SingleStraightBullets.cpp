@@ -21,21 +21,23 @@ void SingleStraightBullets::addSingleBullet(Sprite entity, Keyboard::Key pulsant
 }
 
 void SingleStraightBullets::renderBullet(Terreno *terrain, Time perFrame){
-    proiettile *pointer = head;
-    Time elapsed;
-    while (pointer != NULL){
-		elapsed = pointer->invuln_clock.getElapsedTime();
-		if ((elapsed.asMilliseconds() > invuln_time) &&
-			outsideBounds(pointer, terrain)){ //TODO this should probably be in GPlanet::checkcollision, no?
-            proiettile *tmp = pointer;
-            pointer = pointer->next;
-            deleteBullet(tmp);
-        } else {
-            double angle = M_PI * pointer->bullet.getRotation() / 180;
-            pointer->bullet.move(-sin(angle)*speed*perFrame.asSeconds()*100,
-                             cos(angle)*speed*perFrame.asSeconds()*100);
-            src->getWindow()->draw(pointer->bullet);
-            pointer = pointer->next;
+    if(terrain != NULL){
+        proiettile *pointer = head;
+        Time elapsed;
+        while (pointer != NULL){
+            elapsed = pointer->invuln_clock.getElapsedTime();
+            if ((elapsed.asMilliseconds() > invuln_time) &&
+                outsideBounds(pointer, terrain)){ //TODO this should probably be in GPlanet::checkcollision, no?
+                proiettile *tmp = pointer;
+                pointer = pointer->next;
+                deleteBullet(tmp);
+            } else {
+                double angle = M_PI * pointer->bullet.getRotation() / 180;
+                pointer->bullet.move(-sin(angle)*speed*perFrame.asSeconds()*100,
+                                cos(angle)*speed*perFrame.asSeconds()*100);
+                src->getWindow()->draw(pointer->bullet);
+                pointer = pointer->next;
+            }
         }
     }
 }

@@ -90,8 +90,9 @@ void Bunker::deleteBunker(bunkerlist *target){
     }
 }
  
-void Bunker::gestisci(Nave *player, Terreno *terrain){
+void Bunker::gestisci(Nave *player, Terreno *terrain, double angle){
     bunkerlist *tmp = head;
+    updatePosition(angle);
     while (tmp != NULL){
         if (tmp->exist){
             if (tmp->type == 1){
@@ -147,4 +148,9 @@ void Bunker::drawAll(){
             src->getWindow()->draw(tmp->bunker);
         tmp = tmp->next;
     } 
+}
+
+void Bunker::updatePosition(double angle){
+    //left it for completeness, if we want to implement moving bunkers. 
+    //makes it much cleaner in BossBunker :)
 }

@@ -45,13 +45,14 @@ public:
 	void hitBunker(int damage, bunkerlist *p);
 	void deleteBunker(bunkerlist *target);
 	bool isEmpty();
-    void gestisci(Nave *player, Terreno *terrain);
+    void gestisci(Nave *player, Terreno *terrain, double angle = 0);
     int checkCollisionBBullets(FloatRect obj);
     bool collidesWith(bunkerlist *p, FloatRect q);
     void drawAll();
 
 protected:
     void spriteSetup(bunkerlist *p);
+    virtual void updatePosition(double angle);
 };
 
 #endif /* Bunker_hpp */

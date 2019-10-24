@@ -7,11 +7,11 @@ Boss::Boss(){
 }
 
 
-Boss::Boss(int life, int turrets, Resources *src, double angolo, int vel, bool notdead){
+Boss::Boss(int life, int turrets_n, Resources *src, double angolo, int vel, bool notdead){
     this->src = src;
 	hp_total = life;
 	hp_left = hp_total;
-	turret_total = turrets;
+	turret_total = turrets_n;
 	turret_left = turret_total;
 	alive = notdead;
 	angle = angolo;
@@ -25,10 +25,7 @@ Boss::Boss(int life, int turrets, Resources *src, double angolo, int vel, bool n
 	centre.x = notBoss.getPosition().x;
 	centre.y = notBoss.getPosition().y;
 	speed = 1;
-
-	//turrets = BossBunker(src, 4, radius, centre);
-
-
+	turrets = new BossBunker(src,radius);
 	
 
 	CollisionBoundary = CircleShape(radius, 30);
@@ -100,7 +97,7 @@ void Boss::getHit(int shot){
 void Boss::draw(int type){
 	if (alive) {
 		src->getWindow()->draw(notBoss);
-		//turrets.drawAll();
+		turrets->drawAll();
 
 		if (type == 1) {
 			src->getWindow()->draw(VirtualCenter);
@@ -111,12 +108,11 @@ void Boss::draw(int type){
 	}
 }
 
-void Boss::gestisci(){
-	//turrets.gestisci(window, player);
+void Boss::gestisci(Nave *player){
 	if (rotation.getElapsedTime().asMilliseconds() > 20) {
 		notBoss.setRotation(notBoss.getRotation() + 0.6);	//make it dependent from timePerFrame
-		//turrets.move(0.6);
 		rotation.restart();
+	turrets->gestisci(player, NULL, angle);
 	}
 	if (hp_left <= 0) {
 		alive = false;
