@@ -110,10 +110,12 @@ void Boss::draw(int type){
 
 void Boss::gestisci(Nave *player){
 	if (rotation.getElapsedTime().asMilliseconds() > 20) {
-		notBoss.setRotation(notBoss.getRotation() + 0.6);	//make it dependent from timePerFrame
+		cout << "notBoss.getRotation() = " << notBoss.getRotation() << '\n';
+		notBoss.setRotation(notBoss.getRotation() + Boss::ROTATION_STEP);	//make it dependent from timePerFrame
+		turrets->updatePosition(notBoss.getRotation() + Boss::ROTATION_STEP);
 		rotation.restart();
-	turrets->gestisci(player, NULL, angle);
 	}
+	turrets->gestisci(player, NULL, angle);
 	if (hp_left <= 0) {
 		alive = false;
 	}

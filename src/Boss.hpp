@@ -3,9 +3,10 @@
 #include "Bullets.hpp"
 
 class Boss{
+private:
+    static constexpr double ROTATION_STEP = 0.6;
      
 protected:
-    
     Resources *src;
 	int hp_total;
 	int hp_left;

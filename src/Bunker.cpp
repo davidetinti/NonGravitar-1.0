@@ -92,7 +92,7 @@ void Bunker::deleteBunker(bunkerlist *target){
  
 void Bunker::gestisci(Nave *player, Terreno *terrain, double angle){
     bunkerlist *tmp = head;
-    updatePosition(angle);
+    //updatePosition(angle);
     while (tmp != NULL){
         if (tmp->exist){
             if (tmp->type == 1){

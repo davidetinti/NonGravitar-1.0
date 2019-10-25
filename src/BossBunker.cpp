@@ -26,15 +26,21 @@ BossBunker::BossBunker(Resources *s, double r, Vector2f c){
                           new SingleStraightBullets(400, 100, 10, 14, 0, true, src),true);
         tmp = tmp->next;
         spriteSetup(tmp);
-        cout << "number "<< i+1 << " is at  " << tmp->x << "\t" << tmp->y << '\n';
+        cout << "number "<< i+1 << " is at  " << tmp->x << "\t" << tmp->y << "\twith an angle of " << angle << '\n';
         tmp->next = NULL;
     }
+    cout << "30:"<<newPosition(30).x<<" and y:" << newPosition(30).y<<'\n';
+    cout << "60:"<<newPosition(60).x<<" and y:" <<newPosition(60).y<<'\n';
+    cout << "90:"<<newPosition(90).x<<" and y:" <<newPosition(90).y<<'\n';
+    cout << "120:"<<newPosition(120).x<<" and y:" <<newPosition(120).y<<'\n';
 }
 
 Vector2f BossBunker::newPosition(double angle){
-    double x = (centre.x + radius) * cos(angle) - centre.y * sin(angle);
-    double y = (centre.x + radius) * sin(angle) + centre.y * cos(angle);
-    return Vector2f(x,y);
+    Vector2f *start = new Vector2f(radius, 0);
+    double finalx = (start->x) * cos(angle) - start->y * sin(angle);
+    double finaly = (start->x) * sin(angle) + start->y * cos(angle);
+    Vector2f *result = new Vector2f(finalx + centre.x,finaly + centre.y);
+    return *result;
 }
 
 void BossBunker::updatePosition(double angle){
@@ -48,6 +54,7 @@ void BossBunker::updatePosition(double angle){
         newPos = newPosition(newAng);
         iterator->x = newPos.x;
         iterator->y = newPos.y;
+        iterator->bunker.setPosition(iterator->x, iterator->y);
         iterator = iterator->next;
         i++;
     }
