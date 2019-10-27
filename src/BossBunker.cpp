@@ -37,6 +37,7 @@ BossBunker::BossBunker(Resources *s, double r, Vector2f c){
 
 Vector2f BossBunker::newPosition(double angle){
     Vector2f *start = new Vector2f(radius, 0);
+    angle = angle *M_PI/180;
     double finalx = (start->x) * cos(angle) - start->y * sin(angle);
     double finaly = (start->x) * sin(angle) + start->y * cos(angle);
     Vector2f *result = new Vector2f(finalx + centre.x,finaly + centre.y);
@@ -57,5 +58,15 @@ void BossBunker::updatePosition(double angle){
         iterator->bunker.setPosition(iterator->x, iterator->y);
         iterator = iterator->next;
         i++;
+    }
+    updateRotation();
+}
+
+void BossBunker::updateRotation(){
+    bunkerlist *iterator = head;
+    while(iterator != NULL){
+        iterator->bunker.setRotation(270 + atan2(centre.y-iterator->bunker.getPosition().y, 
+                                        centre.x-iterator->bunker.getPosition().x) * (180/M_PI));
+        iterator = iterator->next;
     }
 }

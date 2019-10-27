@@ -11,6 +11,7 @@ protected:
     double radius;
     Vector2f centre;
     Vector2f newPosition(double angle);
+    void updateRotation();
 public:
     BossBunker();
     BossBunker(Resources *src, double radius, Vector2f centre = Vector2f());
