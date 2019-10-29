@@ -60,9 +60,9 @@ bool Bunker::isEmpty(){
     return head == NULL;
 }
 
-void Bunker::armi(bunkerlist *tmp, Terreno *terrain, Time perFrame){
+void Bunker::armi(bunkerlist *tmp, Terreno *terrain, Time perFrame){//perFrame should be in Resources
     tmp->weapon->addSingleBullet(tmp->bunker, Keyboard::R, tmp->tempo);
-    tmp->weapon->renderBullet(terrain, perFrame);
+    tmp->weapon->handle(perFrame, terrain);
 }
 
 

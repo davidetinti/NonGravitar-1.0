@@ -25,12 +25,19 @@ void TripleBullets::addSingleBullet(Sprite entity, Keyboard::Key pulsante, int t
     right.addSingleBullet(t,pulsante,tempo);
 }
 
-void TripleBullets::renderBullet(Terreno *terrain, Time perFrame){
-    left.renderBullet(terrain,perFrame);
-    centre.renderBullet(terrain,perFrame);
-    right.renderBullet(terrain,perFrame);
+void TripleBullets::renderBullet(Time perFrame){
+    left.renderBullet(perFrame);
+    centre.renderBullet(perFrame);
+    right.renderBullet(perFrame);
 }
 
 int TripleBullets::checkCollision(FloatRect p){
     return left.checkCollision(p) + right.checkCollision(p) + centre.checkCollision(p);
-    }
+}
+
+void TripleBullets::cleanup(Terreno *terrain){
+    left.cleanup(terrain);
+    centre.cleanup(terrain);
+    right.cleanup(terrain);
+}
+

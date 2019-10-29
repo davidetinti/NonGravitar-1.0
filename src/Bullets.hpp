@@ -42,9 +42,11 @@ public:
 
     ///  FUNZIONI  //////////////////////////////////////////////////////
     virtual void addSingleBullet(Sprite entity, Keyboard::Key pulsante, int tempo) = 0;
-    virtual void renderBullet(Terreno *terrain,Time perFrame) = 0;
+    virtual void renderBullet(Time perFrame) = 0;
 	void deleteBullet(proiettile *p);
     virtual int checkCollision(FloatRect p);
+    void handle(Time perFrame, Terreno *terrain = NULL);
+    virtual void cleanup(Terreno *terrain) = 0;
 
 protected:
 
