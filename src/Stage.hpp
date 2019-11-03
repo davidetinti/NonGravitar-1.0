@@ -13,7 +13,6 @@ protected:
     list<Pulsante*> buttonList;
     list<Slider*> sliderList;
     list<Text*> textList;
-    bool attiva;
     bool sliderSelected;
     
 public:
@@ -27,14 +26,13 @@ public:
     list<Pulsante*> *getButtonsList();
     list<Slider*> *getSliderList();
     list<Text*> *getTextList();
-    bool getActive();
-    void setActive(bool attiva);
     
     //FUNCTIONS
     void addButton(Vector2f position, int tx_nr, float scale, char name[]);
     void addSlider(Vector2f position, float min, float max, char name[]);
-    void addText(Vector2f position, char* text, Color fillColor, Color outlineColor, int size, float border);
-    void draw();
+    void addText(Vector2f position, String text, Color fillColor, Color outlineColor, int size, float border);
+    void drawBackground();
+    void drawObjects();
 };
 
 #endif /* Stage_hpp */

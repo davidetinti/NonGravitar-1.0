@@ -9,9 +9,10 @@ class Game{
 protected:
     
     Resources *src;
-    Stage *home, *credits, *game, *pause, *settings, *game_over, *highscore;
+    Stage *home, *credits, *game, *pause, *settings, *game_over, *highscore, *active;
     Universe *universe;
     Texture *tmp_background;
+    void handleStageControls();
     
 public:
     
