@@ -17,7 +17,6 @@ BossBunker::BossBunker(Resources *s, double r, Vector2f c){
     head = new bunkerlist(0,100,centre.x + radius, centre.y,10,NULL,
                           new SingleStraightBullets(400, 100, 10, 14, 0, true, src),true);
     spriteSetup(head);
-    cout << "head is at  " << head->x << "\t" << head->y << '\n';
     tmp = head;
     for(int i = 0; i < N_BUNKER - 1; i++){
         angle = angle + offset;
@@ -26,13 +25,8 @@ BossBunker::BossBunker(Resources *s, double r, Vector2f c){
                           new SingleStraightBullets(400, 100, 10, 14, 0, true, src),true);
         tmp = tmp->next;
         spriteSetup(tmp);
-        cout << "number "<< i+1 << " is at  " << tmp->x << "\t" << tmp->y << "\twith an angle of " << angle << '\n';
         tmp->next = NULL;
     }
-    cout << "30:"<<newPosition(30).x<<" and y:" << newPosition(30).y<<'\n';
-    cout << "60:"<<newPosition(60).x<<" and y:" <<newPosition(60).y<<'\n';
-    cout << "90:"<<newPosition(90).x<<" and y:" <<newPosition(90).y<<'\n';
-    cout << "120:"<<newPosition(120).x<<" and y:" <<newPosition(120).y<<'\n';
 }
 
 Vector2f BossBunker::newPosition(double angle){

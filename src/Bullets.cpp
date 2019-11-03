@@ -93,6 +93,12 @@ bool Bullets::outsideBounds(proiettile *p, Terreno *terrain){
 
 }
 
+bool Bullets::outsideBounds(proiettile *p){
+    return p->bullet.getPosition().x < 0 ||
+     p->bullet.getPosition().x > src->getLength() ||
+      p->bullet.getPosition().y < 0 || p->bullet.getPosition().y > src->getHeight();
+}
+
 void Bullets::handle(Time perFrame, Terreno *terrain){ //perFrame should be in Resources
     cleanup(terrain);
     renderBullet(perFrame);

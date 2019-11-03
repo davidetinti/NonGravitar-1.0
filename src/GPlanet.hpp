@@ -9,7 +9,7 @@
 struct lista_schermate_pianeta {
     lista_schermate_pianeta* next;
     lista_schermate_pianeta* prev;
-    Bunker enemies;
+    Bunker *enemies;
     Terreno terrain;
     Fuel carb;
     int nr_schermata;

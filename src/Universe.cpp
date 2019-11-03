@@ -139,8 +139,6 @@ void Universe::handle(){
     }
     if (player.getAtPlanet()){
         getActive()->pianeti.handle(&player);
-        player.armi(&getActive()->pianeti.getCurrent()->interno.getCurrent()->terrain);
-        player.raggioTraente();
 
         if (player.nave.getPosition().x >= src->getLength()) {
 			player.nave.setPosition(0, player.nave.getPosition().y);

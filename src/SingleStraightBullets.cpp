@@ -55,7 +55,7 @@ void SingleStraightBullets::cleanup(Terreno *terrain){
     while (iterator != NULL){
             elapsed = iterator->invuln_clock.getElapsedTime();
             if ((elapsed.asMilliseconds() > invuln_time) &&
-                outsideBounds(iterator, terrain)){
+                (terrain == NULL ?  outsideBounds(iterator) : outsideBounds(iterator, terrain))){
                 proiettile *tmp = iterator;
                 iterator = iterator->next;
                 deleteBullet(tmp);

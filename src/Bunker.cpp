@@ -106,8 +106,9 @@ void Bunker::gestisci(Nave *player, Terreno *terrain, double angle){
             player->setPunti(player->getPunti()+100);
         }
         if (tmp->exist == false){
-            deleteBunker(tmp);
-            tmp = NULL;
+            bunkerlist *tbd = tmp;
+            tmp = tmp->next;
+            deleteBunker(tbd);
         }
         if (tmp != NULL) 
             tmp = tmp->next;

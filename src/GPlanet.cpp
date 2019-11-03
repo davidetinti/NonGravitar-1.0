@@ -8,14 +8,13 @@ lista_schermate_pianeta::lista_schermate_pianeta(Terreno terrain_n, int n,
                         lista_schermate_pianeta *prev_n):
                             next(next_n),prev(prev_n),terrain(terrain_n),
                             nr_schermata(n){
-                                enemies = Bunker(src,&terrain);
+                                enemies = new Bunker(src,&terrain);
                                 carb = Fuel(&terrain,src);
                             }
 lista_schermate_pianeta::lista_schermate_pianeta(Resources *s) :
                             next(NULL),prev(NULL),terrain(Terreno(s)),
                             nr_schermata(666){
                                 //TODO
-                                //enemies = BossBunker(...);
                                 //carb = BossFuel(...);
                             }
 
@@ -72,7 +71,7 @@ lista_schermate_pianeta *GPlanet::find(int n){///???
  
 
 int GPlanet::checkCollisionBunkBullets(FloatRect obj){
-    return current->enemies.checkCollisionBBullets(obj);
+    return current->enemies->checkCollisionBBullets(obj);
 }
 
 void GPlanet::inizializza(int tot_schermate, Resources *src){
@@ -96,13 +95,15 @@ void GPlanet::inizializza(int tot_schermate, Resources *src){
         }
         tmp->next = head;
         head->prev = tmp;
+        boss_screen = new lista_schermate_pianeta(src);
         boss = Boss(100, 3, src);
+        boss_screen->enemies = new BossBunker(src,boss.getRadius(),boss.getCenter());
+        boss.setEnemies((BossBunker *)boss_screen->enemies);
         boss_unlocked = false;
         in_boss = false;
-        boss_screen = new lista_schermate_pianeta(src);
         current = head;
     } else {
-        bunkerlist *tmp = getCurrent()->enemies.getHead();
+        bunkerlist *tmp = getCurrent()->enemies->getHead();
         while (tmp != NULL){
             tmp->weapon->bullet_time.restart();
             tmp = tmp->next;
@@ -117,7 +118,7 @@ void GPlanet::cambia_schermata(int n){
         } else {
             current = current->prev;
         }
-        bunkerlist *tmp = current->enemies.getHead();
+        bunkerlist *tmp = current->enemies->getHead();
         while (tmp != NULL){
             tmp->weapon->bullet_time.restart();
             tmp = tmp->next;
@@ -127,15 +128,15 @@ void GPlanet::cambia_schermata(int n){
     }
 }
 
-void GPlanet::checkCollision(Nave *player) { //should this be moved into Bunker?
+void GPlanet::checkCollision(Nave *player) { //maybe this should be split between universe and here
     int primary = src->getPrimaryDamage(), secondary = src->getSecondaryDamage();
-    bunkerlist *bunk_iterator = current->enemies.getHead();
+    bunkerlist *bunk_iterator = current->enemies->getHead();
     while (bunk_iterator != NULL){
         if (player->SingleShot->checkCollision(bunk_iterator->bunker.getGlobalBounds()) > 0)
-            current->enemies.hitBunker(primary, bunk_iterator);
+            current->enemies->hitBunker(primary, bunk_iterator);
         if(player->Laser->checkCollision(bunk_iterator->bunker.getGlobalBounds()) > 0)
-            current->enemies.hitBunker(secondary, bunk_iterator);
-        if(current->enemies.collidesWith(bunk_iterator, player->nave.getGlobalBounds())){
+            current->enemies->hitBunker(secondary, bunk_iterator);
+        if(current->enemies->collidesWith(bunk_iterator, player->nave.getGlobalBounds())){
             player->getHit(bunk_iterator->damage);
             player->push_back(5);
         }
@@ -157,31 +158,36 @@ void GPlanet::checkCollision(Nave *player) { //should this be moved into Bunker?
  
 void GPlanet::handle(Nave *player){
     bool no_bunkers = true; lista_schermate_pianeta *iterator = head;
-    int i = 0;
+    int i = 0; Terreno *terrain = NULL;
     if (!boss_unlocked) {
 	    while (iterator != NULL && no_bunkers && i < nr_schermate) {
-	        no_bunkers = no_bunkers && (iterator->enemies.isEmpty());
+	        no_bunkers = no_bunkers && (iterator->enemies->isEmpty());
 	        iterator = iterator->next; i++;
 	    }
 	    if (no_bunkers) {
 	        boss_unlocked = true;
-	        cout << "boss became true";
 	        head->terrain.prepareForBoss(&hole);
 	    }
 	}
+    player->raggioTraente();
     checkCollision(player);
     checkTerrain(player);
     if (!in_boss) {
         current->terrain.drawAll();
 		current->carb.gestisci();
         raggiotraente(player);
-		current->enemies.gestisci(player, &current->terrain);
+		current->enemies->gestisci(player, &current->terrain); //A
+        terrain = &current->terrain;//B
 	}
 	if (boss_unlocked && current == head) src->getWindow()->draw(hole);
 	if (in_boss){
-        boss.gestisci(player);
+        boss.gestisci(player); //A
 		boss.draw(0);
     }
+    player->armi(terrain);//B
+    /*  I (paolo) wrote it like this, and it showcases two different ways to solve the problems of calling
+    *   the same function with different arguments and where to handle Boss::turrets. Not sure which one
+    *   is better, tbh. I'm happy to take criticism */
 }
 
 bool GPlanet::inHole(Sprite *body){

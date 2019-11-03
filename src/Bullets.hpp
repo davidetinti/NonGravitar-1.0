@@ -53,6 +53,7 @@ protected:
     bool collidesWith(proiettile *p, FloatRect obj);
     void spriteSetup(proiettile *p, double x, double y, double rotation);
     bool outsideBounds(proiettile *p, Terreno *terrain);
+    bool outsideBounds(proiettile *p);
 };
 
 #endif /* Bullets_hpp */

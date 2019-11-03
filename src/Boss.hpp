@@ -2,7 +2,7 @@
 #include "BossBunker.hpp"
 #include "Bullets.hpp"
 
-class Boss{
+class Boss {
 private:
     static constexpr double ROTATION_STEP = 0.6;
      
@@ -40,6 +40,9 @@ public:
     double getAngle();
     void setAngle(double a);
     bool isDead();
+    Vector2f getCenter();
+    double getRadius();
+    void setEnemies(BossBunker *p);
     
     // FUNZIONI ======================================
 	bool checkCollisionBoss(Sprite *body);

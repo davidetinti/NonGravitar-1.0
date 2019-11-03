@@ -25,7 +25,7 @@ Boss::Boss(int life, int turrets_n, Resources *src, double angolo, int vel, bool
 	centre.x = notBoss.getPosition().x;
 	centre.y = notBoss.getPosition().y;
 	speed = 1;
-	turrets = new BossBunker(src,radius);
+	turrets = NULL;
 	
 
 	CollisionBoundary = CircleShape(radius, 30);
@@ -75,6 +75,19 @@ bool Boss::isDead(){
 	return !alive;
 }
 
+Vector2f Boss::getCenter(){
+	return centre;
+}
+
+double Boss::getRadius(){
+	return radius;
+}
+
+void Boss::setEnemies(BossBunker *p){
+	turrets = p;
+}
+
+
 ///  FUNZIONI  //////////////////////////////////////////////////////
 
 bool Boss::checkCollisionBoss(Sprite *body){
@@ -110,7 +123,6 @@ void Boss::draw(int type){
 
 void Boss::gestisci(Nave *player){
 	if (rotation.getElapsedTime().asMilliseconds() > 20) {
-		cout << "notBoss.getRotation() = " << notBoss.getRotation() << '\n';
 		notBoss.setRotation(notBoss.getRotation() + Boss::ROTATION_STEP);	//make it dependent from timePerFrame
 		turrets->updatePosition(notBoss.getRotation() + Boss::ROTATION_STEP);
 		rotation.restart();

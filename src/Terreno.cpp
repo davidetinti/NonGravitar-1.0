@@ -150,9 +150,7 @@ int Terreno::prepareForHole(){
                 Vector2f(last_x,src->getHeight()),Vector2f(last_x,src->getHeight()),
                 head->next);
 
-    return head->next->element.getPoint(2).x;
-    //cout << "\nPREPARING FOR HOLE\n";
-    
+    return head->next->element.getPoint(2).x;    
 }
 
 void Terreno::prepareForBoss(Sprite *hole){
