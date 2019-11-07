@@ -28,21 +28,21 @@ Terreno::Terreno(int sx_coord, int dx_coord, Resources *src, int tot_schermate){
     int nr = src->rand(4,23);   //elementi di soil
     float px = src->getLength()/nr;         //partial x
     int firstHeight = src->getHeight() - src->rand(0,99);   //altezza del terreno temporanea
-    head = new soil(NULL);
+    head = new soil(nullptr);
     soil *tmp = head;
     spriteSetup(Vector2f(0,src->getHeight()),Vector2f(0,sx_coord),
                 Vector2f(px,firstHeight),Vector2f(px,src->getHeight()),tmp);
     int heightLeft = firstHeight;
     int heightRight = src->getHeight() - src->rand(0,99);
     for (int i = 2; i < nr ; i++){
-        tmp->next = new soil(NULL);
+        tmp->next = new soil(nullptr);
         spriteSetup(Vector2f(px*(i-1), src->getHeight()),Vector2f(px*(i-1), heightLeft),
                     Vector2f(px*i, heightRight),Vector2f(px*i, src->getHeight()),tmp->next);
         heightLeft = heightRight;
         heightRight = src->getHeight() - src->rand(0,99);
         tmp = tmp->next;
     }
-    tmp->next = new soil(NULL);
+    tmp->next = new soil(nullptr);
     tmp = tmp->next;
     spriteSetup(Vector2f(px*(nr-1), src->getHeight()),Vector2f(px*(nr-1), heightLeft),
                 Vector2f(src->getLength(), dx_coord),Vector2f(src->getLength(), src->getHeight()),tmp);
@@ -96,7 +96,7 @@ Color Terreno::colore(int tot_schermate, int transparency){
 void Terreno::drawAll(){
     src->getWindow()->draw(background);
     soil *tmp = head;
-    while (tmp != NULL){
+    while (tmp != nullptr){
         src->getWindow()->draw(tmp->element);
         tmp = tmp->next;
     };
@@ -104,8 +104,8 @@ void Terreno::drawAll(){
 
 double Terreno::get_Y(double x){
     soil *tmp = head;
-	if (tmp != NULL) {
-		while (tmp->element.getPoint(2).x <= x && tmp->next != NULL) {//tmp->soil.getPoint(2).x < DxCoord){
+	if (tmp != nullptr) {
+		while (tmp->element.getPoint(2).x <= x && tmp->next != nullptr) {//tmp->soil.getPoint(2).x < DxCoord){
 			tmp = tmp->next;
 		}
 		double x1 = tmp->element.getPoint(1).x;

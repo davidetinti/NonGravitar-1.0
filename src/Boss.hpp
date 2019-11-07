@@ -46,7 +46,6 @@ public:
     
     // FUNZIONI ======================================
 	bool checkCollisionBoss(Sprite *body);
-    bool checkCollisionTurrets(Sprite* body, char source);
 	void getHit(int shot);
 	void draw(int type = 0);
     void gestisci(Nave *player);

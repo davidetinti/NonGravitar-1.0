@@ -25,7 +25,7 @@ Boss::Boss(int life, int turrets_n, Resources *src, double angolo, int vel, bool
 	centre.x = notBoss.getPosition().x;
 	centre.y = notBoss.getPosition().y;
 	speed = 1;
-	turrets = NULL;
+	turrets = nullptr;
 	
 
 	CollisionBoundary = CircleShape(radius, 30);
@@ -98,10 +98,6 @@ bool Boss::checkCollisionBoss(Sprite *body){
 	else return false;
 }
 
-bool Boss::checkCollisionTurrets(Sprite* body, char source){
-	//if (turrets.checkCollisionBunker(body, source)) return true;
-	return false;
-}
 
 void Boss::getHit(int shot){
 	hp_total = hp_total - shot;
@@ -127,7 +123,6 @@ void Boss::gestisci(Nave *player){
 		turrets->updatePosition(notBoss.getRotation() + Boss::ROTATION_STEP);
 		rotation.restart();
 	}
-	turrets->gestisci(player, NULL, angle);
 	if (hp_left <= 0) {
 		alive = false;
 	}

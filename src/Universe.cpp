@@ -40,7 +40,7 @@ lista_schermate *Universe::getHeadList(){
 lista_schermate *Universe::find(int x, int y){
     lista_schermate *b = head_list;
     bool found = false;
-    while (b != NULL && !found) {
+    while (b != nullptr && !found) {
         if (x == b->x && y == b->y) {
             found = true;
         } else {
@@ -52,28 +52,28 @@ lista_schermate *Universe::find(int x, int y){
 
 void Universe::move(int x, int y){
     if (x == 1 && y == 0) {
-        if (active->dx == NULL) {
+        if (active->dx == nullptr) {
             active->dx = new lista_schermate(active->x + x,active->y + y,src);
             addToList(active->dx);
         }
         active = active->dx;
     }
     if (x == 0 && y == 1) {
-        if (active->up == NULL) {
+        if (active->up == nullptr) {
             active->up = new lista_schermate(active->x + x, active->y + y,src);
             addToList(active->up);
         }
         active = active->up;
     }
     if (x == -1 && y == 0) {
-        if (active->sx == NULL) {
+        if (active->sx == nullptr) {
             active->sx = new lista_schermate(active->x+x,active->y+y,src);
             addToList(active->sx);
         }
         active = active->sx;
     }
     if (x == 0 && y == -1) {
-        if (active->dw == NULL) {
+        if (active->dw == nullptr) {
             active->dw = new lista_schermate(active->x+x,active->y+y,src);
             addToList(active->dw);
         }
@@ -87,7 +87,7 @@ void Universe::move(int x, int y){
 
 void Universe::disegnaPianeti(){
     Pianeta *planetIterator = active->pianeti.getHead();
-    while (planetIterator != NULL) {
+    while (planetIterator != nullptr) {
         if (planetIterator->exist) src->getWindow()->draw(planetIterator->planet);
         planetIterator = planetIterator->next;
     }
@@ -124,7 +124,7 @@ void Universe::handle(){
         }
         
         Pianeta *planetIterator = active->pianeti.getHead();
-        while (planetIterator != NULL && !player.getAtPlanet()){
+        while (planetIterator != nullptr && !player.getAtPlanet()){
             if (contactPlanet(player.nave.getPosition(),planetIterator)){
                 active->pianeti.setCurrent(planetIterator);
                 planetIterator->interno.inizializza(planetIterator->tot_schermate, src);
@@ -133,7 +133,7 @@ void Universe::handle(){
                 
                 player.braceForEntry(planetIterator->planet.getPosition(), src->getLength());
             }
-            //Ovviamente planetIterator non può mai essere NULL. Al più sarà l'ultimo della lista
+            //Ovviamente planetIterator non può mai essere nullptr. Al più sarà l'ultimo della lista
             planetIterator = planetIterator->next;
         }
     }
@@ -153,7 +153,7 @@ void Universe::handle(){
             player.nave.setRotation(player.getAnglePlanet());
 			player.setDxDy(0, 0.1);
             player.setAtPlanet(false);
-            active->pianeti.setCurrent(NULL);
+            active->pianeti.setCurrent(nullptr);
         }
         //only able to go down far enough after boss is unlocked
         if (player.nave.getPosition().y > src->getHeight()){
@@ -172,7 +172,7 @@ bool Universe::contactPlanet(Vector2f pos, Pianeta* p){
 }
 
 void Universe::addToList(lista_schermate *p){
-    if(p != NULL){
+    if(p != nullptr){
         tail->next = p;
         tail = tail->next;
     }

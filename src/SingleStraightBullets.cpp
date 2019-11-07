@@ -22,7 +22,7 @@ void SingleStraightBullets::addSingleBullet(Sprite entity, Keyboard::Key pulsant
 
 void SingleStraightBullets::renderBullet(Time perFrame){ //perFrame should be in Resources
     proiettile *pointer = head;
-    while (pointer != NULL){
+    while (pointer != nullptr){
         double angle = M_PI * pointer->bullet.getRotation() / 180;
         pointer->bullet.move(-sin(angle)*speed*perFrame.asSeconds()*100,
                         cos(angle)*speed*perFrame.asSeconds()*100);
@@ -36,7 +36,7 @@ SingleStraightBullets::SingleStraightBullets(){}
 int SingleStraightBullets::checkCollision(FloatRect p){
     proiettile *tmp = head;
     int hit_counter = 0;
-    while (tmp != NULL){
+    while (tmp != nullptr){
         if (collidesWith(tmp,p)){
             hit_counter++;
             proiettile *target = tmp;
@@ -52,10 +52,10 @@ int SingleStraightBullets::checkCollision(FloatRect p){
 void SingleStraightBullets::cleanup(Terreno *terrain){
     proiettile *iterator = head;
     Time elapsed;
-    while (iterator != NULL){
+    while (iterator != nullptr){
             elapsed = iterator->invuln_clock.getElapsedTime();
             if ((elapsed.asMilliseconds() > invuln_time) &&
-                (terrain == NULL ?  outsideBounds(iterator) : outsideBounds(iterator, terrain))){
+                (terrain == nullptr ?  outsideBounds(iterator) : outsideBounds(iterator, terrain))){
                 proiettile *tmp = iterator;
                 iterator = iterator->next;
                 deleteBullet(tmp);

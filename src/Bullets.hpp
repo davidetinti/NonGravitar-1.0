@@ -10,7 +10,7 @@ struct proiettile{
     Clock invuln_clock;
     proiettile *next;
     proiettile *prev;
-    proiettile(proiettile *next_n, proiettile *prev_n = NULL);
+    proiettile(proiettile *next_n, proiettile *prev_n = nullptr);
 };
 
 
@@ -45,7 +45,7 @@ public:
     virtual void renderBullet(Time perFrame) = 0;
 	void deleteBullet(proiettile *p);
     virtual int checkCollision(FloatRect p);
-    void handle(Time perFrame, Terreno *terrain = NULL);
+    void handle(Time perFrame, Terreno *terrain = nullptr);
     virtual void cleanup(Terreno *terrain) = 0;
 
 protected:

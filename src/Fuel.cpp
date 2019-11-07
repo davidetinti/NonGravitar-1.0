@@ -8,7 +8,7 @@ x(x_n),y(y_n),power(power_n),exist(exist_n){
 }
 
 Fuel::Fuel(){
-    head=NULL;
+    head=nullptr;
 }
 
 Fuel::Fuel(Terreno *terrain, Resources *src) {
@@ -31,9 +31,9 @@ Fuel::Fuel(Terreno *terrain, Resources *src) {
         power=10;
     }
     
-    head = new fuel (x,terrain->get_Y(x),power,NULL,exist);
+    head = new fuel (x,terrain->get_Y(x),power,nullptr,exist);
     current = head;
-    head->next = NULL;
+    head->next = nullptr;
     spriteSetup(current,power);
     
     if(!exist){
@@ -52,16 +52,16 @@ Fuel::Fuel(Terreno *terrain, Resources *src) {
         exist = ((rand() % 100) > 50);
         x = partial_x[i] + rand() % 140;
         
-        if(current==NULL){
-            current = new fuel(x,terrain->get_Y(x),power,NULL,exist);
+        if(current==nullptr){
+            current = new fuel(x,terrain->get_Y(x),power,nullptr,exist);
             head=current;
             spriteSetup(current,power);
         }else{
-            current->next = new fuel(x,terrain->get_Y(x),power,NULL,exist);
+            current->next = new fuel(x,terrain->get_Y(x),power,nullptr,exist);
             current = current->next;
             spriteSetup(current,power);
         }
-        current->next = NULL;
+        current->next = nullptr;
         if(!exist){
             delete_fuel(current);
             current = head;
@@ -105,7 +105,7 @@ void Fuel::delete_fuel(fuel *selected){
         head = head->next;
         delete selected;
     }else{
-        while(tmp!=NULL){
+        while(tmp!=nullptr){
             if(tmp->next==selected){
                 tmp->next=tmp->next->next;
                 delete selected;
@@ -120,7 +120,7 @@ void Fuel::delete_fuel(fuel *selected){
 
 void Fuel::gestisci(){
     current = head;
-    while (current != NULL){
+    while (current != nullptr){
         src->getWindow()->draw(current->fuel_sprite);
         current = current->next;
     }

@@ -14,9 +14,9 @@ struct bunkerlist{
     bool exist;
     Sprite bunker,explosion;
     Bullets *weapon;
-    bunkerlist *next;
     bunkerlist(int type_n, int tempo_n, double x_n, double y_n, double life_n,
-               bunkerlist *next_n, Bullets *weapon_n, bool exist_n = true, double explosion_x_n = 0);
+               Bullets *weapon_n, Texture *b, Texture *e, bool exist_n = true, double explosion_x_n = 0);
+    void spriteSetup(Texture *bunker_tx,Texture *explosion_tx);
 };
 
 class Bunker{
@@ -25,11 +25,11 @@ protected:
     
     Resources *src;
     Texture *bunker_tx,*explosion_tx;
-	bunkerlist *head;
     double partial_x[4];        //coordinate per la griglia dei bunker
     
 public:
     
+    list<bunkerlist>* bunkers;
     Clock bunkerDamage;
     
     // COSTRUTTORI ===================================
@@ -37,18 +37,18 @@ public:
     Bunker(Resources *src, Terreno *terrain);
     
     // SETTERS E GETTERS =============================
-    bunkerlist *getHead();
     void setEnemies(bunkerlist *enemies);
     
     ///  FUNZIONI  //////////////////////////////////////////////////////
     void armi(bunkerlist *tmp, Terreno *terrain, Time perFrame);
-	void hitBunker(int damage, bunkerlist *p);
-	void deleteBunker(bunkerlist *target);
+	void hitBunker(int damage, list<bunkerlist>::iterator p);
+	list<bunkerlist>::iterator deleteBunker(list<bunkerlist>::iterator it);
 	bool isEmpty();
     void gestisci(Nave *player, Terreno *terrain, double angle = 0);
     int checkCollisionBBullets(FloatRect obj);
-    bool collidesWith(bunkerlist *p, FloatRect q);
+    bool collidesWith(list<bunkerlist>::iterator p, FloatRect q);
     void drawAll();
+    void restartTimers();
 
 protected:
     void spriteSetup(bunkerlist *p);

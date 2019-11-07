@@ -18,7 +18,7 @@ uPlanets::uPlanets(Resources *s){
     int str_h[] = {60,410,60,410,60,410,60,410};
 
     src = s;
-    head = new Pianeta(true, src->rand(0,250), src->rand(0,250), str_l[0], str_h[0], src->rand(3,10), NULL);
+    head = new Pianeta(true, src->rand(0,250), src->rand(0,250), str_l[0], str_h[0], src->rand(3,10), nullptr);
     head->interno = GPlanet();
     spriteSetup(head);
     current = head;
@@ -27,7 +27,7 @@ uPlanets::uPlanets(Resources *s){
     for (int i = 1; i < 8; i++) {
         exists = src->rand(0,2) > 0;
         if(exists){
-            pp->next = new Pianeta(true, src->rand(0,250), src->rand(0,250), str_l[i], str_h[i], src->rand(3,10), NULL);
+            pp->next = new Pianeta(true, src->rand(0,250), src->rand(0,250), str_l[i], str_h[i], src->rand(3,10), nullptr);
             pp = pp->next;
             spriteSetup(pp);
         }
@@ -63,7 +63,7 @@ void uPlanets::handle(Nave *player){
     current->interno.handle(player);
     /*
     for (int i = 0; i < current->tot_schermate; i++){
-        if (iterator->enemies.getHead() == NULL){
+        if (iterator->enemies.getHead() == nullptr){
             iterator = iterator->next;
         } else {
             no_bunkers = false;
@@ -89,14 +89,14 @@ void uPlanets::spriteSetup(Pianeta* p){
 }
 
 void uPlanets::deletePlanet(Pianeta* p){
-    if(p!=NULL){
+    if(p!=nullptr){
         Pianeta *tmp = getHead();
-        while(tmp != NULL){
+        while(tmp != nullptr){
             if(tmp->next == p && !p->exist) {
                 tmp->next = p->next;
                 delete p;
             }
-            if(tmp!=NULL) tmp = tmp->next;
+            if(tmp!=nullptr) tmp = tmp->next;
         }
     }
 }

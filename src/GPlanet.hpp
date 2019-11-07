@@ -15,8 +15,8 @@ struct lista_schermate_pianeta {
     int nr_schermata;
     lista_schermate_pianeta(Terreno terrain_n, int n,
                         int totale_schermate, Resources *src,
-                        lista_schermate_pianeta *next_n = NULL,
-                        lista_schermate_pianeta *prev_n = NULL);
+                        lista_schermate_pianeta *next_n = nullptr,
+                        lista_schermate_pianeta *prev_n = nullptr);
     lista_schermate_pianeta(Resources *src);
 };
 

@@ -12,15 +12,15 @@ lista_schermate_pianeta::lista_schermate_pianeta(Terreno terrain_n, int n,
                                 carb = Fuel(&terrain,src);
                             }
 lista_schermate_pianeta::lista_schermate_pianeta(Resources *s) :
-                            next(NULL),prev(NULL),terrain(Terreno(s)),
+                            next(nullptr),prev(nullptr),terrain(Terreno(s)),
                             nr_schermata(666){
                                 //TODO
                                 //carb = BossFuel(...);
                             }
 
 GPlanet::GPlanet(){
-    current = NULL;
-    head = NULL;
+    current = nullptr;
+    head = nullptr;
 	boss = Boss();
 	boss_unlocked = false;
     in_boss = false;
@@ -61,8 +61,8 @@ bool GPlanet::getIn_boss(){
 
 lista_schermate_pianeta *GPlanet::find(int n){///???
     lista_schermate_pianeta *tmp = head;
-    lista_schermate_pianeta *a = NULL;
-    while (tmp != NULL && a == NULL){
+    lista_schermate_pianeta *a = nullptr;
+    while (tmp != nullptr && a == nullptr){
         if (tmp->nr_schermata == n) a = tmp;
         tmp = tmp->next;
     }
@@ -81,7 +81,7 @@ void GPlanet::inizializza(int tot_schermate, Resources *src){
 	hole.setOrigin(hole_tx->getSize().x / 2, hole_tx->getSize().y / 2);
     this->src = src;
     lista_schermate_pianeta *tmp, *pre_tmp;
-    if(head == NULL){
+    if(head == nullptr){
         head = new lista_schermate_pianeta(
             Terreno(random_height(), random_height(), src, tot_schermate),
             0, tot_schermate, src);
@@ -89,7 +89,7 @@ void GPlanet::inizializza(int tot_schermate, Resources *src){
         for (int i = 1; i < tot_schermate; i++){
             tmp = new lista_schermate_pianeta(
                 Terreno(random_height(), pre_tmp->terrain.getSxCoord(),src,tot_schermate),
-                i, tot_schermate, src, NULL, pre_tmp);
+                i, tot_schermate, src, nullptr, pre_tmp);
             pre_tmp->next = tmp;
             pre_tmp = tmp;
         }
@@ -103,11 +103,7 @@ void GPlanet::inizializza(int tot_schermate, Resources *src){
         in_boss = false;
         current = head;
     } else {
-        bunkerlist *tmp = getCurrent()->enemies->getHead();
-        while (tmp != NULL){
-            tmp->weapon->bullet_time.restart();
-            tmp = tmp->next;
-        }
+        current->enemies->restartTimers();
     }
 }
 
@@ -118,11 +114,7 @@ void GPlanet::cambia_schermata(int n){
         } else {
             current = current->prev;
         }
-        bunkerlist *tmp = current->enemies->getHead();
-        while (tmp != NULL){
-            tmp->weapon->bullet_time.restart();
-            tmp = tmp->next;
-        }
+        current->enemies->restartTimers();
     } else {
         current = boss_screen;
     }
@@ -130,17 +122,19 @@ void GPlanet::cambia_schermata(int n){
 
 void GPlanet::checkCollision(Nave *player) { //maybe this should be split between universe and here
     int primary = src->getPrimaryDamage(), secondary = src->getSecondaryDamage();
-    bunkerlist *bunk_iterator = current->enemies->getHead();
-    while (bunk_iterator != NULL){
-        if (player->SingleShot->checkCollision(bunk_iterator->bunker.getGlobalBounds()) > 0)
-            current->enemies->hitBunker(primary, bunk_iterator);
-        if(player->Laser->checkCollision(bunk_iterator->bunker.getGlobalBounds()) > 0)
-            current->enemies->hitBunker(secondary, bunk_iterator);
-        if(current->enemies->collidesWith(bunk_iterator, player->nave.getGlobalBounds())){
-            player->getHit(bunk_iterator->damage);
+    list<bunkerlist>::iterator it = current->enemies->bunkers->begin();
+    list<bunkerlist>::iterator end = current->enemies->bunkers->end();
+    
+    while (it != end){
+        if (player->SingleShot->checkCollision(it->bunker.getGlobalBounds()) > 0)
+            current->enemies->hitBunker(primary, it);
+        if(player->Laser->checkCollision(it->bunker.getGlobalBounds()) > 0)
+            current->enemies->hitBunker(secondary, it);
+        if(current->enemies->collidesWith(it, player->nave.getGlobalBounds())){
+            player->getHit(it->damage);
             player->push_back(5);
         }
-        bunk_iterator = bunk_iterator->next;
+        it++;
     }
     //TODO: add collision bullets from boss turrets to ship
 	//TODO: add collision laser from ship to turrets and boss
@@ -158,9 +152,9 @@ void GPlanet::checkCollision(Nave *player) { //maybe this should be split betwee
  
 void GPlanet::handle(Nave *player){
     bool no_bunkers = true; lista_schermate_pianeta *iterator = head;
-    int i = 0; Terreno *terrain = NULL;
+    int i = 0; Terreno *terrain = nullptr;
     if (!boss_unlocked) {
-	    while (iterator != NULL && no_bunkers && i < nr_schermate) {
+	    while (iterator != nullptr && no_bunkers && i < nr_schermate) {
 	        no_bunkers = no_bunkers && (iterator->enemies->isEmpty());
 	        iterator = iterator->next; i++;
 	    }
@@ -176,7 +170,6 @@ void GPlanet::handle(Nave *player){
         current->terrain.drawAll();
 		current->carb.gestisci();
         raggiotraente(player);
-		current->enemies->gestisci(player, &current->terrain); //A
         terrain = &current->terrain;//B
 	}
 	if (boss_unlocked && current == head) src->getWindow()->draw(hole);
@@ -184,6 +177,7 @@ void GPlanet::handle(Nave *player){
         boss.gestisci(player); //A
 		boss.draw(0);
     }
+	current->enemies->gestisci(player, &current->terrain); //A
     player->armi(terrain);//B
     /*  I (paolo) wrote it like this, and it showcases two different ways to solve the problems of calling
     *   the same function with different arguments and where to handle Boss::turrets. Not sure which one
@@ -223,7 +217,7 @@ int GPlanet::random_height(){
 void GPlanet::raggiotraente(Nave *player){
     if (player->raggioTraente()){
         fuel *tmp = current->carb.getHead();
-        while(tmp!=NULL){
+        while(tmp!=nullptr){
             if(abs(player->nave.getPosition().x - tmp->x) <50 && (tmp->y - player->nave.getPosition().y <=150)){
                 fuel *tmp1 = tmp->next;
                 cout << player->getFuelbar() << "\n";

@@ -5,9 +5,9 @@
 proiettile::proiettile(proiettile *next_n, proiettile *prev_n)
                 : next(next_n), prev(prev_n) {
                     exist = true;
-                    if(next != NULL) 
+                    if(next != nullptr) 
                         next->prev = this;
-                    if(prev != NULL)
+                    if(prev != nullptr)
                         prev->next = this;
                 }
 
@@ -18,7 +18,7 @@ Bullets::Bullets(){
 Bullets::Bullets(int time_btw_shoot,int damage, int speed, int tx_nr, int sd_nr, bool autoshoot, Resources *src){
     this->src = src;
     this->autoshoot = autoshoot;
-    this->head = NULL;
+    this->head = nullptr;
     this->time_btw_shoot = time_btw_shoot;
     this->damage = damage;
     this->speed = speed;
@@ -42,15 +42,15 @@ void Bullets::setHead(proiettile *head){
 
 
 void Bullets::deleteBullet(proiettile *p){
-    if(p->prev == NULL && p->next == NULL){
+    if(p->prev == nullptr && p->next == nullptr){
         delete p;
-        head = NULL;
-    } else if(p->prev == NULL) {
+        head = nullptr;
+    } else if(p->prev == nullptr) {
         head = p->next;
-        head->prev = NULL;
+        head->prev = nullptr;
         delete p;
-    } else if(p->next == NULL) {
-        p->prev->next = NULL;
+    } else if(p->next == nullptr) {
+        p->prev->next = nullptr;
         delete p;
     }
 }
@@ -58,7 +58,7 @@ void Bullets::deleteBullet(proiettile *p){
 int Bullets::checkCollision(FloatRect p){
     proiettile *tmp = head;
     int hit_counter = 0;
-    while (tmp != NULL){
+    while (tmp != nullptr){
         if (collidesWith(tmp,p)){
             hit_counter++;
             proiettile *target = tmp;

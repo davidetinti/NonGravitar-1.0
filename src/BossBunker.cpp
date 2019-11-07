@@ -14,18 +14,15 @@ BossBunker::BossBunker(Resources *s, double r, Vector2f c){
     bunkerlist *tmp;
     radius = r;
     centre = Vector2f(src->getLength()/2, src->getHeight()/2);
-    head = new bunkerlist(0,100,centre.x + radius, centre.y,10,NULL,
-                          new SingleStraightBullets(400, 100, 10, 14, 0, true, src),true);
-    spriteSetup(head);
-    tmp = head;
+    bunkers = new list<bunkerlist>;
+    int nr_bunkers = src->rand(1,4);
+    bunkers->push_front(bunkerlist(0,100,centre.x + radius, centre.y,10,
+                          new SingleStraightBullets(400, 100, 10, 14, 0, true, src),bunker_tx,explosion_tx));
     for(int i = 0; i < N_BUNKER - 1; i++){
         angle = angle + offset;
         newPos = newPosition(angle);
-        tmp->next = new bunkerlist(0,100,newPos.x, newPos.y,10,NULL,
-                          new SingleStraightBullets(400, 100, 10, 14, 0, true, src),true);
-        tmp = tmp->next;
-        spriteSetup(tmp);
-        tmp->next = NULL;
+        bunkers->push_front(bunkerlist(0,100,newPos.x, newPos.y,10,
+                          new SingleStraightBullets(400, 100, 10, 14, 0, true, src),bunker_tx,explosion_tx));
     }
 }
 
@@ -39,28 +36,30 @@ Vector2f BossBunker::newPosition(double angle){
 }
 
 void BossBunker::updatePosition(double angle){
-    bunkerlist *iterator = head;
+    list<bunkerlist>::iterator iterator = bunkers->begin();
+    list<bunkerlist>::iterator end = bunkers->end();
     double newAng = 0;
     double offset = 360 / N_BUNKER;
     int i = 0;
     Vector2f newPos;
-    while (iterator != NULL){
+    while (iterator != end){
         newAng = angle + offset * i;
         newPos = newPosition(newAng);
         iterator->x = newPos.x;
         iterator->y = newPos.y;
         iterator->bunker.setPosition(iterator->x, iterator->y);
-        iterator = iterator->next;
+        iterator++;
         i++;
     }
     updateRotation();
 }
 
 void BossBunker::updateRotation(){
-    bunkerlist *iterator = head;
-    while(iterator != NULL){
+    list<bunkerlist>::iterator iterator = bunkers->begin();
+    list<bunkerlist>::iterator end = bunkers->end();
+    while(iterator != end){
         iterator->bunker.setRotation(270 + atan2(centre.y-iterator->bunker.getPosition().y, 
                                         centre.x-iterator->bunker.getPosition().x) * (180/M_PI));
-        iterator = iterator->next;
+        iterator++;
     }
 }

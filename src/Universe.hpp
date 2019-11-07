@@ -13,8 +13,8 @@ struct lista_schermate {
     int y;
     uPlanets pianeti;
     lista_schermate *next;
-    lista_schermate(int x_n, int y_n, Resources *src, lista_schermate *d=NULL, lista_schermate *s=NULL, 
-        lista_schermate *u=NULL, lista_schermate *down=NULL, lista_schermate *nxt=NULL);
+    lista_schermate(int x_n, int y_n, Resources *src, lista_schermate *d=nullptr, lista_schermate *s=nullptr, 
+        lista_schermate *u=nullptr, lista_schermate *down=nullptr, lista_schermate *nxt=nullptr);
 };
 
 

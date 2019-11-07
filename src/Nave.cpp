@@ -7,7 +7,7 @@ Nave::Nave(){
 }
 
 Nave::Nave(Resources* src){
-    tractor_beam = NULL;
+    tractor_beam = nullptr;
     this->src = src;
     raggiox = 0;
     raggioy = 0;
