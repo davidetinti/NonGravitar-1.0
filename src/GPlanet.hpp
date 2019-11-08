@@ -30,6 +30,7 @@ protected:
     Texture *hole_tx;
     Sprite hole;
     int nr_schermate;
+    bool completed;
     
 public:
     
@@ -49,7 +50,6 @@ public:
     
     // FUNZIONI ======================================
     lista_schermate_pianeta *find(int n);
-    int checkCollisionBunkBullets(FloatRect obj);
     void inizializza(int tot_schermate, Resources *src);
     void cambia_schermata(int n);
     void checkCollision(Nave *player);
@@ -58,10 +58,12 @@ public:
     void enterBoss(Nave *player);
     void checkTerrain(Nave *player);
     void raggiotraente(Nave *player);
+    bool getCompleted();
     
 protected:
     
     int random_height();
+    void updateBossLock();
 };
 
 #endif /* GPlanet_hpp */

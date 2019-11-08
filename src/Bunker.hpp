@@ -22,14 +22,15 @@ struct bunkerlist{
 class Bunker{
 
 protected:
-    
+
     Resources *src;
     Texture *bunker_tx,*explosion_tx;
     double partial_x[4];        //coordinate per la griglia dei bunker
+    list<bunkerlist>* bunkers;
     
 public:
     
-    list<bunkerlist>* bunkers;
+    const int DAMAGEONCOLLISION = 5;    
     Clock bunkerDamage;
     
     // COSTRUTTORI ===================================
@@ -46,6 +47,8 @@ public:
 	bool isEmpty();
     void gestisci(Nave *player, Terreno *terrain, double angle = 0);
     int checkCollisionBBullets(FloatRect obj);
+    bool checkCollision(Bullets *b);
+    bool checkCollision(Sprite *p);
     bool collidesWith(list<bunkerlist>::iterator p, FloatRect q);
     void drawAll();
     void restartTimers();

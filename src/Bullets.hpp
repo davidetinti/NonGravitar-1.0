@@ -10,7 +10,7 @@ struct proiettile{
     Clock invuln_clock;
     proiettile *next;
     proiettile *prev;
-    proiettile(proiettile *next_n, proiettile *prev_n = nullptr);
+    proiettile(double x, double y, double rotation, Texture *bullet_tx);
 };
 
 
@@ -20,7 +20,6 @@ protected:
     
     Resources *src;
     Texture *bullet_tx;
-    proiettile *head;
     int time_btw_shoot; //tempo tra i colpi
     int damage;
     int speed;
@@ -28,7 +27,7 @@ protected:
     bool autoshoot;
     
 public:
-    
+    list<proiettile> *bulletList;
     SoundBuffer bullet_sb;
     Clock bullet_time;
     
@@ -37,23 +36,20 @@ public:
     Bullets(int time_btw_shoot, int damage, int speed, int tx_nr, int sd_nr, bool autoshoot, Resources *src);
     
     // SETTERS E GETTERS =============================
-    proiettile* getHead();
-    void setHead(proiettile *head);
-
+    int getDamage();
+    
     ///  FUNZIONI  //////////////////////////////////////////////////////
     virtual void addSingleBullet(Sprite entity, Keyboard::Key pulsante, int tempo) = 0;
     virtual void renderBullet(Time perFrame) = 0;
-	void deleteBullet(proiettile *p);
     virtual int checkCollision(FloatRect p);
     void handle(Time perFrame, Terreno *terrain = nullptr);
     virtual void cleanup(Terreno *terrain) = 0;
 
 protected:
 
-    bool collidesWith(proiettile *p, FloatRect obj);
-    void spriteSetup(proiettile *p, double x, double y, double rotation);
-    bool outsideBounds(proiettile *p, Terreno *terrain);
-    bool outsideBounds(proiettile *p);
+    bool collidesWith(list<proiettile>::iterator p, FloatRect obj);
+    bool outsideBounds(list<proiettile>::iterator p, Terreno *terrain);
+    bool outsideBounds(list<proiettile>::iterator p);
 };
 
 #endif /* Bullets_hpp */

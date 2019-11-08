@@ -53,6 +53,7 @@ private:
     
     bool contactPlanet(Vector2f pos, Pianeta* p);
     void addToList(lista_schermate *p);
+    void exitBoss();
 };
 
 #endif /* Universo_hpp */

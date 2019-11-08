@@ -108,6 +108,44 @@ int Bunker::checkCollisionBBullets(FloatRect obj){
     return hit_counter;
 }
 
+bool Bunker::checkCollision(Bullets *b){
+    list<proiettile>::iterator itB = b->bulletList->begin();
+    list<proiettile>::iterator endB = b->bulletList->end();
+    list<bunkerlist>::iterator it = bunkers->begin();
+    list<bunkerlist>::iterator end = bunkers->end();
+    bool deleted = false;
+    bool hit = false;
+
+    while (itB != endB){
+        deleted = false;
+        it = bunkers->begin();
+        while (it != end && !deleted){
+            if (collidesWith(it,itB->bullet.getGlobalBounds())){
+                hitBunker(b->getDamage(),it);
+                itB = b->bulletList->erase(itB);
+                deleted = true;
+                hit = true;
+            }
+            it++;
+        }
+        if(!deleted) itB++;
+    }
+    return hit;
+}
+
+bool Bunker::checkCollision(Sprite *p){
+    list<bunkerlist>::iterator it = bunkers->begin();
+    list<bunkerlist>::iterator end = bunkers->end();
+    bool hit = false;
+
+    while (it != end){
+        if(collidesWith(it,p->getGlobalBounds()))
+            hit = true;
+        it++;
+    }
+    return hit;
+}
+
 bool Bunker::collidesWith(list<bunkerlist>::iterator p, sf::FloatRect q){
     return p->bunker.getGlobalBounds().intersects(q);
 }

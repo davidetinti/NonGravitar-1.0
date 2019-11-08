@@ -90,6 +90,21 @@ void Boss::setEnemies(BossBunker *p){
 
 ///  FUNZIONI  //////////////////////////////////////////////////////
 
+bool Boss::checkCollisionBoss(Bullets *b){
+	list<proiettile>::iterator it = b->bulletList->begin();
+	list<proiettile>::iterator end = b->bulletList->end();
+	bool hit = false;
+	while (it != end){
+		if(checkCollisionBoss(&it->bullet)){
+			hit = true;
+			getHit(b->getDamage());
+			it = b->bulletList->erase(it);
+		}
+		else it++;
+	}
+	return hit;
+}
+
 bool Boss::checkCollisionBoss(Sprite *body){
 	if (pow(body->getPosition().x - centre.x, 2) + pow(body->getPosition().y - centre.y, 2) >= pow(radius, 2)) {
 		getHit(1);

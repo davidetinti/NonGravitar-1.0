@@ -148,12 +148,8 @@ void Universe::handle(){
 			player.nave.setPosition(src->getLength(), player.nave.getPosition().y);
 			active->pianeti.getCurrent()->interno.cambia_schermata(-1);
         }
-        if (player.nave.getPosition().y < 0) {
-            player.nave.setPosition(player.getX_planet(), player.getY_planet());
-            player.nave.setRotation(player.getAnglePlanet());
-			player.setDxDy(0, 0.1);
-            player.setAtPlanet(false);
-            active->pianeti.setCurrent(nullptr);
+        if (player.nave.getPosition().y < 0 || active->pianeti.getCurrent()->interno.getCompleted()) {
+            exitBoss();
         }
         //only able to go down far enough after boss is unlocked
         if (player.nave.getPosition().y > src->getHeight()){
@@ -176,4 +172,12 @@ void Universe::addToList(lista_schermate *p){
         tail->next = p;
         tail = tail->next;
     }
+}
+
+void Universe::exitBoss(){
+    player.nave.setPosition(player.getX_planet(), player.getY_planet());
+    player.nave.setRotation(player.getAnglePlanet());
+    player.setDxDy(0, 0.1);
+    player.setAtPlanet(false);
+    active->pianeti.setCurrent(nullptr);
 }

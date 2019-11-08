@@ -13,54 +13,51 @@ void SingleStraightBullets::addSingleBullet(Sprite entity, Keyboard::Key pulsant
     Time elapsed = bullet_time.getElapsedTime();
     if ((!autoshoot && Keyboard::isKeyPressed(pulsante) && elapsed.asMilliseconds()>time_btw_shoot) || 
         (autoshoot && elapsed.asMilliseconds() > (time_btw_shoot + tempo))) { //perché tempo? a cosa dovrebbe servire
-        proiettile *tmp = head;
-        head = new proiettile(tmp);
-        spriteSetup(head,x,y,rotation);
+        bulletList->push_front(proiettile(x,y,rotation,bullet_tx));
         bullet_time.restart();
     }
 }
 
 void SingleStraightBullets::renderBullet(Time perFrame){ //perFrame should be in Resources
-    proiettile *pointer = head;
-    while (pointer != nullptr){
-        double angle = M_PI * pointer->bullet.getRotation() / 180;
-        pointer->bullet.move(-sin(angle)*speed*perFrame.asSeconds()*100,
+    list<proiettile>::iterator it = bulletList->begin();
+    list<proiettile>::iterator end = bulletList->end();
+    while (it != end){
+        double angle = M_PI * it->bullet.getRotation() / 180;
+        it->bullet.move(-sin(angle)*speed*perFrame.asSeconds()*100,
                         cos(angle)*speed*perFrame.asSeconds()*100);
-        src->getWindow()->draw(pointer->bullet);
-        pointer = pointer->next;
+        src->getWindow()->draw(it->bullet);
+        it++;
     }
 }
 
 SingleStraightBullets::SingleStraightBullets(){}
 
 int SingleStraightBullets::checkCollision(FloatRect p){
-    proiettile *tmp = head;
+    list<proiettile>::iterator it = bulletList->begin();
+    list<proiettile>::iterator end = bulletList->end();
     int hit_counter = 0;
-    while (tmp != nullptr){
-        if (collidesWith(tmp,p)){
+    while (it != end){
+        if (collidesWith(it,p)){
             hit_counter++;
-            proiettile *target = tmp;
-            tmp = tmp->next;
-            deleteBullet(target);
+            it = bulletList->erase(it);
         } else {
-            tmp = tmp->next;
+            it++;
         }
     }
     return hit_counter;
 }
 
 void SingleStraightBullets::cleanup(Terreno *terrain){
-    proiettile *iterator = head;
+    list<proiettile>::iterator iterator = bulletList->begin();
+    list<proiettile>::iterator end = bulletList->end();
     Time elapsed;
-    while (iterator != nullptr){
+    while (iterator != end){
             elapsed = iterator->invuln_clock.getElapsedTime();
             if ((elapsed.asMilliseconds() > invuln_time) &&
                 (terrain == nullptr ?  outsideBounds(iterator) : outsideBounds(iterator, terrain))){
-                proiettile *tmp = iterator;
-                iterator = iterator->next;
-                deleteBullet(tmp);
+                iterator = bulletList->erase(iterator);
             } else {
-                iterator = iterator->next;
+                iterator++;
             }
     }
 }

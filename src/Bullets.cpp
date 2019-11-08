@@ -2,13 +2,15 @@
 
 // COSTRUTTORI =======================================
 
-proiettile::proiettile(proiettile *next_n, proiettile *prev_n)
-                : next(next_n), prev(prev_n) {
-                    exist = true;
-                    if(next != nullptr) 
-                        next->prev = this;
-                    if(prev != nullptr)
-                        prev->next = this;
+proiettile::proiettile(double x, double y, double rotation, Texture *bullet_tx)
+                {
+                    this->bullet.setTexture(*bullet_tx);
+                    this->bullet.setOrigin(bullet_tx->getSize().x/2, bullet_tx->getSize().y/2);
+                    this->bullet.setPosition(x, y);
+                    this->bullet.setRotation(rotation);
+                    this->bullet.setTextureRect(IntRect(0, 0, bullet_tx->getSize().x, bullet_tx->getSize().y));
+                    this->bullet.scale(1,1);
+                    //p->bullet_sound.setBuffer(bullet_sb);
                 }
 
 Bullets::Bullets(){
@@ -16,9 +18,9 @@ Bullets::Bullets(){
 }
 
 Bullets::Bullets(int time_btw_shoot,int damage, int speed, int tx_nr, int sd_nr, bool autoshoot, Resources *src){
+    bulletList = new list<proiettile>;
     this->src = src;
     this->autoshoot = autoshoot;
-    this->head = nullptr;
     this->time_btw_shoot = time_btw_shoot;
     this->damage = damage;
     this->speed = speed;
@@ -29,63 +31,33 @@ Bullets::Bullets(int time_btw_shoot,int damage, int speed, int tx_nr, int sd_nr,
 
 // SETTERS E GETTERS =================================
 
-
-proiettile* Bullets::getHead(){
-    return this->head;
-}
-
-void Bullets::setHead(proiettile *head){
-    this->head = head;
+int Bullets::getDamage(){
+    return damage;
 }
 
 // FUNZIONI ==========================================
 
 
-void Bullets::deleteBullet(proiettile *p){
-    if(p->prev == nullptr && p->next == nullptr){
-        delete p;
-        head = nullptr;
-    } else if(p->prev == nullptr) {
-        head = p->next;
-        head->prev = nullptr;
-        delete p;
-    } else if(p->next == nullptr) {
-        p->prev->next = nullptr;
-        delete p;
-    }
-}
-
 int Bullets::checkCollision(FloatRect p){
-    proiettile *tmp = head;
+    list<proiettile>::iterator it = bulletList->begin();
+    list<proiettile>::iterator end = bulletList->end();
     int hit_counter = 0;
-    while (tmp != nullptr){
-        if (collidesWith(tmp,p)){
+    while (it != end){
+        if (collidesWith(it,p)){
             hit_counter++;
-            proiettile *target = tmp;
-            tmp = tmp->next;
-            deleteBullet(target);
+            it = bulletList->erase(it);
         } else {
-            tmp = tmp->next;
+            it++;
         }
     }
     return hit_counter;
 }
 
-bool Bullets::collidesWith(proiettile *p, FloatRect obj){
+bool Bullets::collidesWith(list<proiettile>::iterator p, FloatRect obj){
     return p->bullet.getGlobalBounds().intersects(obj);
 }
 
-void Bullets::spriteSetup(proiettile *p, double x, double y, double rotation){
-    p->bullet.setTexture(*bullet_tx);
-    p->bullet.setOrigin(bullet_tx->getSize().x/2, bullet_tx->getSize().y/2);
-    p->bullet.setPosition(x, y);
-    p->bullet.setRotation(rotation);
-    p->bullet.setTextureRect(IntRect(0, 0, bullet_tx->getSize().x, bullet_tx->getSize().y));
-    p->bullet.scale(1,1);
-    //p->bullet_sound.setBuffer(bullet_sb);
-}
-
-bool Bullets::outsideBounds(proiettile *p, Terreno *terrain){
+bool Bullets::outsideBounds(list<proiettile>::iterator p, Terreno *terrain){
     return p->bullet.getPosition().x < 0 ||
      p->bullet.getPosition().x > src->getLength() ||
       p->bullet.getPosition().y < 0 ||
@@ -93,7 +65,7 @@ bool Bullets::outsideBounds(proiettile *p, Terreno *terrain){
 
 }
 
-bool Bullets::outsideBounds(proiettile *p){
+bool Bullets::outsideBounds(list<proiettile>::iterator p){
     return p->bullet.getPosition().x < 0 ||
      p->bullet.getPosition().x > src->getLength() ||
       p->bullet.getPosition().y < 0 || p->bullet.getPosition().y > src->getHeight();

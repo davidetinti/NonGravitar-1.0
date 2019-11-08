@@ -45,6 +45,7 @@ public:
     void setEnemies(BossBunker *p);
     
     // FUNZIONI ======================================
+    bool checkCollisionBoss(Bullets *b);
 	bool checkCollisionBoss(Sprite *body);
 	void getHit(int shot);
 	void draw(int type = 0);

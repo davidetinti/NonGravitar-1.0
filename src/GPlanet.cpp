@@ -70,11 +70,9 @@ lista_schermate_pianeta *GPlanet::find(int n){///???
 }
  
 
-int GPlanet::checkCollisionBunkBullets(FloatRect obj){
-    return current->enemies->checkCollisionBBullets(obj);
-}
 
 void GPlanet::inizializza(int tot_schermate, Resources *src){
+    completed = false;
     nr_schermate = tot_schermate;
     hole_tx = src->caricaTexture(31);
 	hole.setTexture(*hole_tx);
@@ -122,47 +120,29 @@ void GPlanet::cambia_schermata(int n){
 
 void GPlanet::checkCollision(Nave *player) { //maybe this should be split between universe and here
     int primary = src->getPrimaryDamage(), secondary = src->getSecondaryDamage();
-    list<bunkerlist>::iterator it = current->enemies->bunkers->begin();
-    list<bunkerlist>::iterator end = current->enemies->bunkers->end();
     
-    while (it != end){
-        if (player->SingleShot->checkCollision(it->bunker.getGlobalBounds()) > 0)
-            current->enemies->hitBunker(primary, it);
-        if(player->Laser->checkCollision(it->bunker.getGlobalBounds()) > 0)
-            current->enemies->hitBunker(secondary, it);
-        if(current->enemies->collidesWith(it, player->nave.getGlobalBounds())){
-            player->getHit(it->damage);
-            player->push_back(5);
-        }
-        it++;
+    current->enemies->checkCollision(player->SingleShot);
+    current->enemies->checkCollision(player->Laser);
+    if (current->enemies->checkCollision(&player->nave) > 0){
+        player->getHit(current->enemies->DAMAGEONCOLLISION);
+        player->push_back(5);
     }
+    if (in_boss){
+        boss.checkCollisionBoss(player->SingleShot);
+        boss.checkCollisionBoss(player->Laser);
+    }
+    
     //TODO: add collision bullets from boss turrets to ship
-	//TODO: add collision laser from ship to turrets and boss
-
-    int hit_n = checkCollisionBunkBullets(player->nave.getGlobalBounds());
+    int hit_n = current->enemies->checkCollisionBBullets(player->nave.getGlobalBounds());
     //getHit called with 1 so that it ignores clock
     player->getHit(30 * hit_n, 1);
-    /*
-    if(in_boss && boss.checkCollisionBoss(&player->nave)){
-       player->getHit(5);
-       //TODO
-       //player->push_back(4);
-    }*/
+
 }
  
 void GPlanet::handle(Nave *player){
-    bool no_bunkers = true; lista_schermate_pianeta *iterator = head;
-    int i = 0; Terreno *terrain = nullptr;
-    if (!boss_unlocked) {
-	    while (iterator != nullptr && no_bunkers && i < nr_schermate) {
-	        no_bunkers = no_bunkers && (iterator->enemies->isEmpty());
-	        iterator = iterator->next; i++;
-	    }
-	    if (no_bunkers) {
-	        boss_unlocked = true;
-	        head->terrain.prepareForBoss(&hole);
-	    }
-	}
+    Terreno *terrain = nullptr;
+    if (!boss_unlocked)
+	    updateBossLock();
     player->raggioTraente();
     checkCollision(player);
     checkTerrain(player);
@@ -182,6 +162,7 @@ void GPlanet::handle(Nave *player){
     /*  I (paolo) wrote it like this, and it showcases two different ways to solve the problems of calling
     *   the same function with different arguments and where to handle Boss::turrets. Not sure which one
     *   is better, tbh. I'm happy to take criticism */
+    if(boss.isDead()) completed = true;
 }
 
 bool GPlanet::inHole(Sprite *body){
@@ -212,6 +193,23 @@ void GPlanet::checkTerrain(Nave *player){
 
 int GPlanet::random_height(){
     return src->getHeight() - src->rand(0,99);
+}
+
+void GPlanet::updateBossLock(){
+    bool no_bunkers = true; int i = 0;
+    lista_schermate_pianeta *iterator = head;
+    while (iterator != nullptr && no_bunkers && i < nr_schermate) {
+	        no_bunkers = no_bunkers && (iterator->enemies->isEmpty());
+	        iterator = iterator->next; i++;
+	    }
+	    if (no_bunkers) {
+	        boss_unlocked = true;
+	        head->terrain.prepareForBoss(&hole);
+	    }
+}
+
+bool GPlanet::getCompleted(){
+    return completed;
 }
 
 void GPlanet::raggiotraente(Nave *player){
