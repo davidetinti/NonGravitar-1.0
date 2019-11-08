@@ -215,7 +215,7 @@ void Nave::push_back(int distance, int dir){
         switch (dir){
             case 0: 
                 nave.setRotation(180);
-		        dy = 10 * distance;
+		        dy = -10 * distance;
                 break;
             case 1:
                 nave.setRotation(270 + atan2(centre.y-nave.getPosition().y, 
