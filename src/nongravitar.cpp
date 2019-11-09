@@ -3,13 +3,6 @@
 #include <unistd.h>
 #include <stdio.h>
 
-void showCurrentWorkingDirectory(void)
-{
-    char path[1024];
-    getcwd(path, sizeof(path));
-    puts(path);
-}
-
 int main() {
     
     // INIZIALIZZAZIONE ==============================
@@ -18,6 +11,16 @@ int main() {
     Time timeSinceLastUpdate = Time::Zero;
     Clock deltaClock;       // This will track how much time has past since the last frame
 
+    string line;
+    fstream infile;
+    infile.open("./resources/highscore", fstream::in | fstream::out);
+    while(getline(infile,line)) // To get you all the lines.
+    {
+        ; // Saves the line in STRING.
+        cout<<line; // Prints our STRING.
+    }
+    infile.close();
+    
     // FINESTRA ======================================
 	while (src.getWindow()->isOpen()) {
 		Event event1;

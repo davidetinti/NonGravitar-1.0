@@ -11,9 +11,8 @@ SourceLoader::SourceLoader(){
     timePerFrame = seconds(1.0f / 120.0f); // 120 frames per second
     settings.antialiasingLevel = 8;
     window.create(VideoMode(length, height), "Non Gravitar", (Style::Titlebar | Style::Close | Style::Resize), settings);
-    localPath[0] = "./../resources/";
-    localPath[1] = "/Users/davidetinti/Desktop/NonGravitar-1.0/resources/";
-    localPath[2] = "/Users/mlvp2t/Desktop/NonGravitar-1.0/resources/";
+    path[0] = "./../resources/";
+    //localPath[2] = "/Users/mlvp2t/Desktop/NonGravitar-1.0/resources/";
     loadTextures();
     loadSounds();
     loadFonts();
@@ -21,7 +20,7 @@ SourceLoader::SourceLoader(){
 
 void SourceLoader::loadTextures(){
     for (int i = 0; i < sizeof(texture)/sizeof(texture[0]); i++){
-        for (String userPath: localPath){
+        for (String userPath: path){
             texture[i].loadFromFile(userPath + to_string(i) + ".png");
         }
     }
@@ -29,7 +28,7 @@ void SourceLoader::loadTextures(){
 
 void SourceLoader::loadSounds(){
     for (int i = 0; i < sizeof(sound)/sizeof(sound[0]); i++){
-        for (String userPath: localPath){
+        for (String userPath: path){
             sound[i].loadFromFile(userPath + to_string(i) + ".ogg");
         }
     }
@@ -38,10 +37,8 @@ void SourceLoader::loadSounds(){
 void SourceLoader::loadFonts(){
     for (int i = 0; i < sizeof(font)/sizeof(font[0]); i++){
         if (!font[i].loadFromFile("./../resources/" + to_string(i) + ".ttf")){
-            if (!font[i].loadFromFile("/Users/davidetinti/Desktop/NonGravitar-1.0/resources/" + to_string(i) + ".ttf")){
-                if (!font[i].loadFromFile("/Users/mlvp2t/Desktop/NonGravitar-1.0/resources/" + to_string(i) + ".ttf")){
+            if (!font[i].loadFromFile("/Users/mlvp2t/Desktop/NonGravitar-1.0/resources/" + to_string(i) + ".ttf")){
                     cout << "ERROR";
-                }
             }
         }
     }
@@ -64,7 +61,7 @@ int SourceLoader::getSecondaryDamage(){
 }
 
 String *SourceLoader::getLocalPath(int n){
-    return &localPath[n];
+    return &path[n];
 }
 
 SoundBuffer *SourceLoader::getSound(int n){

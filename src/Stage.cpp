@@ -38,7 +38,7 @@ void Stage::addButton(Vector2f position, int tx_nr, float scala, char name[]){
     buttonList.push_back(tmp);
 }
 
-void Stage::addText(Vector2f position, String text, Color fillColor, Color outlineColor, int size, float border){
+Text* Stage::addText(Vector2f position, String text, Color fillColor, Color outlineColor, int size, float border){
     Text* tmp = new Text(text, *src->getFont(1));
     tmp->setPosition(position);
     tmp->setFillColor(fillColor);
@@ -46,6 +46,7 @@ void Stage::addText(Vector2f position, String text, Color fillColor, Color outli
     tmp->setCharacterSize(size);
     tmp->setOutlineThickness(border);
     textList.push_back(tmp);
+    return tmp;
 }
 
 void Stage::drawBackground(){

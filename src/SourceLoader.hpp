@@ -9,6 +9,7 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Network.hpp>
 #include <cstring>
+#include <fstream>
 
 using namespace std;
 using namespace sf;
@@ -21,7 +22,7 @@ protected:
     int length;
     int primaryDamage;
     int secondaryDamage;
-    String localPath[3];
+    String path[1];
     SoundBuffer sound[3];
     Texture texture[42];
     Font font[2];
@@ -58,6 +59,10 @@ public:
  0.ogg - player bullet
  1.ogg - button pushed
  2.ogg - button selected
+ 
+ FONTS:
+ 0.ttf - Text
+ 1.ttf - Demonized
  
  TEXTURES:
  0.png - player bullet
@@ -102,11 +107,7 @@ public:
  39.png - pause button
  40.png - resume button
  41.png - game over background
- 
- FONTS:
- 0.ttf - Text
- 1.ttf - Demonized
- 
+
  */
 
 #endif /* SourceLoader_hpp */
