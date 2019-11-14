@@ -7,6 +7,7 @@ Game::Game(){
 
 Game::Game(Resources *src){
     this->src = src;
+    highscore_st = Highscore(src);
     tmp_background = src->caricaTexture(36);
     universe = new Universe(src);
     home = new Stage(src, 25);
@@ -24,16 +25,19 @@ Game::Game(Resources *src){
     settings->addSlider(Vector2f(364, 290), 0.025, 0.1, (char*)"A_acceleration");
     settings->addSlider(Vector2f(364, 421), 3, 7, (char*)"B_max_speed");
     settings->addSlider(Vector2f(363, 552), 0, 0, (char*)"C_difficulty");
-    credits->addButton(Vector2f(640,650), 24, 0.25, (char*)"5_back");
     String str_credits = String("DEVELOPED BY:\n\n- DAVIDE TINTI\n- PAOLO MARZOLO\n- MATTEO FEROLI");
     credits->addText(Vector2f(430,250), str_credits, Color::Black, Color::White, 40, 1);
+    credits->addButton(Vector2f(640,650), 24, 0.25, (char*)"5_back");
     highscore->addButton(Vector2f(640,650), 24, 0.25, (char*)"5_back");
     game->addButton(Vector2f(1150,50), 39, 0.20, (char*)"7_pause");
     pause->addButton(Vector2f(330,450), 40, 0.45, (char*)"1_resume");
     pause->addButton(Vector2f(950,450), 38, 0.45, (char*)"6_back_to_menu");
-    game_over->addButton(Vector2f(640,650), 24, 0.25, (char*)"6_back");
-    String str_score = String("YOUR SCORE IS: ");
-    game_over->addText(Vector2f(300, 250), str_score, Color::Red, Color::Black, 60, 1);
+    pause->getBackground()->setColor(Color(128,128,128));
+    points = game_over->addText(Vector2f(260, 360), to_string(10000),
+                                Color::White, Color::Black, 60, 1);
+    highscore_st.setTextScore(points);
+    highscore_st.setTextPlayer(game_over->addText(Vector2f(880, 360), to_string(10000),
+                                                  Color::White, Color::Black, 60, 1));
     active = home;
 }
 
@@ -68,13 +72,6 @@ void Game::handleStageControls(){
                         break;
                     case '7':
                         active = pause;
-                        Texture tmp;
-                        tmp.create(src->getWindow()->getSize().x, src->getWindow()->getSize().y);
-                        tmp.update(*src->getWindow());
-                        Image a = tmp.copyToImage();
-                        tmp_background->update(a);
-                        pause->getBackground()->setTexture(*tmp_background);
-                        pause->getBackground()->setColor(Color(128,128,128));
                         break;
                 }
             }
@@ -101,6 +98,11 @@ void Game::handleStageControls(){
     }
 }
 
+void Game::updateScore(){
+    points->setString(to_string(universe->player.getPunti()));
+    points->setPosition(370 - points->getLocalBounds().width/2, 360);
+}
+
 void Game::handle(){
     active->drawBackground();
     handleStageControls();
@@ -108,9 +110,21 @@ void Game::handle(){
         if (!universe->player.getIsDead()){
             universe->handle();
             //TODO: move hud to game. why would it be in universe???
-            universe->hud.gestisci(universe->player.getPunti(), universe->player.getLifebar(), universe->player.getFuelbar());
+            universe->hud.gestisci(universe->player.getPunti(),
+                                   universe->player.getLifebar(),
+                                   universe->player.getFuelbar());
         } else {
+            updateScore();
             active = game_over;
+        }
+    }
+    if (active == highscore){
+        highscore_st.draw();
+    }
+    if (active == game_over){
+        if (highscore_st.insert()){
+            active = home;
+            universe = new Universe(this->src);
         }
     }
     src->handleAnimation();

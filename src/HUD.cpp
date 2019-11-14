@@ -31,7 +31,7 @@ HUD::HUD(Resources *src){
     life.setOutlineColor(Color::White);
     life.setCharacterSize(20);
     life.setOutlineThickness(1);
-    life.setPosition(this->src->getLength()/2 - 265, 16);
+    life.setPosition(this->src->getLength()/2 - 210 - life.getLocalBounds().width, 16);
     fuel = Text("FUEL", *src->getFont(1));
     fuel.setFillColor(Color::Blue);
     fuel.setOutlineColor(Color::White);
@@ -43,7 +43,7 @@ HUD::HUD(Resources *src){
     score.setOutlineColor(Color::White);
     score.setCharacterSize(20);
     score.setOutlineThickness(1);
-    score.setPosition(this->src->getLength()/2-55, 40);
+    score.setPosition((this->src->getLength() - score.getLocalBounds().width)/2, 40);
 }
 
 void HUD::gestisci(int point_f, float life_f, float fuel_f){

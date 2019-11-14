@@ -30,7 +30,7 @@ public:
     //FUNCTIONS
     void addButton(Vector2f position, int tx_nr, float scale, char name[]);
     void addSlider(Vector2f position, float min, float max, char name[]);
-    void addText(Vector2f position, String text, Color fillColor, Color outlineColor, int size, float border);
+    Text* addText(Vector2f position, String text, Color fillColor, Color outlineColor, int size, float border);
     void drawBackground();
     void drawObjects();
 };
