@@ -3,6 +3,7 @@
 Resources::Resources(){
     sourceLoader = new SourceLoader();
     animationList = list<Animation*>();
+    last_input = NULL;
 }
 
 int Resources::getHeight(){
@@ -19,6 +20,18 @@ int Resources::getPrimaryDamage(){
 
 int Resources::getSecondaryDamage(){
     return sourceLoader->getSecondaryDamage();
+}
+
+int Resources::getLastInput(){
+    return last_input;
+}
+
+void Resources::setLastInput(int value){
+    last_input = value;
+}
+
+Event* Resources::getEvent(){
+    return &event;
 }
 
 Time* Resources::getTimePerFrame(){
@@ -70,6 +83,20 @@ void Resources::handleAnimation(){
         } else {
             item->handle();
             it++;
+        }
+    }
+}
+
+void Resources::handleEvents(){
+    while (getWindow()->pollEvent(event)) {
+        switch (event.type) {
+            case Event::TextEntered:
+                last_input = event.text.unicode;
+                break;
+            case Event::Closed:
+                getWindow()->close();
+            default:
+                break;
         }
     }
 }

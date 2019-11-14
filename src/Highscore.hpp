@@ -17,8 +17,7 @@ protected:
     string player_name;;
     Text* player;
     Text* score;
-    char a;
-    
+    Clock insertion_clock;
     
 private:
     

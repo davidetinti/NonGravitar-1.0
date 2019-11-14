@@ -62,18 +62,14 @@ void Highscore::draw(){
 }
 
 bool Highscore::insert(){
-    Event event;
-    if (player_name.length() < 7 && Keyboard::isKeyPressed(Keyboard::Key::A)){
-        //if (event.key.code == Keyboard::Key::A){
-            player_name.append("A");
-            cout << "PREMUTO A";
-        //}
-    }
-    if (Keyboard::isKeyPressed(Keyboard::Key::S)){
-        //if (event.key.code == Keyboard::Key::A){
-        player_name.pop_back();
-        cout << "PREMUTO A";
-        //}
+    int input = src->getLastInput();
+    if (input != NULL){
+        if (input == 8) {
+            player_name.pop_back();
+        } else if (player_name.length() < 6 && input > 32 && input < 127) {
+            player_name += static_cast<char>(input);
+        }
+        src->setLastInput(NULL);
     }
     player->setString(player_name);
     player->setPosition(880 - player->getLocalBounds().width/2, 360);

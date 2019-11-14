@@ -22,7 +22,7 @@ protected:
     int length;
     int primaryDamage;
     int secondaryDamage;
-    String path[1];
+    String path;
     SoundBuffer sound[3];
     Texture texture[42];
     Font font[2];
@@ -42,7 +42,7 @@ public:
     int getLength();
     int getPrimaryDamage();
     int getSecondaryDamage();
-    String *getLocalPath(int n);
+    String *getPath();
     SoundBuffer *getSound(int n);
     Texture *getTexture(int n);
     Font *getFont(int n);

@@ -38,7 +38,6 @@ Game::Game(Resources *src){
     highscore_st.setTextScore(points);
     highscore_st.setTextPlayer(game_over->addText(Vector2f(880, 360), to_string(10000),
                                                   Color::White, Color::Black, 60, 1));
-    game_over->addButton(Vector2f(640,650), 24, 0.25, (char*)"6_back");
     active = home;
 }
 
