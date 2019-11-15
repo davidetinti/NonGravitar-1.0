@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "Game.hpp"
 
 Game::Game(){
