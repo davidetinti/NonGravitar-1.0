@@ -6,13 +6,13 @@ SingleStraightBullets::SingleStraightBullets(int time_btw_shoot, int damage, int
                                 int tx_nr, int sd_nr, bool autoshoot, Resources *src):
                                 Bullets(time_btw_shoot,damage,speed,tx_nr,sd_nr,autoshoot,src){}
 
-void SingleStraightBullets::addSingleBullet(Sprite entity, Keyboard::Key pulsante, int tempo){
+void SingleStraightBullets::addSingleBullet(Sprite entity, Keyboard::Key pulsante){
     double x = entity.getPosition().x;
     double y = entity.getPosition().y;
     double rotation = entity.getRotation();
     Time elapsed = bullet_time.getElapsedTime();
     if ((!autoshoot && Keyboard::isKeyPressed(pulsante) && elapsed.asMilliseconds()>time_btw_shoot) || 
-        (autoshoot && elapsed.asMilliseconds() > (time_btw_shoot + tempo))) { //perché tempo? a cosa dovrebbe servire
+        (autoshoot && elapsed.asMilliseconds() > (time_btw_shoot))) { //perché tempo? a cosa dovrebbe servire
         bulletList->push_front(proiettile(x,y,rotation,bullet_tx));
         bullet_time.restart();
     }

@@ -172,8 +172,8 @@ void Nave::decayThrustInt(){
 // FUNZIONI ==========================================
 
 void Nave::armi(Terreno *terrain){
-    SingleShot->addSingleBullet(nave, Keyboard::Key::S, 0);
-    Laser->addSingleBullet(nave, Keyboard::Key::L, 0);
+    SingleShot->addSingleBullet(nave, Keyboard::Key::S);
+    Laser->addSingleBullet(nave, Keyboard::Key::L);
     SingleShot->handle(*src->getTimePerFrame(), terrain);
     Laser->handle(*src->getTimePerFrame(), terrain);
 }

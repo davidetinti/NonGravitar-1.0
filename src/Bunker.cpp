@@ -42,9 +42,11 @@ Bunker::Bunker(Resources *src, Terreno *terrain){
         x = partial_x[i] + src->rand(0,201);
         p=src->rand(0,1);
         if(p) bunkers->push_front(bunkerlist(1,(src->rand(2500,7500)),x,terrain->get_Y(x),
-                          100, new SingleStraightBullets(400, 100, 10, 14, 0, true, src),bunker_tx,explosion_tx));
+                          100, new SingleStraightBullets(DEFAULT_TIME_BTW_SHOOT, DEFAULT_DAMAGE_SINGLE,
+                                 DEFAULT_SPEED, 14, 0, true, src),bunker_tx,explosion_tx));
         else bunkers->push_front(bunkerlist(1,(src->rand(2500,7500)),x,terrain->get_Y(x),
-                          100, new TripleBullets(400, 100, 10, 14, 0, true, src),bunker_tx,explosion_tx));
+                          100, new TripleBullets(DEFAULT_TIME_BTW_SHOOT, DEFAULT_DAMAGE_TRIPLE,
+                                 DEFAULT_SPEED, 14, 0, true, src),bunker_tx,explosion_tx));
     }
 }
 
@@ -60,7 +62,7 @@ bool Bunker::isEmpty(){
 }
 
 void Bunker::armi(bunkerlist *tmp, Terreno *terrain, Time perFrame){//perFrame should be in Resources
-    tmp->weapon->addSingleBullet(tmp->bunker, Keyboard::R, tmp->tempo);
+    tmp->weapon->addSingleBullet(tmp->bunker, Keyboard::R);
     tmp->weapon->handle(perFrame, terrain);
 }
 

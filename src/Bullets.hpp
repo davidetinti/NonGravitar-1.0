@@ -39,7 +39,7 @@ public:
     int getDamage();
     
     ///  FUNZIONI  //////////////////////////////////////////////////////
-    virtual void addSingleBullet(Sprite entity, Keyboard::Key pulsante, int tempo) = 0;
+    virtual void addSingleBullet(Sprite entity, Keyboard::Key pulsante) = 0;
     virtual void renderBullet(Time perFrame) = 0;
     virtual int checkCollision(FloatRect p);
     void handle(Time perFrame, Terreno *terrain = nullptr);

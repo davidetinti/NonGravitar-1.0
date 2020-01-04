@@ -16,13 +16,13 @@ TripleBullets::TripleBullets(int time_btw_shoot, int damage, int speed,
                                     sd_nr,autoshoot,src);
                                 }
 
-void TripleBullets::addSingleBullet(Sprite entity, Keyboard::Key pulsante, int tempo){
+void TripleBullets::addSingleBullet(Sprite entity, Keyboard::Key pulsante){
     Sprite t = entity;
-    centre.addSingleBullet(t,pulsante,tempo);
+    centre.addSingleBullet(t,pulsante);
     t.setRotation(t.getRotation() - 30);
-    left.addSingleBullet(t,pulsante,tempo);
+    left.addSingleBullet(t,pulsante);
     t.setRotation(t.getRotation() + 60);
-    right.addSingleBullet(t,pulsante,tempo);
+    right.addSingleBullet(t,pulsante);
 }
 
 void TripleBullets::renderBullet(Time perFrame){

@@ -159,9 +159,7 @@ void GPlanet::handle(Nave *player){
     }
 	current->enemies->gestisci(player, current->terrain); //A
     player->armi(terrain);//B
-    /*  I (paolo) wrote it like this, and it showcases two different ways to solve the problems of calling
-    *   the same function with different arguments and where to handle Boss::turrets. Not sure which one
-    *   is better, tbh. I'm happy to take criticism */
+    
     if(boss.isDead()) completed = true;
 }
 

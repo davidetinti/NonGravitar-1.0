@@ -5,7 +5,6 @@
 
 struct bunkerlist{
     int type;    // 0 = bunker spara fisso 1/2/3 colpi      1 = bunker segue il giocatore
-    int tempo;
     int damage;
     double x;
     double y;
@@ -22,7 +21,10 @@ struct bunkerlist{
 class Bunker{
 
 protected:
-
+    int const DEFAULT_TIME_BTW_SHOOT = 2000;
+    int const DEFAULT_DAMAGE_SINGLE = 10;
+    int const DEFAULT_DAMAGE_TRIPLE = 5;
+    int const DEFAULT_SPEED = 3;
     Resources *src;
     Texture *bunker_tx,*explosion_tx;
     double partial_x[4];        //coordinate per la griglia dei bunker
