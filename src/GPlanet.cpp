@@ -125,7 +125,7 @@ void GPlanet::checkCollision(Nave *player) { //maybe this should be split betwee
     current->enemies->checkCollision(player->Laser);
     if (current->enemies->checkCollision(&player->nave) > 0){
         player->getHit(current->enemies->DAMAGEONCOLLISION);
-        player->push_back(5);
+        player->push_back(5,current->nr_schermata == 666);
     }
     if (in_boss){
         boss.checkCollisionBoss(player->SingleShot);

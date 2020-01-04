@@ -1,7 +1,7 @@
 #ifndef Universe_hpp
 #define Universe_hpp
 
-#include "Pianeta.hpp"
+#include "Pianeti.hpp"
 #include "HUD.hpp"
 
 struct lista_schermate {
@@ -11,7 +11,7 @@ struct lista_schermate {
     lista_schermate* dw;
     int x;
     int y;
-    uPlanets pianeti;
+    Pianeti pianeti;
     lista_schermate *next;
     lista_schermate(int x_n, int y_n, Resources *src, lista_schermate *d=nullptr, lista_schermate *s=nullptr, 
         lista_schermate *u=nullptr, lista_schermate *down=nullptr, lista_schermate *nxt=nullptr);
@@ -45,13 +45,12 @@ public:
     // FUNZIONI ======================================
     lista_schermate *find(int x, int y);
     void move(int x, int y);
-    void disegnaPianeti();
     void checkTerrain();
     void handle();
     
 private:
     
-    bool contactPlanet(Vector2f pos, Pianeta* p);
+    bool contactPlanet(Vector2f pos, SinglePlanet* p);
     void addToList(lista_schermate *p);
     void exitPlanet();
 };
