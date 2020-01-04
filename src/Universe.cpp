@@ -120,7 +120,7 @@ void Universe::handle(){
             if (contactPlanet(player.nave.getPosition(),&*it)){
                 active->pianeti.setCurrent(&*it);
                 it->interno.inizializza(it->tot_schermate, src);
-                //transizioni->inPlanet(&planetIterator->interno.getHead()->terrain, planetIterator->tot_schermate);
+                //transizioni->inPlanet(it->interno.getHead()->terrain, it->tot_schermate);
                 player.setAtPlanet(true);
                 
                 player.braceForEntry(it->planet.getPosition(), src->getLength());
@@ -139,14 +139,18 @@ void Universe::handle(){
 			player.nave.setPosition(src->getLength(), player.nave.getPosition().y);
 			active->pianeti.getCurrent()->interno.cambia_schermata(-1);
         }
-        if (player.nave.getPosition().y < 0 || active->pianeti.getCurrent()->interno.getCompleted()) {
+        if (player.nave.getPosition().y < 0) {
             exitPlanet();
-            active->pianeti.deletePlanet(active->pianeti.getCurrent());
-            active->pianeti.setCurrent(nullptr);
         }
         //only able to go down far enough after boss is unlocked
         if (player.nave.getPosition().y > src->getHeight()){
             active->pianeti.getCurrent()->interno.enterBoss(&player);
+        }
+
+        if(active->pianeti.getCurrent()->interno.getCompleted()){
+            exitPlanet();
+            active->pianeti.deletePlanet(active->pianeti.getCurrent());
+            active->pianeti.setCurrent(nullptr);
         }
     }
     src->getWindow()->draw(player.thrust);
