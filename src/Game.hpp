@@ -15,6 +15,7 @@ protected:
     Texture *tmp_background;
     Text* points;
     Highscore highscore_st;
+    HUD hud;
     void handleStageControls();
     void updateScore();
     

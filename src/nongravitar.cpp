@@ -9,7 +9,7 @@ int main() {
     Resources src;
     Game game = Game(&src);
     Time timeSinceLastUpdate = Time::Zero;
-    Clock deltaClock;       // This will track how much time has past since the last frame
+    Clock deltaClock;       // This will track how much time has passed since the last frame
     
     // FINESTRA ======================================
 	while (src.getWindow()->isOpen()) {

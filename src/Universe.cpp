@@ -14,7 +14,6 @@ Universe::Universe(){
 
 Universe::Universe(Resources *src){
     this->src = src;
-    this->hud = HUD(this->src);
     this->player = Nave(this->src);
     this->active = new lista_schermate(0, 0, this->src);
     this->head_list = active;

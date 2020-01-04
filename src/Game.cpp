@@ -6,6 +6,7 @@ Game::Game(){
 
 Game::Game(Resources *src){
     this->src = src;
+    this->hud = HUD(src);
     highscore_st = Highscore(src);
     tmp_background = src->caricaTexture(36);
     universe = new Universe(src);
@@ -108,10 +109,9 @@ void Game::handle(){
     if (active == game){
         if (!universe->player.getIsDead()){
             universe->handle();
-            //TODO: move hud to game. why would it be in universe???
-            universe->hud.gestisci(universe->player.getPunti(),
-                                   universe->player.getLifebar(),
-                                   universe->player.getFuelbar());
+            hud.gestisci(universe->player.getPunti(),
+                         universe->player.getLifebar(),
+                         universe->player.getFuelbar());
         } else {
             updateScore();
             active = game_over;
