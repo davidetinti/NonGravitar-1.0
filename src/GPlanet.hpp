@@ -10,10 +10,10 @@ struct lista_schermate_pianeta {
     lista_schermate_pianeta* next;
     lista_schermate_pianeta* prev;
     Bunker *enemies;
-    Terreno terrain;
+    Terreno *terrain;
     Fuel carb;
     int nr_schermata;
-    lista_schermate_pianeta(Terreno terrain_n, int n,
+    lista_schermate_pianeta(Terreno *terrain_n, int n,
                         int totale_schermate, Resources *src,
                         lista_schermate_pianeta *next_n = nullptr,
                         lista_schermate_pianeta *prev_n = nullptr);

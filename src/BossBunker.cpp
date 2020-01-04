@@ -16,13 +16,12 @@ BossBunker::BossBunker(Resources *s, double r, Vector2f c){
     centre = Vector2f(src->getLength()/2, src->getHeight()/2);
     bunkers = new list<bunkerlist>;
     int nr_bunkers = src->rand(1,4);
-    bunkers->push_front(bunkerlist(0,100,centre.x + radius, centre.y,10,
-                          new SingleStraightBullets(400, 100, 10, 14, 0, true, src),bunker_tx,explosion_tx));
-    for(int i = 0; i < N_BUNKER - 1; i++){
-        angle = angle + offset;
-        newPos = newPosition(angle);
+    newPos = Vector2f(centre.x+radius,centre.y);
+    for(int i = 0; i < N_BUNKER; i++){
         bunkers->push_front(bunkerlist(0,100,newPos.x, newPos.y,10,
                           new SingleStraightBullets(400, 100, 10, 14, 0, true, src),bunker_tx,explosion_tx));
+        angle = angle + offset;
+        newPos = newPosition(angle);
     }
 }
 
@@ -36,19 +35,19 @@ Vector2f BossBunker::newPosition(double angle){
 }
 
 void BossBunker::updatePosition(double angle){
-    list<bunkerlist>::iterator iterator = bunkers->begin();
+    list<bunkerlist>::iterator it = bunkers->begin();
     list<bunkerlist>::iterator end = bunkers->end();
     double newAng = 0;
     double offset = 360 / N_BUNKER;
     int i = 0;
     Vector2f newPos;
-    while (iterator != end){
+    while (it != end){
         newAng = angle + offset * i;
         newPos = newPosition(newAng);
-        iterator->x = newPos.x;
-        iterator->y = newPos.y;
-        iterator->bunker.setPosition(iterator->x, iterator->y);
-        iterator++;
+        it->x = newPos.x;
+        it->y = newPos.y;
+        it->bunker.setPosition(it->x, it->y);
+        it++;
         i++;
     }
     updateRotation();

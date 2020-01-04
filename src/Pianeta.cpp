@@ -92,7 +92,7 @@ void uPlanets::deletePlanet(Pianeta* p){
     if(p!=nullptr){
         Pianeta *tmp = getHead();
         while(tmp != nullptr){
-            if(tmp->next == p && !p->exist) {
+            if(tmp->next == p) {
                 tmp->next = p->next;
                 delete p;
             }

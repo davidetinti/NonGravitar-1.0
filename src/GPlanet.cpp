@@ -2,17 +2,17 @@
 
 // COSTRUTTORI =======================================
 
-lista_schermate_pianeta::lista_schermate_pianeta(Terreno terrain_n, int n,
+lista_schermate_pianeta::lista_schermate_pianeta(Terreno *terrain_n, int n,
                         int totale_schermate, Resources *src,
                         lista_schermate_pianeta *next_n,
                         lista_schermate_pianeta *prev_n):
                             next(next_n),prev(prev_n),terrain(terrain_n),
                             nr_schermata(n){
-                                enemies = new Bunker(src,&terrain);
-                                carb = Fuel(&terrain,src);
+                                enemies = new Bunker(src,terrain);
+                                carb = Fuel(terrain,src);
                             }
 lista_schermate_pianeta::lista_schermate_pianeta(Resources *s) :
-                            next(nullptr),prev(nullptr),terrain(Terreno(s)),
+                            next(nullptr),prev(nullptr),terrain(nullptr),
                             nr_schermata(666){
                                 //TODO
                                 //carb = BossFuel(...);
@@ -81,12 +81,12 @@ void GPlanet::inizializza(int tot_schermate, Resources *src){
     lista_schermate_pianeta *tmp, *pre_tmp;
     if(head == nullptr){
         head = new lista_schermate_pianeta(
-            Terreno(random_height(), random_height(), src, tot_schermate),
+            new Terreno(random_height(), random_height(), src, tot_schermate),
             0, tot_schermate, src);
         pre_tmp = head;
         for (int i = 1; i < tot_schermate; i++){
             tmp = new lista_schermate_pianeta(
-                Terreno(random_height(), pre_tmp->terrain.getSxCoord(),src,tot_schermate),
+                new Terreno(random_height(), pre_tmp->terrain->getSxCoord(),src,tot_schermate),
                 i, tot_schermate, src, nullptr, pre_tmp);
             pre_tmp->next = tmp;
             pre_tmp = tmp;
@@ -147,17 +147,17 @@ void GPlanet::handle(Nave *player){
     checkCollision(player);
     checkTerrain(player);
     if (!in_boss) {
-        current->terrain.drawAll();
+        current->terrain->drawAll();
 		current->carb.gestisci();
         raggiotraente(player);
-        terrain = &current->terrain;//B
+        terrain = current->terrain;//B
 	}
 	if (boss_unlocked && current == head) src->getWindow()->draw(hole);
 	if (in_boss){
         boss.gestisci(player); //A
 		boss.draw(0);
     }
-	current->enemies->gestisci(player, &current->terrain); //A
+	current->enemies->gestisci(player, current->terrain); //A
     player->armi(terrain);//B
     /*  I (paolo) wrote it like this, and it showcases two different ways to solve the problems of calling
     *   the same function with different arguments and where to handle Boss::turrets. Not sure which one
@@ -183,7 +183,7 @@ void GPlanet::checkTerrain(Nave *player){
             enterBoss(player);
         else if (player->nave.getPosition().y + 22 
                     >= 
-                getCurrent()->terrain.get_Y(player->nave.getPosition().x))
+                getCurrent()->terrain->get_Y(player->nave.getPosition().x))
                 player->setIsDead(true);
     } else {
         if(boss.checkCollisionBoss(&player->nave))
@@ -204,7 +204,7 @@ void GPlanet::updateBossLock(){
 	    }
 	    if (no_bunkers) {
 	        boss_unlocked = true;
-	        head->terrain.prepareForBoss(&hole);
+	        head->terrain->prepareForBoss(&hole);
 	    }
 }
 

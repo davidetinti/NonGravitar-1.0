@@ -41,13 +41,9 @@ public:
     
     // FUNZIONI ======================================
     void handle(Nave *player);
+    void deletePlanet(Pianeta* p);
 private:
     void spriteSetup(Pianeta* p);
-    void deletePlanet(Pianeta* p);
-    //questa funzione è O(n) per la cancellazione: le altre due possibilità erano rendere la lista
-    //bidirezionale e inserire l'eliminazione, impropriamente, nella funzione di disegno in universo.
-    //poiché questa funzione è al più chiamata una volta ogni qualche minuto, credo l'efficienza debba
-    //lasciare spazio sia alla pulizia del codice sia all'uso di memoria dei puntatori.
 }; 
 
 #endif /* Pianeta_hpp */

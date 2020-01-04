@@ -72,7 +72,7 @@ void Boss::setAngle(double a){
 }
 
 bool Boss::isDead(){
-	return !alive;
+	return turrets->isEmpty(); // || hp_left > 0;
 }
 
 Vector2f Boss::getCenter(){
