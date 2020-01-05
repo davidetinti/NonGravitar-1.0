@@ -10,9 +10,9 @@ protected:
     const int N_BUNKER = 3;
     double radius;
     Vector2f centre;
-    Vector2f newPosition(double angle);
     void updateRotation();
 public:
+    Vector2f newPosition(double angle);
     BossBunker();
     BossBunker(Resources *src, double radius, Vector2f centre = Vector2f());
     void updatePosition(double angle);

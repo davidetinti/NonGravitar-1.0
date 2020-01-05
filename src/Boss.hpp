@@ -6,8 +6,11 @@ class Boss {
 private:
     static constexpr double ROTATION_STEP = 0.6;
     static const int HIT_TIMER_MS = 100;
+    static const int DEATH_TIMER_MS = 2000;
+    static const int EXPL_NR = 5;
      
 protected:
+    bool dying;
     bool red;
     Clock last_hit;
     Resources *src;
@@ -53,6 +56,7 @@ public:
 	void getHit(int shot);
 	void draw(int type = 0);
     void gestisci(Nave *player);
+    void explode();
 };
 
  

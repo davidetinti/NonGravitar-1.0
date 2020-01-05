@@ -27,6 +27,7 @@ Boss::Boss(int life, int turrets_n, Resources *src, double angolo, int vel, bool
 	speed = 1;
 	turrets = nullptr;
 	red = false;
+	dying = false;
 
 	CollisionBoundary = CircleShape(radius, 30);
 	VirtualCenter = CircleShape(2, 30);
@@ -115,13 +116,15 @@ bool Boss::checkCollisionBoss(Sprite *body){
 
 
 void Boss::getHit(int shot){
-	last_hit.restart();
-	if (turrets->isEmpty()){
-		hp_left = hp_left - shot;
-		notBoss.setColor(Color::Red);
-		red = true;
+	if (!dying){
+		last_hit.restart();
+		if (turrets->isEmpty()){
+			hp_left = hp_left - shot;
+			notBoss.setColor(Color::Red);
+			red = true;
+		}
+		else src->getWindow()->draw(CollisionBoundary);
 	}
-	else src->getWindow()->draw(CollisionBoundary);
 }
 
 void Boss::draw(int type){
@@ -148,14 +151,31 @@ void Boss::gestisci(Nave *player){
 		notBoss.setColor(Color::White);
 	}
 
-	if (rotation.getElapsedTime().asMilliseconds() > 20) {
+	if (rotation.getElapsedTime().asMilliseconds() > 20 && !(dying  || !alive)) {
 		notBoss.setRotation(notBoss.getRotation() + Boss::ROTATION_STEP);	//make it dependent from timePerFrame
 		turrets->updatePosition(notBoss.getRotation() + Boss::ROTATION_STEP);
 		rotation.restart();
 	}
-	if (hp_left <= 0) {
+	if (hp_left <= 0 && !dying) {
+		dying = true;
+		explode();
+	}
+	else if (dying && last_hit.getElapsedTime().asMilliseconds() < DEATH_TIMER_MS){
+		//if we want to add more explosions, this is where.
+	}
+	else if(dying && last_hit.getElapsedTime().asMilliseconds() > DEATH_TIMER_MS){
 		alive = false;
 	}
 }
 
+void Boss::explode(){
+	int offset = 360/EXPL_NR;
+	Vector2f newPos = turrets->newPosition(0);
+	for (int i = 0; i < EXPL_NR; i++){
+		src->addAnimation(newPos.x, newPos.y, 20, 1, 20, 6, 0.3);
+		newPos = turrets->newPosition(offset * i);
+	}
+	Vector2f halfoffset = Vector2f(offset/2, offset/2);
+	
+}
  
