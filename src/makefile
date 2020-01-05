@@ -16,14 +16,15 @@ LDFLAGS := -g -ggdb
 
 SRC := $(wildcard *.cpp)
 OBJS = $(addprefix $(ODIR)/,$(SRC:.cpp=.o))
-
+DEPS = $(OBJ:%.o=%.d)
 
 $(ODIR)/%.o: %.cpp
 
 	mkdir -p $(ODIR)
 
-	$(CXX) -c -o $@ $^ $(LDFLAGS)
+	$(CXX) -MMD -c -o $@ $^ $(LDFLAGS)
 
+-include $(DEP)
 
 
 $(PROG): $(OBJS)
@@ -34,7 +35,7 @@ $(PROG): $(OBJS)
 
 clean:
 
-	rm -f $(ODIR)/*.o nongravitar
+	rm -f -r $(ODIR) nongravitar
 
 	
 

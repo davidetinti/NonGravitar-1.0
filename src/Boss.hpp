@@ -5,8 +5,11 @@
 class Boss {
 private:
     static constexpr double ROTATION_STEP = 0.6;
+    static const int HIT_TIMER_MS = 100;
      
 protected:
+    bool red;
+    Clock last_hit;
     Resources *src;
 	int hp_total;
 	int hp_left;
@@ -21,7 +24,7 @@ protected:
     BossBunker *turrets;
 	Clock rotation;
 	Texture *hole_tx;
-    
+     
 public: 
     
     Sprite notBoss;

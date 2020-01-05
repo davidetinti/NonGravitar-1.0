@@ -26,7 +26,7 @@ Boss::Boss(int life, int turrets_n, Resources *src, double angolo, int vel, bool
 	centre.y = notBoss.getPosition().y;
 	speed = 1;
 	turrets = nullptr;
-	
+	red = false;
 
 	CollisionBoundary = CircleShape(radius, 30);
 	VirtualCenter = CircleShape(2, 30);
@@ -116,6 +116,9 @@ bool Boss::checkCollisionBoss(Sprite *body){
 
 void Boss::getHit(int shot){
 	hp_total = hp_total - shot;
+	last_hit.restart();
+	notBoss.setColor(Color::Red);
+	red = true;
 }
 
 void Boss::draw(int type){
@@ -133,6 +136,11 @@ void Boss::draw(int type){
 }
 
 void Boss::gestisci(Nave *player){
+	if(red && last_hit.getElapsedTime().asMilliseconds() > HIT_TIMER_MS){
+		red = false;
+		notBoss.setColor(Color::White);
+	}
+
 	if (rotation.getElapsedTime().asMilliseconds() > 20) {
 		notBoss.setRotation(notBoss.getRotation() + Boss::ROTATION_STEP);	//make it dependent from timePerFrame
 		turrets->updatePosition(notBoss.getRotation() + Boss::ROTATION_STEP);
