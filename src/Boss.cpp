@@ -72,7 +72,7 @@ void Boss::setAngle(double a){
 }
 
 bool Boss::isDead(){
-	return turrets->isEmpty(); // || hp_left > 0;
+	return !alive;
 }
 
 Vector2f Boss::getCenter(){
@@ -115,10 +115,13 @@ bool Boss::checkCollisionBoss(Sprite *body){
 
 
 void Boss::getHit(int shot){
-	hp_total = hp_total - shot;
-	last_hit.restart();
-	notBoss.setColor(Color::Red);
-	red = true;
+	if(turrets->isEmpty()){
+		hp_left = hp_left - shot;
+		last_hit.restart();
+		notBoss.setColor(Color::Red);
+		red = true;
+	}
+	else src->getWindow()->draw(CollisionBoundary);
 }
 
 void Boss::draw(int type){
