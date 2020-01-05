@@ -32,7 +32,7 @@ Boss::Boss(int life, int turrets_n, Resources *src, double angolo, int vel, bool
 	VirtualCenter = CircleShape(2, 30);
 	CollisionBoundary.setOrigin(Vector2f(radius, radius));
 	CollisionBoundary.setPosition(centre.x, centre.y);
-	CollisionBoundary.setOutlineColor(Color(255, 0, 0, 255));
+	CollisionBoundary.setOutlineColor(Color::Cyan);
 	CollisionBoundary.setOutlineThickness(2);
 	CollisionBoundary.setFillColor(Color(0, 0, 0, 0));
 	VirtualCenter.setOrigin(1, 1);
@@ -115,9 +115,9 @@ bool Boss::checkCollisionBoss(Sprite *body){
 
 
 void Boss::getHit(int shot){
-	if(turrets->isEmpty()){
+	last_hit.restart();
+	if (turrets->isEmpty()){
 		hp_left = hp_left - shot;
-		last_hit.restart();
 		notBoss.setColor(Color::Red);
 		red = true;
 	}
@@ -128,6 +128,10 @@ void Boss::draw(int type){
 	if (alive) {
 		src->getWindow()->draw(notBoss);
 		turrets->drawAll();
+
+		if (!turrets->isEmpty() && last_hit.getElapsedTime().asMilliseconds() < HIT_TIMER_MS){
+			src->getWindow()->draw(CollisionBoundary);
+		}
 
 		if (type == 1) {
 			src->getWindow()->draw(VirtualCenter);
