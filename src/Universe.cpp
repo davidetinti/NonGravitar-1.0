@@ -149,7 +149,7 @@ void Universe::handle(){
 
         if(active->pianeti.getCurrent()->interno.getCompleted()){
             exitPlanet();
-            active->pianeti.deletePlanet(active->pianeti.getCurrent());
+            active->pianeti.deletePlanet(active->pianeti.getCurrent(),&player);
             active->pianeti.setCurrent(nullptr);
         }
     }

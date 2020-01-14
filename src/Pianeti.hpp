@@ -41,7 +41,7 @@ public:
     
     // FUNZIONI ======================================
     void handle(Nave *player);
-    void deletePlanet(SinglePlanet* p);
+    void deletePlanet(SinglePlanet* p, Nave *player);
     void draw();
 private:
     void spriteSetup(SinglePlanet* p);

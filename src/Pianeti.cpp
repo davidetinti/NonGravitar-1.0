@@ -84,13 +84,15 @@ void Pianeti::handle(Nave *player){
 }
 
 
-void Pianeti::deletePlanet(SinglePlanet* p){
+void Pianeti::deletePlanet(SinglePlanet* p, Nave *player){
     list<SinglePlanet>::iterator it = planetlist.begin();
     bool deleted = false;
     while(it != planetlist.end() && !deleted){
         if(&*it == p) {
             it = planetlist.erase(it);
             deleted = true;
+            player->setFuelbar(100);
+            player->setLifebar(100);
         }
         it++;
     }
