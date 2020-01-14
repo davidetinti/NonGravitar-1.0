@@ -64,7 +64,7 @@ void Highscore::draw(){
 bool Highscore::insert(){
     int input = src->getLastInput();
     if (input != NULL){
-        if (input == 8) {
+        if (input == 8 && !player_name.empty()) {
             player_name.pop_back();
         } else if (player_name.length() < 6 && input > 32 && input < 127) {
             player_name += static_cast<char>(input);
