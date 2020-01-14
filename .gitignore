@@ -1,7 +1,2 @@
-
-Non_Gravitar.xcodeproj/project.pbxproj
-Non_Gravitar.xcodeproj/project.xcworkspace/contents.xcworkspacedata
-Non_Gravitar.xcodeproj/project.xcworkspace/xcuserdata/davidetinti.xcuserdatad/UserInterfaceState.xcuserstate
-Non_Gravitar.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
-Non_Gravitar.xcodeproj/xcuserdata/davidetinti.xcuserdatad/xcschemes/xcschememanagement.plist
-Non_Gravitar.xcodeproj/xcshareddata/xcschemes/Non_Gravitar.xcscheme
+Non_Gravitar.xcodeproj/*
+.DS_Store
