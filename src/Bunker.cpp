@@ -40,7 +40,7 @@ Bunker::Bunker(Resources *src, Terreno *terrain){
     int nr_bunkers = src->rand(1,4);
     for(int i = 0; i < nr_bunkers; i++){
         x = partial_x[i] + src->rand(0,201);
-        p=src->rand(2,0);
+        p=src->rand(0,2);
         if(p<2) bunkers->push_front(bunkerlist(1,(src->rand(2500,7500)),x,terrain->get_Y(x),
                           100, new SingleStraightBullets(DEFAULT_TIME_BTW_SHOOT, DEFAULT_DAMAGE_SINGLE,
                                  DEFAULT_SPEED, 14, 0, true, src),bunker_tx,explosion_tx));
