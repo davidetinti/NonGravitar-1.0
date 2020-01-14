@@ -28,6 +28,7 @@ Boss::Boss(int life, int turrets_n, Resources *src, double angolo, int vel, bool
 	turrets = nullptr;
 	red = false;
 	dying = false;
+	EXPL_NR = src->rand(3,10);
 
 	CollisionBoundary = CircleShape(radius, 30);
 	VirtualCenter = CircleShape(2, 30);
