@@ -6,7 +6,7 @@ class Boss {
 private:
     static constexpr double ROTATION_STEP = 0.6;
     static const int HIT_TIMER_MS = 100;
-    static const int DEATH_TIMER_MS = 2000;
+    static const int DEATH_TIMER_MS = 800;
     static const int EXPL_NR = 5;
      
 protected:
