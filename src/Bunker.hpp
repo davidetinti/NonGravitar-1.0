@@ -10,11 +10,12 @@ struct bunkerlist{
     double y;
     double life;
     double explosion_x;  //posizione del frame nell'animazione dell'esplosione
+    double boss_bunker_offset;
     bool exist;
     Sprite bunker,explosion;
     Bullets *weapon;
     bunkerlist(int type_n, int tempo_n, double x_n, double y_n, double life_n,
-               Bullets *weapon_n, Texture *b, Texture *e, bool exist_n = true, double explosion_x_n = 0);
+               Bullets *weapon_n, Texture *b, Texture *e, double boss_bunker_offset = 0);
     void spriteSetup(Texture *bunker_tx,Texture *explosion_tx);
 };
 

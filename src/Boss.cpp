@@ -20,10 +20,9 @@ Boss::Boss(int life, int turrets_n, Resources *src, double angolo, int vel, bool
 	notBoss.setTexture(*boss_tx);
 	notBoss.setScale(3.5, 3.5);
 	notBoss.setOrigin(Vector2f(boss_tx->getSize().x/2, boss_tx->getSize().y/2));
-	notBoss.setPosition(620, 360);
+	notBoss.setPosition(src->getLength()/2, src->getHeight()/2);
 	//notBoss.setColor(Color(255, 0, 0, 255));
-	centre.x = notBoss.getPosition().x;
-	centre.y = notBoss.getPosition().y;
+    centre = notBoss.getPosition();
 	speed = 1;
 	turrets = nullptr;
 	red = false;
@@ -33,12 +32,12 @@ Boss::Boss(int life, int turrets_n, Resources *src, double angolo, int vel, bool
 	CollisionBoundary = CircleShape(radius, 30);
 	VirtualCenter = CircleShape(2, 30);
 	CollisionBoundary.setOrigin(Vector2f(radius, radius));
-	CollisionBoundary.setPosition(centre.x, centre.y);
+	CollisionBoundary.setPosition(centre);
 	CollisionBoundary.setOutlineColor(Color::Cyan);
 	CollisionBoundary.setOutlineThickness(2);
 	CollisionBoundary.setFillColor(Color(0, 0, 0, 0));
 	VirtualCenter.setOrigin(1, 1);
-	VirtualCenter.setPosition(centre.x, centre.y);
+	VirtualCenter.setPosition(centre);
 	VirtualCenter.setOutlineColor(Color(255, 0, 0, 255));
 	VirtualCenter.setOutlineThickness(4);
 	VirtualCenter.setFillColor(Color(0, 0, 0, 0));

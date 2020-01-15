@@ -2,12 +2,18 @@
 
 // COSTRUTTORI =======================================
 bunkerlist::bunkerlist(int type_n, int tempo_n, double x_n, double y_n, double life_n,
-                Bullets *weapon_n, Texture *b, Texture *e, bool exist_n, double explosion_x_n) :
-               type(type_n), x(x_n), y(y_n), life(life_n), weapon(weapon_n),
-               exist(exist_n), explosion_x(explosion_x_n){
-                damage = 35;
-                spriteSetup(b,e);
-               }
+                       Bullets *weapon_n, Texture *b, Texture *e, double boss_bunker_offset) :
+type(type_n),
+x(x_n), y(y_n),
+life(life_n),
+weapon(weapon_n),
+boss_bunker_offset(boss_bunker_offset)
+{
+    exist = true;
+    explosion_x = 0;
+    damage = 35;
+    spriteSetup(b,e);
+}
 
 void bunkerlist::spriteSetup(Texture *bunker_tx, Texture *explosion_tx){
     this->bunker.setTexture(*bunker_tx);
@@ -68,7 +74,7 @@ void Bunker::armi(bunkerlist *tmp, Terreno *terrain, Time perFrame){//perFrame s
 
 
 void Bunker::hitBunker(int damage, list<bunkerlist>::iterator p){
-	p->life = p->life - damage;		
+	p->life = p->life - damage;
 }
 
 list<bunkerlist>::iterator Bunker::deleteBunker(list<bunkerlist>::iterator it){
@@ -117,7 +123,6 @@ bool Bunker::checkCollision(Bullets *b){
     list<bunkerlist>::iterator end = bunkers->end();
     bool deleted = false;
     bool hit = false;
-
     while (itB != endB){
         deleted = false;
         it = bunkers->begin();

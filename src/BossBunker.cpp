@@ -10,15 +10,13 @@ BossBunker::BossBunker(Resources *s, double r, Vector2f c){
     double angle = 0;
     double offset = 360 / N_BUNKER;
     Vector2f newPos;
-    bunkerlist *tmp;
     radius = r + bunker_tx->getSize().y;
     centre = Vector2f(src->getLength()/2, src->getHeight()/2);
     bunkers = new list<bunkerlist>;
-    int nr_bunkers = src->rand(1,4);
     newPos = Vector2f(centre.x+radius,centre.y);
     for(int i = 0; i < N_BUNKER; i++){
         bunkers->push_front(bunkerlist(0,100,newPos.x, newPos.y,10,
-                          new SingleStraightBullets(400, 100, 2, 14, 0, true, src),bunker_tx,explosion_tx));
+                          new SingleStraightBullets(400, 100, 2, 14, 0, true, src),bunker_tx,explosion_tx,angle));
         angle = angle + offset;
         newPos = newPosition(angle);
     }
@@ -37,11 +35,10 @@ void BossBunker::updatePosition(double angle){
     list<bunkerlist>::iterator it = bunkers->begin();
     list<bunkerlist>::iterator end = bunkers->end();
     double newAng = 0;
-    double offset = 360 / N_BUNKER;
     int i = 0;
     Vector2f newPos;
     while (it != end){
-        newAng = angle + offset * i;
+        newAng = angle + it->boss_bunker_offset;
         newPos = newPosition(newAng);
         it->x = newPos.x;
         it->y = newPos.y;

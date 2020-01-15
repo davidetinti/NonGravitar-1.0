@@ -119,7 +119,8 @@ void GPlanet::cambia_schermata(int n){
 }
 
 void GPlanet::checkCollision(Nave *player) { //maybe this should be split between universe and here
-    int primary = src->getPrimaryDamage(), secondary = src->getSecondaryDamage();
+    int primary = src->getPrimaryDamage();
+    int secondary = src->getSecondaryDamage();
     
     current->enemies->checkCollision(player->SingleShot);
     current->enemies->checkCollision(player->Laser);
@@ -194,16 +195,18 @@ int GPlanet::random_height(){
 }
 
 void GPlanet::updateBossLock(){
-    bool no_bunkers = true; int i = 0;
+    bool no_bunkers = true;
+    int i = 0;
     lista_schermate_pianeta *iterator = head;
     while (iterator != nullptr && no_bunkers && i < nr_schermate) {
-	        no_bunkers = no_bunkers && (iterator->enemies->isEmpty());
-	        iterator = iterator->next; i++;
-	    }
-	    if (no_bunkers) {
-	        boss_unlocked = true;
-	        head->terrain->prepareForBoss(&hole);
-	    }
+        no_bunkers = no_bunkers && (iterator->enemies->isEmpty());
+        iterator = iterator->next;
+        i++;
+    }
+    if (no_bunkers) {
+        boss_unlocked = true;
+        head->terrain->prepareForBoss(&hole);
+    }
 }
 
 bool GPlanet::getCompleted(){
