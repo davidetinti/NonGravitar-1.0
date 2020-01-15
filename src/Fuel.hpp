@@ -1,6 +1,4 @@
-#ifndef Fuel_hpp
-#define Fuel_hpp
-
+#pragma once
 #include "Terreno.hpp"
 
 struct fuel{
@@ -43,5 +41,3 @@ protected:
     void spriteSetup(fuel *selected, int power);
 
 };
-
-#endif /* Fuel_hpp */
