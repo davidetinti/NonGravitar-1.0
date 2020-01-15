@@ -178,6 +178,7 @@ void GPlanet::enterBoss(Nave *player){
     in_boss = true;
     cambia_schermata(666);
     player->nave.setPosition(src->getLength()/2,src->getHeight()/2);
+    player->in_boss = true;
 }
 
 void GPlanet::checkTerrain(Nave *player){

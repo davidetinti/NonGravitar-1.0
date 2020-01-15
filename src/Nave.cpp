@@ -43,6 +43,7 @@ Nave::Nave(Resources* src){
 	thrust.setScale(0.04, 0.04);
 	thrust_int = 0;
 	thrust.setOrigin(Vector2f(thrust_tx->getSize().x/2, thrust_tx->getSize().y));
+    in_boss = false;
 }
 
 // SETTERS E GETTERS =================================
@@ -208,7 +209,7 @@ void Nave::movements(){
 		addToDxDy(cos((nave.getRotation()-270) * M_PI / 180) * SpaceshipAcceleration, 
                   sin((nave.getRotation()-270) * M_PI / 180) * SpaceshipAcceleration);
 		thrust_int = 255;
-		if (fuel_left > 0)
+		if (fuel_left > 0 && !in_boss)
             fuel_left = fuel_left - SpaceshipAcceleration/2;
     } else {
 		decayThrustInt();
@@ -236,5 +237,6 @@ void Nave::braceForEntry(Vector2f planetPos, int larghezza){
 void Nave::resetStats(){
     life_left = TOTAL_LIFE;
     fuel_left = TOTAL_FUEL;
+    in_boss = false;
 }
 

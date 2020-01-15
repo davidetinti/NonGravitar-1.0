@@ -12,7 +12,6 @@ private:
     static const int HIT_TIMER_MS = 600;
 
 protected:
-    
     Resources *src;
     bool is_red;
     bool IsDead;
@@ -33,7 +32,7 @@ protected:
     Animation* tractor_beam;
     
 public:
-    
+    bool in_boss;
     Clock last_hit;
     Clock PushClock;
     Sprite nave;
