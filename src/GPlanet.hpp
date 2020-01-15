@@ -1,7 +1,6 @@
 #ifndef GPlanet_hpp
 #define GPlanet_hpp
 
-#include "Bunker.hpp"
 #include "Fuel.hpp"
 #include "Boss.hpp"
 #include "Transitions.hpp"

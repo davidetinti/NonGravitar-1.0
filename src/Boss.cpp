@@ -145,7 +145,7 @@ void Boss::draw(int type){
 	}
 }
 
-void Boss::gestisci(Nave *player){
+void Boss::gestisci(){
 	if(red && last_hit.getElapsedTime().asMilliseconds() > HIT_TIMER_MS){
 		red = false;
 		notBoss.setColor(Color::White);
@@ -174,8 +174,6 @@ void Boss::explode(){
 	for (int i = 0; i < EXPL_NR; i++){
 		src->addAnimation(newPos.x, newPos.y, 20, 1, 20, 6, 0.3);
 		newPos = turrets->newPosition(offset * i);
-	}
-	Vector2f halfoffset = Vector2f(offset/2, offset/2);
-	
+	}	
 }
  

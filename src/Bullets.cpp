@@ -2,16 +2,15 @@
 
 // COSTRUTTORI =======================================
 
-proiettile::proiettile(double x, double y, double rotation, Texture *bullet_tx)
-                {
-                    this->bullet.setTexture(*bullet_tx);
-                    this->bullet.setOrigin(bullet_tx->getSize().x/2, bullet_tx->getSize().y/2);
-                    this->bullet.setPosition(x, y);
-                    this->bullet.setRotation(rotation);
-                    this->bullet.setTextureRect(IntRect(0, 0, bullet_tx->getSize().x, bullet_tx->getSize().y));
-                    this->bullet.scale(1,1);
-                    //p->bullet_sound.setBuffer(bullet_sb);
-                }
+proiettile::proiettile(double x, double y, double rotation, Texture *bullet_tx){
+    this->bullet.setTexture(*bullet_tx);
+    this->bullet.setOrigin(bullet_tx->getSize().x/2, bullet_tx->getSize().y/2);
+    this->bullet.setPosition(x, y);
+    this->bullet.setRotation(rotation);
+    this->bullet.setTextureRect(IntRect(0, 0, bullet_tx->getSize().x, bullet_tx->getSize().y));
+    this->bullet.scale(1,1);
+    //p->bullet_sound.setBuffer(bullet_sb);
+}
 
 Bullets::Bullets(){
     

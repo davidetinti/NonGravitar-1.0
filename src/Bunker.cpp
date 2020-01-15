@@ -3,17 +3,18 @@
 // COSTRUTTORI =======================================
 bunkerlist::bunkerlist(int type_n, int tempo_n, double x_n, double y_n, double life_n,
                        Bullets *weapon_n, Texture *b, Texture *e, double boss_bunker_offset) :
-type(type_n),
-x(x_n), y(y_n),
-life(life_n),
-weapon(weapon_n),
-boss_bunker_offset(boss_bunker_offset)
-{
-    exist = true;
-    explosion_x = 0;
-    damage = 35;
-    spriteSetup(b,e);
-}
+    type(type_n),
+    x(x_n),
+    y(y_n),
+    life(life_n),
+    weapon(weapon_n),
+    boss_bunker_offset(boss_bunker_offset)
+    {
+        exist = true;
+        explosion_x = 0;
+        damage = 35;
+        spriteSetup(b,e);
+    }
 
 void bunkerlist::spriteSetup(Texture *bunker_tx, Texture *explosion_tx){
     this->bunker.setTexture(*bunker_tx);
@@ -94,11 +95,10 @@ void Bunker::gestisci(Nave *player, Terreno *terrain, double angle){
             armi(&*it, terrain, *src->getTimePerFrame());
         }
         if (it->life <= 0) {
-            it->exist = false;
+            it = deleteBunker(it);
             player->setPunti(player->getPunti()+100);
         }
         if (it->exist == false){
-            it = deleteBunker(it);
         }
         if (it != bunkers->end()) 
             it++;

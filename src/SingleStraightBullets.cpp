@@ -4,7 +4,9 @@ using namespace sf;
 //tx_nr dovrebbe essere deciso qui invece che dal caller
 SingleStraightBullets::SingleStraightBullets(int time_btw_shoot, int damage, int speed, 
                                 int tx_nr, int sd_nr, bool autoshoot, Resources *src):
-                                Bullets(time_btw_shoot,damage,speed,tx_nr,sd_nr,autoshoot,src){}
+Bullets(time_btw_shoot,damage,speed,tx_nr,sd_nr,autoshoot,src){
+    
+}
 
 void SingleStraightBullets::addSingleBullet(Sprite entity, Keyboard::Key pulsante){
     double x = entity.getPosition().x;
@@ -30,7 +32,9 @@ void SingleStraightBullets::renderBullet(Time perFrame){ //perFrame should be in
     }
 }
 
-SingleStraightBullets::SingleStraightBullets(){}
+SingleStraightBullets::SingleStraightBullets(){
+    
+}
 
 int SingleStraightBullets::checkCollision(FloatRect p){
     list<proiettile>::iterator it = bulletList->begin();

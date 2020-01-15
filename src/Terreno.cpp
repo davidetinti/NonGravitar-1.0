@@ -3,9 +3,10 @@
 // COSTRUTTORI =======================================
 
 soil::soil(soil *n):
-        next(n){
-            element = ConvexShape(4);
-        }
+    next(n)
+    {
+        element = ConvexShape(4);
+    }
 
 Terreno::Terreno(Resources *s){
     //TODO use this for boss background

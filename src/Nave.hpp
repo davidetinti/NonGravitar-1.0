@@ -5,11 +5,16 @@
 
 class Nave{
     
-protected:
+private:
+    
     static constexpr float TOTAL_LIFE = 100;
     static constexpr float TOTAL_FUEL = 100;
+    static const int HIT_TIMER_MS = 1000;
 
+protected:
+    
     Resources *src;
+    bool IsRed;
     bool IsDead;
     bool AtPlanet;
     float life_left;
@@ -29,6 +34,7 @@ protected:
     
 public:
     
+    Clock last_hit;
     Clock DamageClock;
     Clock PushClock;
     Sprite nave;
@@ -42,6 +48,8 @@ public:
     Nave(Resources *src);
     
     // SETTERS E GETTERS =============================
+    bool getIsRed();
+    void setIsRed(bool red);
     bool getIsDead();
     void setIsDead(bool a);
     bool getInGame();
@@ -84,6 +92,7 @@ public:
     void movements();
     void braceForEntry(Vector2f planetPos, int larghezza);
     void resetStats();
+    void checkStatus();
 };
 
 #endif /* Nave_hpp */

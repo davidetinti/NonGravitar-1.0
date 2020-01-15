@@ -55,7 +55,7 @@ public:
 	bool checkCollisionBoss(Sprite *body);
 	void getHit(int shot);
 	void draw(int type = 0);
-    void gestisci(Nave *player);
+    void gestisci();
     void explode();
 };
 

@@ -6,17 +6,23 @@ lista_schermate_pianeta::lista_schermate_pianeta(Terreno *terrain_n, int n,
                         int totale_schermate, Resources *src,
                         lista_schermate_pianeta *next_n,
                         lista_schermate_pianeta *prev_n):
-                            next(next_n),prev(prev_n),terrain(terrain_n),
-                            nr_schermata(n){
-                                enemies = new Bunker(src,terrain);
-                                carb = Fuel(terrain,src);
-                            }
+    next(next_n),
+    prev(prev_n),
+    terrain(terrain_n),
+    nr_schermata(n)
+    {
+        enemies = new Bunker(src,terrain);
+        carb = Fuel(terrain,src);
+    }
+
 lista_schermate_pianeta::lista_schermate_pianeta(Resources *s) :
-                            next(nullptr),prev(nullptr),terrain(nullptr),
-                            nr_schermata(666){
-                                //TODO
-                                //carb = BossFuel(...);
-                            }
+    next(nullptr),
+    prev(nullptr),
+    terrain(nullptr),
+    nr_schermata(666){
+        // TODO: complete this
+        //carb = BossFuel(...);
+    }
 
 GPlanet::GPlanet(){
     current = nullptr;
@@ -72,13 +78,14 @@ lista_schermate_pianeta *GPlanet::find(int n){///???
 
 
 void GPlanet::inizializza(int tot_schermate, Resources *src){
+    this->src = src;
     completed = false;
     nr_schermate = tot_schermate;
+    lista_schermate_pianeta *tmp = nullptr;
+    lista_schermate_pianeta *pre_tmp = nullptr;
     hole_tx = src->caricaTexture(31);
 	hole.setTexture(*hole_tx);
 	hole.setOrigin(hole_tx->getSize().x / 2, hole_tx->getSize().y / 2);
-    this->src = src;
-    lista_schermate_pianeta *tmp, *pre_tmp;
     if(head == nullptr){
         head = new lista_schermate_pianeta(
             new Terreno(random_height(), random_height(), src, tot_schermate),
@@ -119,9 +126,6 @@ void GPlanet::cambia_schermata(int n){
 }
 
 void GPlanet::checkCollision(Nave *player) { //maybe this should be split between universe and here
-    int primary = src->getPrimaryDamage();
-    int secondary = src->getSecondaryDamage();
-    
     current->enemies->checkCollision(player->SingleShot);
     current->enemies->checkCollision(player->Laser);
     if (current->enemies->checkCollision(&player->nave) > 0){
@@ -136,8 +140,14 @@ void GPlanet::checkCollision(Nave *player) { //maybe this should be split betwee
     //TODO: add collision bullets from boss turrets to ship
     int hit_n = current->enemies->checkCollisionBBullets(player->nave.getGlobalBounds());
     //getHit called with 1 so that it ignores clock
-    player->getHit(30 * hit_n, 1);
-
+    if (!player->getIsRed() && hit_n > 0){
+        player->setIsRed(true);
+        player->nave.setColor(Color::Red);
+        player->getHit(30 * hit_n, 1);
+        player->last_hit.restart();
+    } else {
+        player->checkStatus();
+    }
 }
  
 void GPlanet::handle(Nave *player){
@@ -155,13 +165,16 @@ void GPlanet::handle(Nave *player){
 	}
 	if (boss_unlocked && current == head) src->getWindow()->draw(hole);
 	if (in_boss){
-        boss.gestisci(player); //A
+        boss.gestisci(); //A
 		boss.draw(0);
     }
 	current->enemies->gestisci(player, current->terrain); //A
     player->armi(terrain);//B
     
-    if(boss.isDead()) completed = true;
+    if(boss.isDead()){
+        completed = true;
+        player->setPunti(player->getPunti() + 1000);
+    }
 }
 
 bool GPlanet::inHole(Sprite *body){

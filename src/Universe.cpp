@@ -3,10 +3,17 @@
 // COSTRUTTORI =======================================
 
 lista_schermate::lista_schermate(int x_n, int y_n, Resources *src, lista_schermate *d, lista_schermate *s, 
-        lista_schermate *u, lista_schermate *down, lista_schermate *nxt) : dx(d), sx(s), up(u),
-        dw(down), x(x_n), y(y_n), next(nxt){
-            pianeti = Pianeti(src);
-        }
+        lista_schermate *u, lista_schermate *down, lista_schermate *nxt) :
+    dx(d),
+    sx(s),
+    up(u),
+    dw(down),
+    x(x_n),
+    y(y_n),
+    next(nxt)
+    {
+        pianeti = Pianeti(src);
+    }
 
 Universe::Universe(){
     
@@ -149,6 +156,9 @@ void Universe::handle(){
 
         if(active->pianeti.getCurrent()->interno.getCompleted()){
             exitPlanet();
+            src->addAnimation(active->pianeti.getCurrent()->planet.getPosition().x,
+                              active->pianeti.getCurrent()->planet.getPosition().y,
+                              20, 1, 20, 3, 0.5);
             active->pianeti.deletePlanet(active->pianeti.getCurrent());
             active->pianeti.setCurrent(nullptr);
             player.resetStats();

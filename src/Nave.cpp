@@ -26,6 +26,7 @@ Nave::Nave(Resources* src){
     SpaceshipAcceleration = 0.1;
     AtPlanet = false;
     IsDead = false;
+    IsRed = false;
     Nave_tx = this->src->caricaTexture(4);
     nave.setOrigin(Vector2f(Nave_tx->getSize().x/2, Nave_tx->getSize().y/2));
     nave.setPosition(Vector2f(this->src->getLength() / 2, this->src->getHeight() / 2));
@@ -45,6 +46,14 @@ Nave::Nave(Resources* src){
 }
 
 // SETTERS E GETTERS =================================
+
+bool Nave::getIsRed(){
+    return IsRed;
+}
+
+void Nave::setIsRed(bool red){
+    IsRed = red;
+}
 
 bool Nave::getIsDead(){
     return this->IsDead;
@@ -279,4 +288,11 @@ void Nave::braceForEntry(Vector2f planetPos, int larghezza){
 void Nave::resetStats(){
     life_left = TOTAL_LIFE;
     fuel_left = TOTAL_FUEL;
+}
+
+void Nave::checkStatus(){
+    if (last_hit.getElapsedTime().asMilliseconds() > HIT_TIMER_MS){
+        nave.setColor(Color::White);
+        IsRed = false;
+    }
 }

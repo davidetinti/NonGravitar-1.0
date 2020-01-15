@@ -3,12 +3,14 @@
 // COSTRUTTORI =======================================
 
 fuel::fuel(double x_n, double y_n, int power_n,fuel *next_n, bool exist_n) :
-x(x_n),y(y_n),power(power_n),exist(exist_n){
-    
+    x(x_n),
+    y(y_n),
+    power(power_n),
+    exist(exist_n){
 }
 
 Fuel::Fuel(){
-    head=nullptr;
+    head = nullptr;
 }
 
 Fuel::Fuel(Terreno *terrain, Resources *src) {

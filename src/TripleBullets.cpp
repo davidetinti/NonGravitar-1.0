@@ -7,14 +7,14 @@ TripleBullets::TripleBullets(){}
 //tx_nr dovrebbe essere deciso qui invece che dal caller
 TripleBullets::TripleBullets(int time_btw_shoot, int damage, int speed, 
                                 int tx_nr, int sd_nr, bool autoshoot, Resources *src):
-                                Bullets(time_btw_shoot,damage,speed,tx_nr,sd_nr,autoshoot,src){
-                                    left = SingleStraightBullets(time_btw_shoot,damage,speed,tx_nr,
+    Bullets(time_btw_shoot,damage,speed,tx_nr,sd_nr,autoshoot,src){
+        left = SingleStraightBullets(time_btw_shoot,damage,speed,tx_nr,
                                     sd_nr,autoshoot,src);
-                                    centre = SingleStraightBullets(time_btw_shoot,damage,speed,tx_nr,
+        centre = SingleStraightBullets(time_btw_shoot,damage,speed,tx_nr,
                                     sd_nr,autoshoot,src);
-                                    right = SingleStraightBullets(time_btw_shoot,damage,speed,tx_nr,
+        right = SingleStraightBullets(time_btw_shoot,damage,speed,tx_nr,
                                     sd_nr,autoshoot,src);
-                                }
+    }
 
 void TripleBullets::addSingleBullet(Sprite entity, Keyboard::Key pulsante){
     Sprite t = entity;
