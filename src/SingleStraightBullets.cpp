@@ -36,21 +36,6 @@ SingleStraightBullets::SingleStraightBullets(){
     
 }
 
-int SingleStraightBullets::checkCollision(FloatRect p){
-    list<proiettile>::iterator it = bulletList->begin();
-    list<proiettile>::iterator end = bulletList->end();
-    int hit_counter = 0;
-    while (it != end){
-        if (collidesWith(it,p)){
-            hit_counter++;
-            it = bulletList->erase(it);
-        } else {
-            it++;
-        }
-    }
-    return hit_counter;
-}
-
 void SingleStraightBullets::cleanup(Terreno *terrain){
     list<proiettile>::iterator iterator = bulletList->begin();
     list<proiettile>::iterator end = bulletList->end();

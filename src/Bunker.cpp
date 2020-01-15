@@ -109,14 +109,20 @@ void Bunker::gestisci(Nave *player, Terreno *terrain, double angle){
     drawAll();
 }
 
+//returns only the damage by the last detected bunker. see
+//comment on Bullets::checkCollision for reasoning
+//it still verifies no other bullets are hitting the player
 int Bunker::checkCollisionBBullets(FloatRect obj){
     list<bunkerlist>::iterator it = bunkers->begin();
-    int hit_counter = 0;
+    int hit = 0;
+    int tmp_damage = 0;
     while (it != bunkers->end()){
-        hit_counter = hit_counter + it->weapon->checkCollision(obj);
+        tmp_damage = it->weapon->checkCollision(obj);
+        if(tmp_damage > hit) 
+            hit = tmp_damage;
         it++;
     }
-    return hit_counter;
+    return hit;
 }
 
 bool Bunker::checkCollision(Bullets *b){

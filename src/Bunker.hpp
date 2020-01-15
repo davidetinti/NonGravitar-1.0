@@ -23,8 +23,8 @@ class Bunker{
 
 protected:
     int const DEFAULT_TIME_BTW_SHOOT = 2000;
-    int const DEFAULT_DAMAGE_SINGLE = 10;
-    int const DEFAULT_DAMAGE_TRIPLE = 5;
+    int const DEFAULT_DAMAGE_SINGLE = 30;
+    int const DEFAULT_DAMAGE_TRIPLE = 20;
     int const DEFAULT_SPEED = 3;
     Resources *src;
     Texture *bunker_tx,*explosion_tx;

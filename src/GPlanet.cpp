@@ -137,17 +137,8 @@ void GPlanet::checkCollision(Nave *player) { //maybe this should be split betwee
         boss.checkCollisionBoss(player->Laser);
     }
     
-    //TODO: add collision bullets from boss turrets to ship
-    int hit_n = current->enemies->checkCollisionBBullets(player->nave.getGlobalBounds());
-    //getHit called with 1 so that it ignores clock
-    if (!player->getIsRed() && hit_n > 0){
-        player->setIsRed(true);
-        player->nave.setColor(Color::Red);
-        player->getHit(30 * hit_n, 1);
-        player->last_hit.restart();
-    } else {
-        player->checkStatus();
-    }
+    int hit = current->enemies->checkCollisionBBullets(player->nave.getGlobalBounds());
+    player->getHit(hit, 0);
 }
  
 void GPlanet::handle(Nave *player){

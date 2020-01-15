@@ -9,12 +9,12 @@ private:
     
     static constexpr float TOTAL_LIFE = 100;
     static constexpr float TOTAL_FUEL = 100;
-    static const int HIT_TIMER_MS = 1000;
+    static const int HIT_TIMER_MS = 600;
 
 protected:
     
     Resources *src;
-    bool IsRed;
+    bool is_red;
     bool IsDead;
     bool AtPlanet;
     float life_left;
@@ -35,7 +35,6 @@ protected:
 public:
     
     Clock last_hit;
-    Clock DamageClock;
     Clock PushClock;
     Sprite nave;
     Sprite raggio;
@@ -92,7 +91,6 @@ public:
     void movements();
     void braceForEntry(Vector2f planetPos, int larghezza);
     void resetStats();
-    void checkStatus();
 };
 
 #endif /* Nave_hpp */

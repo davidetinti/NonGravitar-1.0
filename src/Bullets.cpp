@@ -36,20 +36,22 @@ int Bullets::getDamage(){
 
 // FUNZIONI ==========================================
 
-
+//returns bullets.damage if collision was detected, but deletes
+//all colliding bullets. this is done because only one bullet can
+//hit the player at once.
 int Bullets::checkCollision(FloatRect p){
     list<proiettile>::iterator it = bulletList->begin();
     list<proiettile>::iterator end = bulletList->end();
-    int hit_counter = 0;
+    int hit = 0;
     while (it != end){
         if (collidesWith(it,p)){
-            hit_counter++;
+            hit = damage;
             it = bulletList->erase(it);
         } else {
             it++;
         }
     }
-    return hit_counter;
+    return hit;
 }
 
 bool Bullets::collidesWith(list<proiettile>::iterator p, FloatRect obj){

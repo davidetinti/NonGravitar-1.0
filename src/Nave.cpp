@@ -26,7 +26,7 @@ Nave::Nave(Resources* src){
     SpaceshipAcceleration = 0.1;
     AtPlanet = false;
     IsDead = false;
-    IsRed = false;
+    is_red = false;
     Nave_tx = this->src->caricaTexture(4);
     nave.setOrigin(Vector2f(Nave_tx->getSize().x/2, Nave_tx->getSize().y/2));
     nave.setPosition(Vector2f(this->src->getLength() / 2, this->src->getHeight() / 2));
@@ -48,11 +48,11 @@ Nave::Nave(Resources* src){
 // SETTERS E GETTERS =================================
 
 bool Nave::getIsRed(){
-    return IsRed;
+    return is_red;
 }
 
 void Nave::setIsRed(bool red){
-    IsRed = red;
+    is_red = red;
 }
 
 bool Nave::getIsDead(){
@@ -210,11 +210,15 @@ bool Nave::raggioTraente(){
 
 //call with 1 to ignore clock
 void Nave::getHit(int damage, int hitType){
-	Time elapsed = DamageClock.getElapsedTime();
-	if (elapsed.asSeconds() > Time_btw_hitS || hitType == 1) {
-		life_left = life_left - damage;
-		DamageClock.restart();
-	}
+    if ((!is_red || hitType == 1) && damage > 0){
+        is_red = true;
+        nave.setColor(Color::Red);
+        last_hit.restart();
+        life_left = life_left - damage;
+    } else if (last_hit.getElapsedTime().asMilliseconds() > HIT_TIMER_MS){
+        nave.setColor(Color::White);
+        is_red = false;
+    }
 }
 
 void Nave::push_back(int distance, int dir){
@@ -290,9 +294,3 @@ void Nave::resetStats(){
     fuel_left = TOTAL_FUEL;
 }
 
-void Nave::checkStatus(){
-    if (last_hit.getElapsedTime().asMilliseconds() > HIT_TIMER_MS){
-        nave.setColor(Color::White);
-        IsRed = false;
-    }
-}
