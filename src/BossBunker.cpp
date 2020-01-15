@@ -16,7 +16,7 @@ BossBunker::BossBunker(Resources *s, double r, Vector2f c){
     newPos = Vector2f(centre.x+radius,centre.y);
     for(int i = 0; i < N_BUNKER; i++){
         bunkers->push_front(bunkerlist(0,100,newPos.x, newPos.y,10,
-                          new SingleStraightBullets(400, 100, 2, 14, 0, true, src),bunker_tx,explosion_tx,angle));
+                          new SingleStraightBullets(1500, 100, 2, 14, 0, true, src),bunker_tx,explosion_tx,angle));
         angle = angle + offset;
         newPos = newPosition(angle);
     }

@@ -191,7 +191,7 @@ void GPlanet::checkTerrain(Nave *player){
                 player->setIsDead(true);
     } else {
         if(boss.checkCollisionBoss(&player->nave))
-            player->push_back(4,1);
+            player->push_back(2,1);
     }
 }
 
