@@ -8,8 +8,6 @@ struct proiettile{
     Sprite bullet;
     Sound bullet_sound;
     Clock invuln_clock;
-    proiettile *next;
-    proiettile *prev;
     proiettile(double x, double y, double rotation, Texture *bullet_tx);
 };
 

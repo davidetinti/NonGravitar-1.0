@@ -47,14 +47,6 @@ Nave::Nave(Resources* src){
 
 // SETTERS E GETTERS =================================
 
-bool Nave::getIsRed(){
-    return is_red;
-}
-
-void Nave::setIsRed(bool red){
-    is_red = red;
-}
-
 bool Nave::getIsDead(){
     return this->IsDead;
 }
@@ -75,10 +67,6 @@ double Nave::getLifebar(){
     return this->life_left;
 }
 
-void Nave::setLifebar(double lifebar){
-    this->life_left = lifebar;
-}
-
 double Nave::getFuelbar(){
     return this->fuel_left;
 }
@@ -91,16 +79,8 @@ void Nave::setFuelbar(double fuelbar){
     }
 }
 
-double Nave::getTopSpeed(){
-    return this->TopSpeed;
-}
-
 void Nave::setTopSpeed(double speed){
     this->TopSpeed = speed;
-}
-
-float Nave::getSpaceshipAcceleration(){
-    return this->SpaceshipAcceleration;
 }
 
 void Nave::setSpaceshipAcceleration(float acceleration){
@@ -111,18 +91,9 @@ double Nave::getX_planet(){
     return this->X_planet;
 }
 
-void Nave::setX_planet(double x){
-    this->X_planet = x;
-}
-
 double Nave::getY_planet(){
     return this->Y_planet;
 }
-
-void Nave::setY_planet(double y){
-    this->Y_planet = y;
-}
-
 
 int Nave::getPunti(){
     return this->punti;
@@ -141,36 +112,8 @@ void Nave::addToDxDy(double offsetDx, double offsetDy){
 	dy = dy + offsetDy;
 }
 
-double Nave::getDx(){
-	return dx;
-}
-
-double Nave::getDy(){
-	return dy;
-}
-
-double Nave::getCurrentSpeed(){
-	return CurrentSpeed;
-}
-
-void Nave::setCurrentSpeed(double speed){
-	CurrentSpeed = speed;
-}
-
-void Nave::setAnglePlanet(double angle){
-	angle_entering_planet = angle;
-}
-
 double Nave::getAnglePlanet(){
 	return angle_entering_planet;
-}
-
-void Nave::setThrustInt(int boost){
-	thrust_int = boost;
-}
-
-int Nave::getThrustInt(){
-	return thrust_int;
 }
 
 void Nave::decayThrustInt(){
@@ -251,7 +194,7 @@ void Nave::gestisci(){
 void Nave::handleThrust(){
     thrust.setRotation(nave.getRotation());
 	thrust.setPosition(nave.getPosition());
-	thrust.setColor(Color(255, 255, 255, getThrustInt()));
+	thrust.setColor(Color(255, 255, 255, thrust_int));
 }
 
 void Nave::movements(){
@@ -262,31 +205,32 @@ void Nave::movements(){
         nave.setRotation(nave.getRotation() + 3);
     }
     if (Keyboard::isKeyPressed(Keyboard::Space)) {
-		addToDxDy(cos((nave.getRotation()-270) * M_PI / 180) * getSpaceshipAcceleration(), sin((nave.getRotation()-270) * M_PI / 180) * getSpaceshipAcceleration());
-		setThrustInt(255);
-		if (getFuelbar() > 0)
-            setFuelbar(getFuelbar() - getSpaceshipAcceleration()/2);
+		addToDxDy(cos((nave.getRotation()-270) * M_PI / 180) * SpaceshipAcceleration, 
+                  sin((nave.getRotation()-270) * M_PI / 180) * SpaceshipAcceleration);
+		thrust_int = 255;
+		if (fuel_left > 0)
+            fuel_left = fuel_left - SpaceshipAcceleration/2;
     } else {
 		decayThrustInt();
-		if(getAtPlanet())
-			setDxDy(getDx()*0.98, getDy()*0.98);
+		if(AtPlanet)
+			setDxDy(dx*0.98, dy*0.98);
     }
-	setCurrentSpeed(sqrt(getDx() * getDx() + getDy() * getDy()));
-	if (getCurrentSpeed() > getTopSpeed()) {
-		setDxDy(getDx() * getTopSpeed() / getCurrentSpeed(), getDy() * getTopSpeed() / getCurrentSpeed());
+	CurrentSpeed = sqrt(dx * dx + dy * dy);
+	if (CurrentSpeed > TopSpeed) {
+		setDxDy(dx * TopSpeed / CurrentSpeed, dy * TopSpeed / CurrentSpeed);
 	}
 
-	nave.move(getDx() * src->getTimePerFrame()->asMilliseconds() * 0.1,getDy() * src->getTimePerFrame()->asMilliseconds() * 0.1);
+	nave.move(dx * src->getTimePerFrame()->asMilliseconds() * 0.1,dy * src->getTimePerFrame()->asMilliseconds() * 0.1);
 }
 
 void Nave::braceForEntry(Vector2f planetPos, int larghezza){
     nave.setPosition(larghezza/2, 0);
-    setAnglePlanet(0);
-    setX_planet(planetPos.x);
-    setY_planet(planetPos.y + 35);
+    angle_entering_planet = 0;
+    X_planet = planetPos.x;
+    Y_planet = planetPos.y + 35;
     nave.setRotation(0);
     setDxDy(0, 0.8);
-    setCurrentSpeed(sqrt(getDx() * getDx() + getDy() * getDy()));
+    CurrentSpeed = sqrt(dx * dx + dy * dy);
 }
 
 void Nave::resetStats(){

@@ -47,38 +47,22 @@ public:
     Nave(Resources *src);
     
     // SETTERS E GETTERS =============================
-    bool getIsRed();
-    void setIsRed(bool red);
     bool getIsDead();
     void setIsDead(bool a);
-    bool getInGame();
-    void setInGame(bool ingame);
     bool getAtPlanet();
     void setAtPlanet(bool atplanet);
     double getLifebar();
-    void setLifebar(double lifebar);
     double getFuelbar();
     void setFuelbar(double fuelbar);
-    double getTopSpeed();
     void setTopSpeed(double speed);
-    float getSpaceshipAcceleration();
     void setSpaceshipAcceleration(float acceleration);
     double getX_planet();
-    void setX_planet(double x);
     double getY_planet();
-    void setY_planet(double y);
     int getPunti();
     void setPunti(int punti);
 	void setDxDy(double newDx, double newDy);
 	void addToDxDy(double offsetDx, double offsetDy);
-	double getDx();
-	double getDy();
-	double getCurrentSpeed();
-	void setCurrentSpeed(double speed);
-	void setAnglePlanet(double angle);
 	double getAnglePlanet();
-	void setThrustInt(int boost);
-	int getThrustInt();
 	void decayThrustInt();
     
     // FUNZIONI ======================================
