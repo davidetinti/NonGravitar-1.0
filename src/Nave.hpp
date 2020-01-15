@@ -6,12 +6,14 @@
 class Nave{
     
 protected:
-    
+    static constexpr float TOTAL_LIFE = 100;
+    static constexpr float TOTAL_FUEL = 100;
+
     Resources *src;
     bool IsDead;
     bool AtPlanet;
-    float Lifebar;
-    float Fuelbar;
+    float life_left;
+    float fuel_left;
     double TopSpeed;
 	double CurrentSpeed;
     float SpaceshipAcceleration;
@@ -81,6 +83,7 @@ public:
     void handleThrust();
     void movements();
     void braceForEntry(Vector2f planetPos, int larghezza);
+    void resetStats();
 };
 
 #endif /* Nave_hpp */

@@ -18,8 +18,8 @@ Nave::Nave(Resources* src){
     punti = 0;
     X_planet = this->src->getLength()/2;
     Y_planet = this->src->getHeight()/2;
-    Lifebar = 100;
-    Fuelbar = 100;
+    life_left = TOTAL_LIFE;
+    fuel_left = TOTAL_FUEL;
     TopSpeed = 5;
 	CurrentSpeed = 0;
 	dx = 0; dy = 0;
@@ -63,22 +63,22 @@ void Nave::setAtPlanet(bool atplanet){
 }
 
 double Nave::getLifebar(){
-    return this->Lifebar;
+    return this->life_left;
 }
 
 void Nave::setLifebar(double lifebar){
-    this->Lifebar = lifebar;
+    this->life_left = lifebar;
 }
 
 double Nave::getFuelbar(){
-    return this->Fuelbar;
+    return this->fuel_left;
 }
 
 void Nave::setFuelbar(double fuelbar){
     if (fuelbar >= 100){
-        this->Fuelbar = 100;
+        this->fuel_left = 100;
     } else {
-        this->Fuelbar = fuelbar;
+        this->fuel_left = fuelbar;
     }
 }
 
@@ -203,7 +203,7 @@ bool Nave::raggioTraente(){
 void Nave::getHit(int damage, int hitType){
 	Time elapsed = DamageClock.getElapsedTime();
 	if (elapsed.asSeconds() > Time_btw_hitS || hitType == 1) {
-		Lifebar = Lifebar - damage;
+		life_left = life_left - damage;
 		DamageClock.restart();
 	}
 }
@@ -274,4 +274,9 @@ void Nave::braceForEntry(Vector2f planetPos, int larghezza){
     nave.setRotation(0);
     setDxDy(0, 0.8);
     setCurrentSpeed(sqrt(getDx() * getDx() + getDy() * getDy()));
+}
+
+void Nave::resetStats(){
+    life_left = TOTAL_LIFE;
+    fuel_left = TOTAL_FUEL;
 }

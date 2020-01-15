@@ -151,6 +151,7 @@ void Universe::handle(){
             exitPlanet();
             active->pianeti.deletePlanet(active->pianeti.getCurrent());
             active->pianeti.setCurrent(nullptr);
+            player.resetStats();
         }
     }
     src->getWindow()->draw(player.thrust);
