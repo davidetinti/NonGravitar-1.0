@@ -5,39 +5,36 @@ struct fuel{
     double x;
     double y;
     int power;
-    bool exist;
     Sprite fuel_sprite;
-    fuel *next;
-    fuel(double x_n, double y_n, int power_n,fuel *next_n,bool exist_n);
+    fuel(double x_n, double y_n, int power_n);
 };
 
-class Fuel{
+class Fuels{
     
 protected:
     
     Resources *src;
     Texture *fuel_tx;
-    fuel *current,*head;
+    list<fuel> *fuel_list;
     double partial_x[3];
     
 public:
     
     // COSTRUTTORI ===================================
-    Fuel();
-    Fuel(Terreno *terrain,Resources *src);
+    Fuels();
+    Fuels(Terreno *terrain,Resources *src);
     
     // SETTERS E GETTERS =============================
-    fuel *getCurrent();
-    fuel *getHead();
-    void setCurrent(fuel *current);
-    void setHead(fuel *head);
+    list<fuel>::iterator getFuelListBegin();
+    list<fuel>::iterator getFuelListEnd();
     
     // FUNZIONI ======================================
-    void delete_fuel(fuel *selected);
-    int getPower(fuel *current);
+    list<fuel>::iterator delete_fuel(list<fuel>::iterator it);
+    int getPower(list<fuel>::iterator it);
     void gestisci();
     
 protected:
+    
     void spriteSetup(fuel *selected, int power);
 
 };

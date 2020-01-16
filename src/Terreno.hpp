@@ -1,7 +1,7 @@
 #ifndef Terreno_hpp
 #define Terreno_hpp
 
-#include <cmath>
+#include <math.h>
 #include "Resources.hpp"
 
 struct soil{

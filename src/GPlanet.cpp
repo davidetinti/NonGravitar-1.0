@@ -12,7 +12,7 @@ lista_schermate_pianeta::lista_schermate_pianeta(Terreno *terrain_n, int n,
     nr_schermata(n)
     {
         enemies = new Bunker(src,terrain);
-        carb = Fuel(terrain,src);
+        carb = new Fuels(terrain,src);
     }
 
 lista_schermate_pianeta::lista_schermate_pianeta(Resources *s) :
@@ -143,14 +143,12 @@ void GPlanet::checkCollision(Nave *player) { //maybe this should be split betwee
  
 void GPlanet::handle(Nave *player){
     Terreno *terrain = nullptr;
-    if (!boss_unlocked)
-	    updateBossLock();
-    player->raggioTraente();
+    if (!boss_unlocked) updateBossLock();
     checkCollision(player);
     checkTerrain(player);
     if (!in_boss) {
         current->terrain->drawAll();
-		current->carb.gestisci();
+        current->carb->gestisci();
         raggiotraente(player);
         terrain = current->terrain;//B
 	}
@@ -219,19 +217,37 @@ bool GPlanet::getCompleted(){
 }
 
 void GPlanet::raggiotraente(Nave *player){
+    list<fuel>::iterator it = current->carb->getFuelListBegin();
+    list<fuel>::iterator end = current->carb->getFuelListEnd();
     if (player->raggioTraente()){
-        fuel *tmp = current->carb.getHead();
-        while(tmp!=nullptr){
-            if(abs(player->nave.getPosition().x - tmp->x) <50 && (tmp->y - player->nave.getPosition().y <=150)){
-                fuel *tmp1 = tmp->next;
-                cout << player->getFuelbar() << "\n";
-                player->setFuelbar(player->getFuelbar() + current->carb.getPower(tmp));
-                cout << player->getFuelbar();
-                current->carb.delete_fuel(tmp);
-                tmp = tmp1;
-            } else {
-                tmp=tmp->next;
+        
+        ConvexShape ray;
+        ray.setPointCount(3);
+        ray.setPoint(0, player->nave.getPosition());
+        ray.setPoint(1, Vector2f(player->nave.getPosition().x - 45, player->nave.getPosition().y + 300));
+        ray.setPoint(2, Vector2f(player->nave.getPosition().x + 45, player->nave.getPosition().y + 300));
+
+        while(it != end){
+            if(ray.getGlobalBounds().intersects(it->fuel_sprite.getGlobalBounds())){
+                double xfn = player->nave.getPosition().x - it->fuel_sprite.getPosition().x;
+                double yfn = player->nave.getPosition().y - it->fuel_sprite.getPosition().y;
+                double angle = atan(xfn/yfn);
+                it->x = it->x - 1 * sin(angle);
+                it->y = it->y - 1 * cos(angle);
+                it->fuel_sprite.setPosition(it->x, it->y);
             }
+            if(player->nave.getGlobalBounds().intersects(it->fuel_sprite.getGlobalBounds())){
+                player->setFuelbar(player->getFuelbar() + it->power);
+                it = current->carb->delete_fuel(it);
+            } else {
+                it++;
+            }
+        }
+    } else {
+        while (it != end){
+            it->y = min(current->terrain->get_Y(it->x), it->y + 1);
+            it->fuel_sprite.setPosition(it->x, it->y);
+            it++;
         }
     }
 }

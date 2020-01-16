@@ -1,7 +1,7 @@
 #ifndef GPlanet_hpp
 #define GPlanet_hpp
 
-#include "Fuel.hpp"
+#include "Fuels.hpp"
 #include "Boss.hpp"
 #include "Transitions.hpp"
 
@@ -10,7 +10,7 @@ struct lista_schermate_pianeta {
     lista_schermate_pianeta* prev;
     Bunker *enemies;
     Terreno *terrain;
-    Fuel carb;
+    Fuels *carb;
     int nr_schermata;
     lista_schermate_pianeta(Terreno *terrain_n, int n,
                         int totale_schermate, Resources *src,

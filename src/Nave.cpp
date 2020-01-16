@@ -12,7 +12,7 @@ Nave::Nave(Resources* src){
     raggiox = 0;
     raggioy = 0;
     raggio_tx = this->src->caricaTexture(17);
-    raggio.setScale(0.35, 0.6);
+    raggio.setScale(0.30, 0.80);
     raggio.setTexture(*raggio_tx);
     raggio.setColor(Color(255,255,255,160));
     punti = 0;

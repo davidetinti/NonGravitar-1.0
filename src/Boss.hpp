@@ -27,7 +27,7 @@ protected:
     BossBunker *turrets;
 	Clock rotation;
 	Texture *hole_tx;
-     
+    
 public: 
     
     Sprite notBoss;
