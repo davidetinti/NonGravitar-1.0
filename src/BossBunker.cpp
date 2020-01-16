@@ -6,11 +6,11 @@ BossBunker::BossBunker(){
 BossBunker::BossBunker(Resources *s, double r, Vector2f c){
     src = s;
     explosion_tx = src->caricaTexture(20);
-    bunker_tx = src->caricaTexture(3);
+    bunker_tx = src->caricaTexture(43);
     double angle = 0;
     double offset = 360 / N_BUNKER;
     Vector2f newPos;
-    radius = r + bunker_tx->getSize().y;
+    radius = r + 50;
     centre = Vector2f(src->getLength()/2, src->getHeight()/2);
     bunkers = new list<bunkerlist>;
     newPos = Vector2f(centre.x+radius,centre.y);

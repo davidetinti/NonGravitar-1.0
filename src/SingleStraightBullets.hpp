@@ -1,3 +1,4 @@
+#pragma once
 #include "Terreno.hpp"
 #include "Bullets.hpp"
 
@@ -5,7 +6,7 @@ using namespace sf;
 using namespace std;
 
 
-class SingleStraightBullets: public Bullets{
+class SingleStraightBullets : public Bullets{
 public:
     void addSingleBullet(Sprite entity, Keyboard::Key pulsante);
     void renderBullet(Time perFrame);

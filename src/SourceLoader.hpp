@@ -24,7 +24,7 @@ protected:
     int secondaryDamage;
     String path;
     SoundBuffer sound[3];
-    Texture texture[43];
+    Texture texture[44];
     Font font[2];
     ContextSettings settings;
     RenderWindow window;
@@ -108,6 +108,7 @@ public:
  40.png - resume button
  41.png - game over background
  42.png - bunker one bullet
+ 43.png - boss bunker
 
  */
 

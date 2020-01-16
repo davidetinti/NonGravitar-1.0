@@ -16,7 +16,7 @@ Boss::Boss(int life, int turrets_n, Resources *src, double angolo, int vel, bool
 	alive = notdead;
 	angle = angolo;
 	boss_tx = src->caricaTexture(32);
-	radius = boss_tx->getSize().x/2;
+	radius = boss_tx->getSize().x/2 - 350;
 	notBoss.setTexture(*boss_tx);
 	notBoss.setOrigin(Vector2f(boss_tx->getSize().x/2, boss_tx->getSize().y/2));
 	notBoss.setPosition(src->getLength()/2, src->getHeight()/2);
