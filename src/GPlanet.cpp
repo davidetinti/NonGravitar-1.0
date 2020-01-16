@@ -220,15 +220,8 @@ void GPlanet::raggiotraente(Nave *player){
     list<fuel>::iterator it = current->carb->getFuelListBegin();
     list<fuel>::iterator end = current->carb->getFuelListEnd();
     if (player->raggioTraente()){
-        
-        ConvexShape ray;
-        ray.setPointCount(3);
-        ray.setPoint(0, player->nave.getPosition());
-        ray.setPoint(1, Vector2f(player->nave.getPosition().x - 45, player->nave.getPosition().y + 300));
-        ray.setPoint(2, Vector2f(player->nave.getPosition().x + 45, player->nave.getPosition().y + 300));
-
         while(it != end){
-            if(ray.getGlobalBounds().intersects(it->fuel_sprite.getGlobalBounds())){
+            if(player->raggio.getGlobalBounds().intersects(it->fuel_sprite.getGlobalBounds())){
                 double xfn = player->nave.getPosition().x - it->fuel_sprite.getPosition().x;
                 double yfn = player->nave.getPosition().y - it->fuel_sprite.getPosition().y;
                 double angle = atan(xfn/yfn);
