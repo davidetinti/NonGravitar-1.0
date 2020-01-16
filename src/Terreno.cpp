@@ -9,10 +9,17 @@ soil::soil(soil *n):
     }
 
 Terreno::Terreno(Resources *s){
-    //TODO use this for boss background
+    this->src = s;
+    nr_schermate = 0;
+    dx_coord = 0;
+    sx_coord = 0;
+    terrain_tx = nullptr;
     background_tx = s->caricaTexture(33);
     background.setTexture(*background_tx);
-    background.setColor(Color::Yellow);
+    head = nullptr;
+    minSizeHole = 0;
+    minSizeSoil = 0;
+    
 }
 
 Terreno::Terreno(int sx_coord, int dx_coord, Resources *src, int tot_schermate){

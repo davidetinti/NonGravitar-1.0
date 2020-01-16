@@ -18,10 +18,8 @@ Boss::Boss(int life, int turrets_n, Resources *src, double angolo, int vel, bool
 	boss_tx = src->caricaTexture(32);
 	radius = boss_tx->getSize().x/2;
 	notBoss.setTexture(*boss_tx);
-	notBoss.setScale(3.5, 3.5);
 	notBoss.setOrigin(Vector2f(boss_tx->getSize().x/2, boss_tx->getSize().y/2));
 	notBoss.setPosition(src->getLength()/2, src->getHeight()/2);
-	//notBoss.setColor(Color(255, 0, 0, 255));
     centre = notBoss.getPosition();
 	speed = 1;
 	turrets = nullptr;

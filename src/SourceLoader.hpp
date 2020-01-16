@@ -24,7 +24,7 @@ protected:
     int secondaryDamage;
     String path;
     SoundBuffer sound[3];
-    Texture texture[42];
+    Texture texture[43];
     Font font[2];
     ContextSettings settings;
     RenderWindow window;
@@ -68,7 +68,7 @@ public:
  0.png - player bullet
  1.png - player laser
  2.png - slider
- 3.png - bunker
+ 3.png - bunker triple bullet
  4.png - spaceship
  5.png - planet type 1
  6.png - planet type 2
@@ -107,6 +107,7 @@ public:
  39.png - pause button
  40.png - resume button
  41.png - game over background
+ 42.png - bunker one bullet
 
  */
 

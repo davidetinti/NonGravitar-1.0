@@ -42,6 +42,7 @@ Bunker::Bunker(Resources *src, Terreno *terrain){
     partial_x[2] = 665;
     partial_x[3] = 915;
     bunker_tx = src->caricaTexture(3);
+    bunker_tx2 = src->caricaTexture(42);
     int x;
     
     bunkers = new list<bunkerlist>;
@@ -53,7 +54,7 @@ Bunker::Bunker(Resources *src, Terreno *terrain){
         
         if(p>4) bunkers->push_front(bunkerlist(p2,(src->rand(2500,7500)),x,terrain->get_Y(x),
                           100, new SingleStraightBullets(DEFAULT_TIME_BTW_SHOOT, DEFAULT_DAMAGE_SINGLE,
-                                 DEFAULT_SPEED, 14, 0, true, src),bunker_tx,explosion_tx));
+                                 DEFAULT_SPEED, 14, 0, true, src),bunker_tx2,explosion_tx));
         else bunkers->push_front(bunkerlist(p2,(src->rand(2500,7500)),x,terrain->get_Y(x),
                           100, new TripleBullets(DEFAULT_TIME_BTW_SHOOT, DEFAULT_DAMAGE_TRIPLE,
                                  DEFAULT_SPEED, 14, 0, true, src),bunker_tx,explosion_tx));

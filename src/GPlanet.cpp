@@ -103,6 +103,8 @@ void GPlanet::inizializza(int tot_schermate, Resources *src){
         boss_screen = new lista_schermate_pianeta(src);
         boss = Boss(1000, 3, src);
         boss_screen->enemies = new BossBunker(src,boss.getRadius(),boss.getCenter());
+        // TODO: sistemare sfondo boss
+        //boss_screen->terrain = new Terreno(src);
         boss.setEnemies((BossBunker *)boss_screen->enemies);
         boss_unlocked = false;
         in_boss = false;
@@ -154,6 +156,8 @@ void GPlanet::handle(Nave *player){
 	}
 	if (boss_unlocked && current == head) src->getWindow()->draw(hole);
 	if (in_boss){
+        // TODO: sistemare sfondo boss
+        //boss_screen->terrain->drawAll();
         boss.gestisci(); //A
 		boss.draw(0);
     }

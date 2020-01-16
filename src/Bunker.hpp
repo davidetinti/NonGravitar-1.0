@@ -27,7 +27,7 @@ protected:
     int const DEFAULT_DAMAGE_TRIPLE = 20;
     int const DEFAULT_SPEED = 3;
     Resources *src;
-    Texture *bunker_tx,*explosion_tx;
+    Texture *bunker_tx,*explosion_tx,*bunker_tx2;
     double partial_x[4];        //coordinate per la griglia dei bunker
     list<bunkerlist>* bunkers;
     
