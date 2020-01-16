@@ -222,11 +222,14 @@ void GPlanet::raggiotraente(Nave *player){
     if (player->raggioTraente()){
         while(it != end){
             if(player->raggio.getGlobalBounds().intersects(it->fuel_sprite.getGlobalBounds())){
-                double xfn = player->nave.getPosition().x - it->fuel_sprite.getPosition().x;
-                double yfn = player->nave.getPosition().y - it->fuel_sprite.getPosition().y;
-                double angle = atan(xfn/yfn);
+                double temp_x = player->nave.getPosition().x - it->fuel_sprite.getPosition().x;
+                double temp_y = player->nave.getPosition().y - it->fuel_sprite.getPosition().y;
+                double angle = atan(temp_x/temp_y);
                 it->x = it->x - 1 * sin(angle);
-                it->y = it->y - 1 * cos(angle);
+                it->y = min(it->y - 1 * cos(angle), current->terrain->get_Y(it->x));
+                it->fuel_sprite.setPosition(it->x, it->y);
+            } else {
+                it->y = min(current->terrain->get_Y(it->x), it->y + 1);
                 it->fuel_sprite.setPosition(it->x, it->y);
             }
             if(player->nave.getGlobalBounds().intersects(it->fuel_sprite.getGlobalBounds())){
