@@ -143,15 +143,13 @@ void GPlanet::checkCollision(Nave *player) { //maybe this should be split betwee
 }
  
 void GPlanet::handle(Nave *player){
-    Terreno *terrain = nullptr;
     if (!boss_unlocked) updateBossLock();
     checkCollision(player);
     checkTerrain(player);
-    current->terrain->drawAll(); //different behavior if in boss or not
+    current->terrain->drawAll();
     if (!in_boss) {
         current->carb->gestisci();
         raggiotraente(player);
-        terrain = current->terrain;
 	}
 	if (boss_unlocked && current == head) src->getWindow()->draw(hole);
 	if (in_boss){
@@ -159,7 +157,7 @@ void GPlanet::handle(Nave *player){
 		boss.draw(0);
     }
 	current->enemies->gestisci(player, current->terrain);
-    player->armi(terrain);
+    player->armi(current->terrain);
     
     if(boss.isDead()){
         completed = true;

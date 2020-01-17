@@ -166,5 +166,6 @@ void Terreno::prepareForBoss(Sprite *hole){
 }
 
 bool Terreno::isBoss(){
-    return head == nullptr && terrain_tx == nullptr;
+    return head == nullptr
+    && terrain_tx == nullptr;
 }
