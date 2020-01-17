@@ -10,7 +10,7 @@ soil::soil(soil *n):
 
 Terreno::Terreno(Resources *s){
     this->src = s;
-    nr_schermate = 0;
+    nr_schermate = 1;
     dx_coord = 0;
     sx_coord = 0;
     terrain_tx = nullptr;
@@ -163,4 +163,8 @@ int Terreno::prepareForHole(){
 
 void Terreno::prepareForBoss(Sprite *hole){
     hole->setPosition(prepareForHole() + minSizeHole / 2, 700);
+}
+
+bool Terreno::isBoss(){
+    return head == nullptr && terrain_tx == nullptr;
 }

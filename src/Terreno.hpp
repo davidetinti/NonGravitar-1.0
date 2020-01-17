@@ -43,6 +43,7 @@ public:
     void drawAll();
     double get_Y(double x);
     void prepareForBoss(Sprite *hole);
+    bool isBoss();
 private:
     void spriteSetup(Vector2f p0, Vector2f p1, Vector2f p2, Vector2f p3, soil *p);
     int prepareForHole();

@@ -106,7 +106,7 @@ bool Boss::checkCollisionBoss(Bullets *b){
 
 bool Boss::checkCollisionBoss(Sprite *body){
 	if (pow(body->getPosition().x - centre.x, 2) + pow(body->getPosition().y - centre.y, 2) >= pow(radius, 2)) {
-		getHit(1);
+		getHit(DAMAGE_ON_COLLISION);
 		return true;
 	}
 	else return false;

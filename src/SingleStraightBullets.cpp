@@ -43,7 +43,7 @@ void SingleStraightBullets::cleanup(Terreno *terrain){
     while (iterator != end){
             elapsed = iterator->invuln_clock.getElapsedTime();
             if ((elapsed.asMilliseconds() > invuln_time) &&
-                (terrain == nullptr ?  outsideBounds(iterator) : outsideBounds(iterator, terrain))){
+                (terrain->isBoss() ?  outsideBounds(iterator) : outsideBounds(iterator, terrain))){
                 iterator = bulletList->erase(iterator);
             } else {
                 iterator++;

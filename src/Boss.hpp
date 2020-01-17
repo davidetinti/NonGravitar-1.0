@@ -7,6 +7,7 @@ private:
     static constexpr double ROTATION_STEP = 0.3;
     static const int HIT_TIMER_MS = 100;
     static const int DEATH_TIMER_MS = 800;
+    static const int DAMAGE_ON_COLLISION = 5;
     int EXPL_NR;
      
 protected:

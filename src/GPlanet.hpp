@@ -23,6 +23,7 @@ class GPlanet {
     
 protected:
     
+    static const int BOSS_POINTS = 1000;
     Resources *src;
     bool boss_unlocked,in_boss;
     lista_schermate_pianeta *current, *head, *boss_screen;
