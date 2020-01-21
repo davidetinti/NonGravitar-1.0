@@ -1,6 +1,6 @@
 #include "Terreno.hpp"
 
-// COSTRUTTORI =======================================
+/// COSTRUTTORI
 
 soil::soil(soil *n):
     next(n)
@@ -59,7 +59,7 @@ Terreno::Terreno(int sx_coord, int dx_coord, Resources *src, int tot_schermate){
     minSizeSoil = 30;
 }
 
-// SETTERS E GETTERS =================================
+/// SETTERS & GETTERS
 
 int Terreno::getDxCoord(){
     return this->dx_coord;
@@ -77,7 +77,8 @@ void Terreno::setSxCoord(int sx_coord){
     this->sx_coord = sx_coord;
 }
 
-// FUNZIONI ==========================================
+/// FUNZIONI
+
 Color Terreno::colore(int tot_schermate, int transparency){
     switch (tot_schermate) {
         case 3:

@@ -1,6 +1,4 @@
-#ifndef SourceLoader_hpp
-#define SourceLoader_hpp
-
+#pragma once
 #include <iostream>
 #include <list>
 #include <SFML/Window.hpp>
@@ -111,5 +109,3 @@ public:
  43.png - boss bunker
 
  */
-
-#endif /* SourceLoader_hpp */

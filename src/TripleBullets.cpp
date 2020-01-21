@@ -1,7 +1,5 @@
 #include "TripleBullets.hpp"
 
-using namespace sf;
-
 TripleBullets::TripleBullets(){}
 
 //tx_nr dovrebbe essere deciso qui invece che dal caller

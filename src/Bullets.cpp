@@ -1,6 +1,6 @@
 #include "Bullets.hpp"
 
-// COSTRUTTORI =======================================
+/// COSTRUTTORI
 
 proiettile::proiettile(double x, double y, double rotation, Texture *bullet_tx){
     this->bullet.setTexture(*bullet_tx);
@@ -28,13 +28,13 @@ Bullets::Bullets(int time_btw_shoot,int damage, int speed, int tx_nr, int sd_nr,
 	this->invuln_time = 500;
 }
 
-// SETTERS E GETTERS =================================
+/// SETTERS & GETTERS
 
 int Bullets::getDamage(){
     return damage;
 }
 
-// FUNZIONI ==========================================
+/// FUNZIONI
 
 //returns bullets.damage if collision was detected, but deletes
 //all colliding bullets. this is done because only one bullet can

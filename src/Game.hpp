@@ -1,6 +1,4 @@
-#ifndef Game_hpp
-#define Game_hpp
-
+#pragma once
 #include "Universe.hpp"
 #include "Stage.hpp"
 #include "Highscore.hpp"
@@ -26,5 +24,3 @@ public:
     void handle();
     
 };
-
-#endif /* Game_hpp */

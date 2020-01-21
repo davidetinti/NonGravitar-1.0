@@ -1,6 +1,4 @@
-#ifndef GPlanet_hpp
-#define GPlanet_hpp
-
+#pragma once
 #include "Fuels.hpp"
 #include "Boss.hpp"
 #include "Transitions.hpp"
@@ -36,10 +34,8 @@ public:
     
     Boss boss;
     
-    // COSTRUTTORI ===================================
     GPlanet();
 
-    // SETTERS E GETTERS =============================
     bool getBoss_unlocked();
     lista_schermate_pianeta *getCurrent();
     lista_schermate_pianeta *getHead();
@@ -48,7 +44,6 @@ public:
     void setHead(lista_schermate_pianeta *head);
     bool getIn_boss();
     
-    // FUNZIONI ======================================
     lista_schermate_pianeta *find(int n);
     void inizializza(int tot_schermate, Resources *src);
     void cambia_schermata(int n);
@@ -65,5 +60,3 @@ protected:
     int random_height();
     void updateBossLock();
 };
-
-#endif /* GPlanet_hpp */

@@ -1,6 +1,7 @@
 #include "Bunker.hpp"
 
-// COSTRUTTORI =======================================
+/// COSTRUTTORI
+
 bunkerlist::bunkerlist(int type_n, int tempo_n, double x_n, double y_n, double life_n,
                        Bullets *weapon_n, Texture *b, Texture *e, double boss_bunker_offset) :
     type(type_n),
@@ -65,12 +66,7 @@ Bunker::Bunker(Resources *src, Terreno *terrain){
     }
 }
 
-// SETTERS E GETTERS =================================
-
-
-
-
-// FUNZIONI ==========================================
+/// FUNZIONI
 
 bool Bunker::isEmpty(){
     return bunkers->empty();

@@ -77,7 +77,7 @@ void Resources::handleAnimation(){
     list<Animation*>::iterator end = animationList.end();
     while (it != end){
         Animation *item = *it;
-        if (item->isTerminated()){
+        if (item->isEnded()){
             delete item;
             it = animationList.erase(it);
         } else {

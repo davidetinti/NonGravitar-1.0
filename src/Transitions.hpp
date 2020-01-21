@@ -1,6 +1,4 @@
-#ifndef Transitions_hpp
-#define Transitions_hpp
-
+#pragma once
 #include "Terreno.hpp"
 
 class Transitions{
@@ -16,16 +14,8 @@ public:
     Clock cl1,cl2,c3;
     RectangleShape screen,trans;
     
-    // COSTRUTTORI ===================================
     Transitions();
     Transitions(Resources *src);
-    
-    // SETTERS E GETTERS =============================
-    
-    
-    // FUNZIONI ======================================
     void inPlanet(Terreno *terrain, int tot_schermate);
     void outPlanet();
 };
-
-#endif /* Transitions_hpp */

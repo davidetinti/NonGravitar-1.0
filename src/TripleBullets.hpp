@@ -1,9 +1,5 @@
-#include "Terreno.hpp"
+#pragma once
 #include "SingleStraightBullets.hpp"
-
-using namespace sf;
-using namespace std;
-
 
 class TripleBullets: public Bullets{
     SingleStraightBullets left, centre, right;

@@ -1,6 +1,4 @@
-#ifndef Bunker_hpp
-#define Bunker_hpp
-
+#pragma once
 #include "Nave.hpp"
 
 struct bunkerlist{
@@ -60,5 +58,3 @@ protected:
     void spriteSetup(bunkerlist *p);
     virtual void updatePosition(double angle);
 };
-
-#endif /* Bunker_hpp */

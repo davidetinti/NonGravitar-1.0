@@ -1,10 +1,5 @@
 #pragma once
-#include "Terreno.hpp"
 #include "Bullets.hpp"
-
-using namespace sf;
-using namespace std;
-
 
 class SingleStraightBullets : public Bullets{
 public:

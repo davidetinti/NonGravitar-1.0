@@ -1,5 +1,7 @@
 #include "BossBunker.hpp"
 
+/// COSTRUTTORI
+
 BossBunker::BossBunker(){
 }
 
@@ -21,6 +23,8 @@ BossBunker::BossBunker(Resources *s, double r, Vector2f c){
         newPos = newPosition(angle);
     }
 }
+
+/// FUNZIONI
 
 Vector2f BossBunker::newPosition(double angle){
     Vector2f *start = new Vector2f(radius, 0);

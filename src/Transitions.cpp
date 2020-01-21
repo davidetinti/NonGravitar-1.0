@@ -1,6 +1,6 @@
 #include "Transitions.hpp"
 
-// COSTRUTTORI =======================================
+/// COSTRUTTORI
 
 Transitions::Transitions(){
     
@@ -15,11 +15,7 @@ Transitions::Transitions(Resources *src){
     this->tempo_transizione = 0;
 }
 
-// SETTERS E GETTERS =================================
-
-
-
-// FUNZIONI ==========================================
+/// FUNZIONI
 
 void Transitions::inPlanet(Terreno *terrain, int tot_schermate){
     tempo_transizione = 1000;

@@ -5,13 +5,13 @@
 
 int main() {
     
-    // INIZIALIZZAZIONE ==============================
+    /// INIZIALIZZAZIONE
     Resources src;
     Game game = Game(&src);
     Time timeSinceLastUpdate = Time::Zero;
     Clock deltaClock;       // This will track how much time has passed since the last frame
     
-    // FINESTRA ======================================
+    /// FINESTRA
 	while (src.getWindow()->isOpen()) {
         Time deltaTime = deltaClock.restart();  // Restart returns the time since the last restart call
         timeSinceLastUpdate += deltaTime;

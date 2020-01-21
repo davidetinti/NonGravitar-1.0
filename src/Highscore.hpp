@@ -1,6 +1,4 @@
-#ifndef Highscore_hpp
-#define Highscore_hpp
-
+#pragma once
 #include "Resources.hpp"
 
 struct ScoreRow {
@@ -66,5 +64,3 @@ public:
     void checkNewScore(Text* player, Text* score);
     
 };
-
-#endif /* Highscore_hpp */

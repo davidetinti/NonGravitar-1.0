@@ -1,6 +1,4 @@
-#ifndef Nave_hpp
-#define Nave_hpp
-
+#pragma once
 #include "TripleBullets.hpp"
 
 class Nave{
@@ -72,8 +70,6 @@ public:
     void gestisci();
     void handleThrust();
     void movements();
-    void braceForEntry(Vector2f planetPos, int larghezza);
+    void braceForEntry(Vector2f planetPos);
     void resetStats();
 };
-
-#endif /* Nave_hpp */

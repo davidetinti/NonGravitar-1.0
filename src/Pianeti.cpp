@@ -1,6 +1,6 @@
 #include "Pianeti.hpp"
 
-// COSTRUTTORI =======================================
+/// COSTRUTTORI
 
 SinglePlanet::SinglePlanet(bool ex, int rel_x, int rel_y, int gr_x,
                            int gr_y, int screens, Resources *s):
@@ -47,7 +47,7 @@ Pianeti::Pianeti(Resources *s){
     explosion.setTexture(*explosion_tx);
 }
 
-// SETTERS E GETTERS =================================
+/// SETTERS & GETTERS
 
 SinglePlanet* Pianeti::getHead(){
     return head;
@@ -65,7 +65,7 @@ void Pianeti::setCurrent(SinglePlanet* h){
     current = h;
 }
 
-// METHODS ==========================================
+/// FUNZIONI
 
 void Pianeti::handle(Nave *player){
     current->interno.handle(player);

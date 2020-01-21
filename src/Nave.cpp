@@ -1,6 +1,6 @@
 #include "Nave.hpp"
 
-// COSTRUTTORI =======================================
+/// COSTRUTTORI
 
 Nave::Nave(){
     
@@ -46,7 +46,7 @@ Nave::Nave(Resources* src){
     in_boss = false;
 }
 
-// SETTERS E GETTERS =================================
+/// SETTERS & GETTERS
 
 bool Nave::getIsDead(){
     return this->IsDead;
@@ -122,7 +122,7 @@ void Nave::decayThrustInt(){
 	if (thrust_int < 0) thrust_int = 0;
 }
 
-// FUNZIONI ==========================================
+/// FUNZIONI
 
 void Nave::armi(Terreno *terrain){
     SingleShot->addSingleBullet(nave, Keyboard::Key::S);
@@ -224,8 +224,8 @@ void Nave::movements(){
 	nave.move(dx * src->getTimePerFrame()->asMilliseconds() * 0.1,dy * src->getTimePerFrame()->asMilliseconds() * 0.1);
 }
 
-void Nave::braceForEntry(Vector2f planetPos, int larghezza){
-    nave.setPosition(larghezza/2, 0);
+void Nave::braceForEntry(Vector2f planetPos){
+    nave.setPosition(src->getLength()/2, 0);
     angle_entering_planet = 0;
     X_planet = planetPos.x;
     Y_planet = planetPos.y + 35;

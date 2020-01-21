@@ -1,10 +1,7 @@
-#ifndef Resources_hpp
-#define Resources_hpp
-
+#pragma once
 #include <chrono>
 #include <random>
 #include "Animation.hpp"
-#include "SourceLoader.hpp"
 
 class Resources {
     
@@ -40,5 +37,3 @@ public:
     bool intersecate(FloatRect object1, FloatRect object2);
     
 };
-
-#endif /* Risorse_hpp */

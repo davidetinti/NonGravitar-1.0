@@ -1,6 +1,4 @@
-#ifndef Terreno_hpp
-#define Terreno_hpp
-
+#pragma once
 #include <math.h>
 #include "Resources.hpp"
 
@@ -27,18 +25,15 @@ public:
     
     Sprite background;
     
-    // COSTRUTTORI ===================================
     Terreno();
     Terreno(Resources *src);
     Terreno(int sx_coord, int dx_coord, Resources *src, int tot_schermate);
     
-    // SETTERS E GETTERS =============================
     int getDxCoord();
     int getSxCoord();
     void setDxCoord(int dx_coord);
     void setSxCoord(int sx_coord);
     
-    // FUNZIONI ======================================
     Color colore(int tot_schermate, int transparency);
     void drawAll();
     double get_Y(double x);
@@ -48,5 +43,3 @@ private:
     void spriteSetup(Vector2f p0, Vector2f p1, Vector2f p2, Vector2f p3, soil *p);
     int prepareForHole();
 };
-
-#endif /* Terreno_hpp */

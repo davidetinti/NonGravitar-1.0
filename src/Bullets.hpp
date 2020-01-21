@@ -1,6 +1,4 @@
-#ifndef Bullets_hpp
-#define Bullets_hpp
-
+#pragma once
 #include "Terreno.hpp"
 
 struct proiettile{
@@ -29,14 +27,11 @@ public:
     SoundBuffer bullet_sb;
     Clock bullet_time;
     
-    // COSTRUTTORI ===================================
     Bullets();
     Bullets(int time_btw_shoot, int damage, int speed, int tx_nr, int sd_nr, bool autoshoot, Resources *src);
     
-    // SETTERS E GETTERS =============================
     int getDamage();
     
-    ///  FUNZIONI  //////////////////////////////////////////////////////
     virtual void addSingleBullet(Sprite entity, Keyboard::Key pulsante) = 0;
     virtual void renderBullet(Time perFrame) = 0;
     virtual int checkCollision(FloatRect p);
@@ -49,5 +44,3 @@ protected:
     bool outsideBounds(list<proiettile>::iterator p, Terreno *terrain);
     bool outsideBounds(list<proiettile>::iterator p);
 };
-
-#endif /* Bullets_hpp */

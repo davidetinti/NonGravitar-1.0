@@ -1,6 +1,4 @@
-#ifndef Pianeti_hpp
-#define Pianeti_hpp
-
+#pragma once
 #include "GPlanet.hpp"
 
 struct SinglePlanet {
@@ -29,22 +27,17 @@ protected:
 public:
     list<SinglePlanet> planetlist;
     
-    // COSTRUTTORI ===================================
     Pianeti();
     Pianeti(Resources *src);
     
-    // SETTERS E GETTERS =============================
     SinglePlanet* getHead();
     void setHead(SinglePlanet* h);
     SinglePlanet* getCurrent();
     void setCurrent(SinglePlanet* h);
     
-    // FUNZIONI ======================================
     void handle(Nave *player);
     void deletePlanet(SinglePlanet* p);
     void draw();
 private:
     void spriteSetup(SinglePlanet* p);
-}; 
-
-#endif /* Pianeti_hpp */
+};

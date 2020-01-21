@@ -1,6 +1,4 @@
-#ifndef Controller_hpp
-#define Controller_hpp
-
+#pragma once
 #include "Resources.hpp"
 
 class Slider{
@@ -34,5 +32,3 @@ public:
     bool isHandled;
     
 };
-
-#endif /* Controller_hpp */

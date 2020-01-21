@@ -1,6 +1,4 @@
-#ifndef Universe_hpp
-#define Universe_hpp
-
+#pragma once
 #include "Pianeti.hpp"
 #include "HUD.hpp"
 
@@ -32,17 +30,13 @@ public:
     Nave player;
     HUD hud;
     
-    
-    // COSTRUTTORI ===================================
     Universe();
     Universe(Resources *src);
     
-    // SETTERS E GETTERS =============================
     lista_schermate *getActive();
     lista_schermate *getTail();
     lista_schermate *getHeadList();
     
-    // FUNZIONI ======================================
     lista_schermate *find(int x, int y);
     void move(int x, int y);
     void checkTerrain();
@@ -54,5 +48,3 @@ private:
     void addToList(lista_schermate *p);
     void exitPlanet();
 };
-
-#endif /* Universo_hpp */

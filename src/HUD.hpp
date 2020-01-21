@@ -1,9 +1,5 @@
-#ifndef HUD_hpp
-#define HUD_hpp
-
+#pragma once
 #include "Pulsante.hpp"
-
-//TODO aggiungere testo fuel, life e score
 
 class HUD{
     
@@ -21,5 +17,3 @@ public:
     void gestisci(int point, float life, float fuel);
     
 };
-
-#endif /* HUD_hpp */

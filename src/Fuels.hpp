@@ -20,15 +20,12 @@ protected:
     
 public:
     
-    // COSTRUTTORI ===================================
     Fuels();
     Fuels(Terreno *terrain,Resources *src);
     
-    // SETTERS E GETTERS =============================
     list<fuel>::iterator getFuelListBegin();
     list<fuel>::iterator getFuelListEnd();
     
-    // FUNZIONI ======================================
     list<fuel>::iterator delete_fuel(list<fuel>::iterator it);
     int getPower(list<fuel>::iterator it);
     void gestisci();

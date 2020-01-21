@@ -1,6 +1,6 @@
 #include "Fuels.hpp"
 
-// COSTRUTTORI =======================================
+/// COSTRUTTORI
 
 fuel::fuel(double x_n, double y_n, int power_n):
     x(x_n),
@@ -43,7 +43,7 @@ Fuels::Fuels(Terreno *terrain, Resources *src) {
     }
 }
 
-// SETTERS E GETTERS =============================
+/// SETTERS & GETTERS
 
 list<fuel>::iterator Fuels::getFuelListBegin(){
     return fuel_list->begin();
@@ -53,7 +53,7 @@ list<fuel>::iterator Fuels::getFuelListEnd(){
     return fuel_list->end();
 }
 
-// FUNZIONI ======================================
+/// FUNZIONI
 
 list<fuel>::iterator Fuels::delete_fuel(list<fuel>::iterator it){
     return fuel_list->erase(it);

@@ -1,6 +1,4 @@
-#ifndef Pulsante_hpp
-#define Pulsante_hpp
-
+#pragma once
 #include "Resources.hpp"
 
 class Pulsante{
@@ -23,5 +21,3 @@ public:
     void disegna();
     bool handle();
 };
-
-#endif /* Pulsante_hpp */

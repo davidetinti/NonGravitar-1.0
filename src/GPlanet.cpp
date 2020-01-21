@@ -1,6 +1,6 @@
 #include "GPlanet.hpp"
 
-// COSTRUTTORI =======================================
+/// COSTRUTTORI
 
 lista_schermate_pianeta::lista_schermate_pianeta(Terreno *terrain_n, int n,
                         int totale_schermate, Resources *src,
@@ -33,7 +33,7 @@ GPlanet::GPlanet(){
     
 }
 
-// SETTERS E GETTERS =================================
+/// SETTERS & GETTERS
 
 bool GPlanet::getBoss_unlocked(){
     return this->boss_unlocked;
@@ -63,7 +63,7 @@ bool GPlanet::getIn_boss(){
     return in_boss;
 }
 
-// FUNZIONI ==========================================
+/// FUNZIONI
 
 lista_schermate_pianeta *GPlanet::find(int n){///???
     lista_schermate_pianeta *tmp = head;
@@ -130,8 +130,14 @@ void GPlanet::checkCollision(Nave *player) { //maybe this should be split betwee
     current->enemies->checkCollision(player->SingleShot);
     current->enemies->checkCollision(player->Laser);
     if (current->enemies->checkCollision(&player->nave) > 0){
+        if (current->nr_schermata == 666){
+            //player->nave.setPosition(src->getLength()/2, src->getHeight()/2);
+            player->push_back(5, current->nr_schermata == 666);
+        } else {
+            player->push_back(5, current->nr_schermata == 666);
+            //player->braceForEntry(Vector2f(player->getX_planet(),player->getY_planet()));
+        }
         player->getHit(current->enemies->DAMAGEONCOLLISION);
-        player->push_back(5,current->nr_schermata == 666);
     }
     if (in_boss){
         boss.checkCollisionBoss(player->SingleShot);
@@ -153,8 +159,8 @@ void GPlanet::handle(Nave *player){
 	}
 	if (boss_unlocked && current == head) src->getWindow()->draw(hole);
 	if (in_boss){
-        boss.gestisci();
-		boss.draw(0);
+        boss.handle();
+		boss.draw();
     }
 	current->enemies->gestisci(player, current->terrain);
     player->armi(current->terrain);
@@ -182,13 +188,17 @@ void GPlanet::checkTerrain(Nave *player){
     if (!in_boss){
         if(inHole(&player->nave))
             enterBoss(player);
-        else if (player->nave.getPosition().y + 22 
-                    >= 
-                getCurrent()->terrain->get_Y(player->nave.getPosition().x))
-                player->setIsDead(true);
+        else if (player->nave.getPosition().y + 22 >= getCurrent()->terrain->get_Y(player->nave.getPosition().x)){
+            player->getHit(10);
+            player->push_back(5, current->nr_schermata == 666);
+        }
+                
+        
     } else {
-        if(boss.checkCollisionBoss(&player->nave))
+        if(boss.checkCollisionBoss(&player->nave)) {
+            player->getHit(10);
             player->push_back(2,1);
+        }
     }
 }
 

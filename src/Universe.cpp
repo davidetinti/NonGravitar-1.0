@@ -1,6 +1,6 @@
 #include "Universe.hpp"
 
-// COSTRUTTORI =======================================
+/// COSTRUTTORI
 
 lista_schermate::lista_schermate(int x_n, int y_n, Resources *src, lista_schermate *d, lista_schermate *s, 
         lista_schermate *u, lista_schermate *down, lista_schermate *nxt) :
@@ -27,7 +27,7 @@ Universe::Universe(Resources *src){
     this->tail = head_list;
 }
 
-// SETTERS E GETTERS =================================
+/// SETTERS & GETTERS
 
 lista_schermate *Universe::getActive(){
     return  this->active;
@@ -41,7 +41,7 @@ lista_schermate *Universe::getHeadList(){
     return  this->head_list;
 }
 
-// FUNZIONI ==========================================
+/// FUNZIONI
 
 lista_schermate *Universe::find(int x, int y){
     lista_schermate *b = head_list;
@@ -130,7 +130,7 @@ void Universe::handle(){
                 //transizioni->inPlanet(it->interno.getHead()->terrain, it->tot_schermate);
                 player.setAtPlanet(true);
                 
-                player.braceForEntry(it->planet.getPosition(), src->getLength());
+                player.braceForEntry(it->planet.getPosition());
             }
             it++;
         }
