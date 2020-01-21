@@ -14,41 +14,38 @@ using namespace sf;
 
 class SourceLoader{
     
+private:
+    
+    static const int SOUND_NR = 3;
+    static const int TEXTURE_NR = 44;
+    static const int FONT_NR = 2;
+    
 protected:
     
     int height;
     int length;
-    int primaryDamage;
-    int secondaryDamage;
     String path;
-    SoundBuffer sound[3];
-    Texture texture[44];
-    Font font[2];
+    SoundBuffer sound[SOUND_NR];
+    Texture texture[TEXTURE_NR];
+    Font font[FONT_NR];
     ContextSettings settings;
     RenderWindow window;
-    Time timePerFrame;      // Determines how many fps
-    Time utilityTime;       // For transitions
-    Clock utilityClock;     // For transitions
+    Time time_per_frame;      // Determines how many fps
     void loadTextures();
     void loadSounds();
     void loadFonts();
+    String *getPath();
     
 public:
     
     SourceLoader();
     int getHeight();
     int getLength();
-    int getPrimaryDamage();
-    int getSecondaryDamage();
-    String *getPath();
     SoundBuffer *getSound(int n);
     Texture *getTexture(int n);
     Font *getFont(int n);
     RenderWindow *getWindow();
     Time *getTimePerFrame();
-    Time *getUtilityTime();
-    Clock *getUtilityClock();
-    
 };
 
 /*

@@ -5,7 +5,7 @@ HUD::HUD(){
 
 HUD::HUD(Resources *src){
     this->src = src;
-    bars_tx = this->src->caricaTexture(16);
+    bars_tx = this->src->getTexture(16);
     lifebar_active.setTexture(*bars_tx);
     lifebar_active.setTextureRect(IntRect(0, 31, 400, 32));
     lifebar_active.setOrigin(400,0);

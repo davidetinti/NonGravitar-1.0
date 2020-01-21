@@ -7,16 +7,16 @@ BossBunker::BossBunker(){
 
 BossBunker::BossBunker(Resources *s, double r, Vector2f c){
     src = s;
-    explosion_tx = src->caricaTexture(20);
-    bunker_tx = src->caricaTexture(43);
+    explosion_tx = src->getTexture(20);
+    bunker_tx = src->getTexture(43);
     double angle = 0;
-    double offset = 360 / N_BUNKER;
+    double offset = 360 / BUNKER_NR;
     Vector2f newPos;
     radius = r + 50;
     centre = Vector2f(src->getLength()/2, src->getHeight()/2);
     bunkers = new list<bunkerlist>;
     newPos = Vector2f(centre.x+radius,centre.y);
-    for(int i = 0; i < N_BUNKER; i++){
+    for(int i = 0; i < BUNKER_NR; i++){
         bunkers->push_front(bunkerlist(0,100,newPos.x, newPos.y,10,
                           new SingleStraightBullets(1500, 100, 2, 14, 0, true, src),bunker_tx,explosion_tx,angle));
         angle = angle + offset;

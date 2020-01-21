@@ -11,7 +11,7 @@ Nave::Nave(Resources* src){
     this->src = src;
     raggiox = 0;
     raggioy = 0;
-    raggio_tx = this->src->caricaTexture(17);
+    raggio_tx = this->src->getTexture(17);
     raggio.setScale(0.30, 0.80);
     raggio.setTexture(*raggio_tx);
     raggio.setColor(Color(255,255,255,160));
@@ -27,7 +27,7 @@ Nave::Nave(Resources* src){
     AtPlanet = false;
     IsDead = false;
     is_red = false;
-    Nave_tx = this->src->caricaTexture(4);
+    Nave_tx = this->src->getTexture(4);
     nave.setOrigin(Vector2f(Nave_tx->getSize().x/2, Nave_tx->getSize().y/2));
     nave.setPosition(Vector2f(this->src->getLength() / 2, this->src->getHeight() / 2));
     nave.setTexture(*Nave_tx);
@@ -38,7 +38,7 @@ Nave::Nave(Resources* src){
     Laser = new SingleStraightBullets(5000, 200, 10, 1, 0, false, src);
 	Time_btw_hitS = 0.75;
 	Time_btw_pushesMS = 500;
-	thrust_tx = src->caricaTexture(30);
+	thrust_tx = src->getTexture(30);
 	thrust.setTexture(*thrust_tx);
 	thrust.setScale(0.04, 0.04);
 	thrust_int = 0;
@@ -127,8 +127,8 @@ void Nave::decayThrustInt(){
 void Nave::armi(Terreno *terrain){
     SingleShot->addSingleBullet(nave, Keyboard::Key::S);
     Laser->addSingleBullet(nave, Keyboard::Key::L);
-    SingleShot->handle(*src->getTimePerFrame(), terrain);
-    Laser->handle(*src->getTimePerFrame(), terrain);
+    SingleShot->handle(terrain);
+    Laser->handle(terrain);
 }
 
 bool Nave::raggioTraente(){

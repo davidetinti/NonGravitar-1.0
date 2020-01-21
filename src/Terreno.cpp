@@ -14,7 +14,7 @@ Terreno::Terreno(Resources *s){
     dx_coord = 0;
     sx_coord = 0;
     terrain_tx = nullptr;
-    background_tx = s->caricaTexture(33);
+    background_tx = s->getTexture(33);
     background.setTexture(*background_tx);
     head = nullptr;
     minSizeHole = 0;
@@ -25,9 +25,9 @@ Terreno::Terreno(Resources *s){
 Terreno::Terreno(int sx_coord, int dx_coord, Resources *src, int tot_schermate){
     this->src = src;
     nr_schermate = tot_schermate;
-    terrain_tx = src->caricaTexture(29);
+    terrain_tx = src->getTexture(29);
     terrain_tx->setRepeated(true);
-    background_tx = src->caricaTexture(13);
+    background_tx = src->getTexture(13);
     background.setTexture(*background_tx);
     background.setPosition(0, 0);
     background.setColor(colore(tot_schermate,128));

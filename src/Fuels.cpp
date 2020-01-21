@@ -22,7 +22,7 @@ Fuels::Fuels(Terreno *terrain, Resources *src) {
     double x;
     int power;
     this->src = src;
-    fuel_tx = src->caricaTexture(18);
+    fuel_tx = src->getTexture(18);
     partial_x[0] = 20;
     partial_x[1] = 620;
     partial_x[2] = 1140;

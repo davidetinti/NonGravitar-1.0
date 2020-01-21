@@ -14,14 +14,6 @@ int Resources::getLength(){
     return sourceLoader->getLength();
 }
 
-int Resources::getPrimaryDamage(){
-    return sourceLoader->getPrimaryDamage();
-}
-
-int Resources::getSecondaryDamage(){
-    return sourceLoader->getSecondaryDamage();
-}
-
 int Resources::getLastInput(){
     return last_input;
 }
@@ -30,40 +22,24 @@ void Resources::setLastInput(int value){
     last_input = value;
 }
 
-Event* Resources::getEvent(){
-    return &event;
-}
-
 Time* Resources::getTimePerFrame(){
     return sourceLoader->getTimePerFrame();
-}
-
-Time* Resources::getUtilityTime(){
-    return sourceLoader->getUtilityTime();
-}
-
-Clock* Resources::getUtilityClock(){
-    return sourceLoader->getUtilityClock();
 }
 
 RenderWindow* Resources::getWindow(){
     return sourceLoader->getWindow();
 }
 
-SoundBuffer* Resources::caricaSuono(int n){
+SoundBuffer* Resources::getSound(int n){
     return sourceLoader->getSound(n);
 }
 
-Texture* Resources::caricaTexture(int n){
+Texture* Resources::getTexture(int n){
     return sourceLoader->getTexture(n);
 }
 
 Font* Resources::getFont(int n){
     return sourceLoader->getFont(n);
-}
-
-list<Animation*>* Resources::getAnimationList(){
-    return &animationList;
 }
 
 Animation* Resources::addAnimation(int x, int y, int tx_nr, int rows, int columns, float scale, double speed){
@@ -100,18 +76,11 @@ void Resources::handleEvents(){
         }
     }
 }
-//DESCRIPTION NEEDED
+
+//TODO: DESCRIPTION NEEDED
 int Resources::rand(int min, int max){
     //need to include checks on input
     static default_random_engine dre(chrono::steady_clock::now().time_since_epoch().count());
     uniform_int_distribution<int> uid (min,max);
     return uid(dre);
-}
-
-bool Resources::intersecate(FloatRect object1, FloatRect object2){
-    if (object1.intersects(object2)){
-        return true;
-    } else {
-        return false;
-    }
 }

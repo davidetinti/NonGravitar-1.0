@@ -6,7 +6,7 @@ Stage::Stage(){
 
 Stage::Stage(Resources *src, int tx_sfondo){
     this->src = src;
-    Texture* sfondo_tx = src->caricaTexture(tx_sfondo);
+    Texture* sfondo_tx = src->getTexture(tx_sfondo);
     background.setTexture(*sfondo_tx);
     background.setTextureRect(IntRect(0,0,sfondo_tx->getSize().x,sfondo_tx->getSize().y));
     sliderSelected = false;

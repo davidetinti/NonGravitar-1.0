@@ -8,7 +8,7 @@ Game::Game(Resources *src){
     this->src = src;
     this->hud = HUD(src);
     highscore_st = Highscore(src);
-    tmp_background = src->caricaTexture(36);
+    tmp_background = src->getTexture(36);
     universe = new Universe(src);
     home = new Stage(src, 25);
     settings = new Stage(src, 35);

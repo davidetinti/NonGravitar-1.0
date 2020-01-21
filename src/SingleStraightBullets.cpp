@@ -19,13 +19,13 @@ void SingleStraightBullets::addSingleBullet(Sprite entity, Keyboard::Key pulsant
     }
 }
 
-void SingleStraightBullets::renderBullet(Time perFrame){ //perFrame should be in Resources
+void SingleStraightBullets::renderBullet(){
     list<proiettile>::iterator it = bulletList->begin();
     list<proiettile>::iterator end = bulletList->end();
     while (it != end){
         double angle = M_PI * it->bullet.getRotation() / 180;
-        it->bullet.move(-sin(angle)*speed*perFrame.asSeconds()*100,
-                        cos(angle)*speed*perFrame.asSeconds()*100);
+        it->bullet.move(-sin(angle) * speed * src->getTimePerFrame()->asSeconds() * 100,
+                        cos(angle) * speed * src->getTimePerFrame()->asSeconds() * 100);
         src->getWindow()->draw(it->bullet);
         it++;
     }

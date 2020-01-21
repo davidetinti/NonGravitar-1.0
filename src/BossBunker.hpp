@@ -7,7 +7,7 @@ protected:
     
     const int DAMAGE = 10;
     const int SPEED = 10;
-    const int N_BUNKER = 3;
+    const int BUNKER_NR = 3;
     double radius;
     Vector2f centre;
     void updateRotation();

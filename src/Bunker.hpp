@@ -42,7 +42,7 @@ public:
     void setEnemies(bunkerlist *enemies);
     
     ///  FUNZIONI  //////////////////////////////////////////////////////
-    void armi(bunkerlist *tmp, Terreno *terrain, Time perFrame);
+    void armi(bunkerlist *tmp, Terreno *terrain);
 	void hitBunker(int damage, list<bunkerlist>::iterator p);
 	list<bunkerlist>::iterator deleteBunker(list<bunkerlist>::iterator it);
 	bool isEmpty();

@@ -83,7 +83,7 @@ void GPlanet::inizializza(int tot_schermate, Resources *src){
     nr_schermate = tot_schermate;
     lista_schermate_pianeta *tmp = nullptr;
     lista_schermate_pianeta *pre_tmp = nullptr;
-    hole_tx = src->caricaTexture(31);
+    hole_tx = src->getTexture(31);
 	hole.setTexture(*hole_tx);
 	hole.setOrigin(hole_tx->getSize().x / 2, hole_tx->getSize().y / 2);
     if(head == nullptr){

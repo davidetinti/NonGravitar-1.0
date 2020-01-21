@@ -6,9 +6,7 @@ using namespace sf;
 SourceLoader::SourceLoader(){
     length = 1280;
     height = 720;
-    primaryDamage = 100;
-    secondaryDamage = 100;
-    timePerFrame = seconds(1.0f / 120.0f); // 120 frames per second
+    time_per_frame = seconds(1.0f / 120.0f); // 120 frames per second
     settings.antialiasingLevel = 8;
     window.create(VideoMode(length, height), "Non Gravitar", (Style::Titlebar | Style::Close | Style::Resize), settings);
     path = "./../resources/";
@@ -31,9 +29,7 @@ void SourceLoader::loadSounds(){
 
 void SourceLoader::loadFonts(){
     for (int i = 0; i < sizeof(font)/sizeof(font[0]); i++){
-        if (!font[i].loadFromFile("./../resources/" + to_string(i) + ".ttf")){
-            cout << "ERROR";
-        }
+        font[i].loadFromFile(path + to_string(i) + ".ttf");
     }
 }
 
@@ -43,18 +39,6 @@ int SourceLoader::getHeight(){
 
 int SourceLoader::getLength(){
     return length;
-}
-
-int SourceLoader::getPrimaryDamage(){
-    return primaryDamage;
-}
-
-int SourceLoader::getSecondaryDamage(){
-    return secondaryDamage;
-}
-
-String *SourceLoader::getPath(){
-    return &path;
 }
 
 SoundBuffer *SourceLoader::getSound(int n){
@@ -74,13 +58,5 @@ RenderWindow *SourceLoader::getWindow(){
 }
 
 Time *SourceLoader::getTimePerFrame(){
-    return &timePerFrame;
-}
-
-Time *SourceLoader::getUtilityTime(){
-    return &utilityTime;
-}
-
-Clock *SourceLoader::getUtilityClock(){
-    return &utilityClock;
+    return &time_per_frame;
 }

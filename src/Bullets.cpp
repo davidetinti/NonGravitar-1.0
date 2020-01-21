@@ -23,7 +23,7 @@ Bullets::Bullets(int time_btw_shoot,int damage, int speed, int tx_nr, int sd_nr,
     this->time_btw_shoot = time_btw_shoot;
     this->damage = damage;
     this->speed = speed;
-    this->bullet_tx = src->caricaTexture(tx_nr);
+    this->bullet_tx = src->getTexture(tx_nr);
     //this->bullet_sb = *src->caricaSuono(tx_nr);
 	this->invuln_time = 500;
 }
@@ -72,7 +72,7 @@ bool Bullets::outsideBounds(list<proiettile>::iterator p){
     p->bullet.getPosition().y < 0 || p->bullet.getPosition().y > src->getHeight();
 }
 
-void Bullets::handle(Time perFrame, Terreno *terrain){ //perFrame should be in Resources
+void Bullets::handle(Terreno *terrain){ //perFrame should be in Resources
     cleanup(terrain);
-    renderBullet(perFrame);
+    renderBullet();
 }

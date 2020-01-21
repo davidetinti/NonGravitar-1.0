@@ -37,13 +37,13 @@ Bunker::Bunker(Resources *src, Terreno *terrain){
     int p;
     int p2;
     this->src = src;
-    explosion_tx = src->caricaTexture(20);
+    explosion_tx = src->getTexture(20);
     partial_x[0] = 165;
     partial_x[1] = 415;
     partial_x[2] = 665;
     partial_x[3] = 915;
-    bunker_tx = src->caricaTexture(3);
-    bunker_tx2 = src->caricaTexture(42);
+    bunker_tx = src->getTexture(3);
+    bunker_tx2 = src->getTexture(42);
     int x;
     
     bunkers = new list<bunkerlist>;
@@ -72,9 +72,9 @@ bool Bunker::isEmpty(){
     return bunkers->empty();
 }
 
-void Bunker::armi(bunkerlist *tmp, Terreno *terrain, Time perFrame){//perFrame should be in Resources
+void Bunker::armi(bunkerlist *tmp, Terreno *terrain){
     tmp->weapon->addSingleBullet(tmp->bunker, Keyboard::R);
-    tmp->weapon->handle(perFrame, terrain);
+    tmp->weapon->handle(terrain);
 }
 
 
@@ -96,7 +96,7 @@ void Bunker::gestisci(Nave *player, Terreno *terrain, double angle){
                 it->bunker.setRotation(270 + atan2((player->nave.getPosition().y-it->bunker.getPosition().y), 
                                         (player->nave.getPosition().x-it->bunker.getPosition().x)) * 180/M_PI);
             }
-            armi(&*it, terrain, *src->getTimePerFrame());
+            armi(&*it, terrain);
         }
         if (it->life <= 0) {
             it = deleteBunker(it);

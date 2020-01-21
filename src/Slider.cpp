@@ -7,13 +7,13 @@ Slider::Slider(){
 Slider::Slider(Vector2f position, float min, float max, char nome[], Resources *src){
     this->src = src;
     Texture *slider_tx, *axis_tx;
-    slider_tx = src->caricaTexture(2);
+    slider_tx = src->getTexture(2);
     slider.setTexture(*slider_tx);
     sliderWidth = slider_tx->getSize().x;
     sliderHeight = slider_tx->getSize().y;
     slider.setPosition(position);
     slider.setOrigin(sliderWidth / 2, sliderHeight / 2);
-    axis_tx = src->caricaTexture(22);
+    axis_tx = src->getTexture(22);
     axis.setTexture(*axis_tx);
     axisWidth = axis_tx->getSize().x;
     axisHeight = axis_tx->getSize().y ;

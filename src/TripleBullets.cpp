@@ -23,10 +23,10 @@ void TripleBullets::addSingleBullet(Sprite entity, Keyboard::Key pulsante){
     right.addSingleBullet(t,pulsante);
 }
 
-void TripleBullets::renderBullet(Time perFrame){
-    left.renderBullet(perFrame);
-    centre.renderBullet(perFrame);
-    right.renderBullet(perFrame);
+void TripleBullets::renderBullet(){
+    left.renderBullet();
+    centre.renderBullet();
+    right.renderBullet();
 }
 
 int TripleBullets::checkCollision(FloatRect p){

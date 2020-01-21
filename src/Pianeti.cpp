@@ -17,7 +17,7 @@ SinglePlanet::SinglePlanet(bool ex, int rel_x, int rel_y, int gr_x,
     }
 
 void SinglePlanet::spriteSetup(Resources *src){
-    this->planet_tx = src->caricaTexture(this->tot_schermate + 2);
+    this->planet_tx = src->getTexture(this->tot_schermate + 2);
     this->planet.setTexture(*planet_tx);
     this->planet.setOrigin(Vector2f(planet_tx->getSize().x/2, planet_tx->getSize().y/2));
     this->planet.setPosition(relative_x + grid_x, relative_y + grid_y);
@@ -43,7 +43,7 @@ Pianeti::Pianeti(Resources *s){
             str_h[i], src->rand(3,10),s));
         }
     }
-    explosion_tx = src->caricaTexture(19);
+    explosion_tx = src->getTexture(19);
     explosion.setTexture(*explosion_tx);
 }
 
