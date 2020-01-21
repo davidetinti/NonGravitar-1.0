@@ -62,7 +62,7 @@ bool Bullets::outsideBounds(list<proiettile>::iterator p, Terreno *terrain){
     return p->bullet.getPosition().x < 0 ||
      p->bullet.getPosition().x > src->getLength() ||
       p->bullet.getPosition().y < 0 ||
-       p->bullet.getPosition().y >= terrain->get_Y(p->bullet.getPosition().x - 15);
+       p->bullet.getPosition().y >= terrain->getTerrainY(p->bullet.getPosition().x - 15);
 
 }
 

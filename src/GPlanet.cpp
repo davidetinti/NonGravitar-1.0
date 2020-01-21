@@ -188,7 +188,7 @@ void GPlanet::checkTerrain(Nave *player){
     if (!in_boss){
         if(inHole(&player->nave))
             enterBoss(player);
-        else if (player->nave.getPosition().y + 22 >= getCurrent()->terrain->get_Y(player->nave.getPosition().x)){
+        else if (player->nave.getPosition().y + 22 >= getCurrent()->terrain->getTerrainY(player->nave.getPosition().x)){
             player->getHit(10);
             player->push_back(5, current->nr_schermata == 666);
         }
@@ -235,10 +235,10 @@ void GPlanet::raggiotraente(Nave *player){
                 double temp_y = player->nave.getPosition().y - it->fuel_sprite.getPosition().y;
                 double angle = atan(temp_x/temp_y);
                 it->x = it->x - 1 * sin(angle);
-                it->y = min(it->y - 1 * cos(angle), current->terrain->get_Y(it->x));
+                it->y = min(it->y - 1 * cos(angle), current->terrain->getTerrainY(it->x));
                 it->fuel_sprite.setPosition(it->x, it->y);
             } else {
-                it->y = min(current->terrain->get_Y(it->x), it->y + 1);
+                it->y = min(current->terrain->getTerrainY(it->x), it->y + 1);
                 it->fuel_sprite.setPosition(it->x, it->y);
             }
             if(player->nave.getGlobalBounds().intersects(it->fuel_sprite.getGlobalBounds())){
@@ -250,7 +250,7 @@ void GPlanet::raggiotraente(Nave *player){
         }
     } else {
         while (it != end){
-            it->y = min(current->terrain->get_Y(it->x), it->y + 1);
+            it->y = min(current->terrain->getTerrainY(it->x), it->y + 1);
             it->fuel_sprite.setPosition(it->x, it->y);
             it++;
         }

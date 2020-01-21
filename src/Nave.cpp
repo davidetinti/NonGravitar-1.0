@@ -189,7 +189,7 @@ void Nave::push_back(int distance, int dir){
 
 void Nave::gestisci(){
     movements();
-    //if (Lifebar <= 0 || Fuelbar <= 0) IsDead = true;
+    if (life_left <= 0 || fuel_left <= 0) IsDead = true;
 }
 
 void Nave::handleThrust(){

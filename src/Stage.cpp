@@ -55,7 +55,7 @@ void Stage::drawBackground(){
 
 void Stage::drawObjects(){
     for (Pulsante* button : buttonList){
-        button->disegna();
+        button->draw();
     }
     for (Slider* slider : sliderList){
         slider->draw();

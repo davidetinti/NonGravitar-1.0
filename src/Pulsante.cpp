@@ -1,36 +1,43 @@
 #include "Pulsante.hpp"
 
+/// COSTRUTTORI
+
 Pulsante::Pulsante(){
     
 }
 
-Pulsante::Pulsante(Vector2f posizione, int tx_nr, float scala, char nome[], Resources *src){
-    this->src = src;
-    original_scale = Vector2f(scala,scala);
+Pulsante::Pulsante(Vector2f position, int tx_nr, float scale, char name_a[], Resources *s){
+    src = s;
+    original_scale = Vector2f(scale,scale);
     button_tx = src->getTexture(tx_nr);
     button.setTexture(*button_tx);
     button.setTextureRect(IntRect(0,0,button_tx->getSize().x,button_tx->getSize().y));
     button.setOrigin(button_tx->getSize().x/2,button_tx->getSize().y/2);
-    button.setPosition(posizione);
+    button.setPosition(position);
     button.setScale(original_scale);
-    strncpy(name, nome, 20);
+    strncpy(name, name_a, 20);
 }
+
+/// GETTERS & SETTERS
 
 char* Pulsante::getName(){
     return name;
 }
 
 bool Pulsante::isSelected(){
-    if (button.getGlobalBounds().contains(Mouse::getPosition(*src->getWindow()).x, Mouse::getPosition(*src->getWindow()).y)){
+    if (button.getGlobalBounds().contains(Mouse::getPosition(*src->getWindow()).x,
+                                          Mouse::getPosition(*src->getWindow()).y)){
         return true;
     } else {
         return false;
     }
 }
 
-void Pulsante::disegna(){
+/// FUNZIONI
+
+void Pulsante::draw(){
     if (isSelected()){
-        button.setScale(original_scale.x*1.2,original_scale.y*1.2);
+        button.setScale(original_scale.x * 1.2, original_scale.y * 1.2);
         src->getWindow()->draw(button);
     } else {
         button.setScale(original_scale);
@@ -39,7 +46,7 @@ void Pulsante::disegna(){
 }
 
 bool Pulsante::handle(){
-    disegna();
+    draw();
     if (isSelected()){
         return true;
     } else {

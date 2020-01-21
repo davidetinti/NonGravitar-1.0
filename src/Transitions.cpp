@@ -28,11 +28,11 @@ void Transitions::inPlanet(Terreno *terrain, int tot_schermate){
      this->src->getWindow()->getSize().y);
 	a.update(*this->src->getWindow());
     screen.setTexture(&a);
-    trans.setFillColor(terrain->colore(tot_schermate, n));
+    trans.setFillColor(terrain->setColor(tot_schermate, n));
     while (t1.asMilliseconds() < tempo_transizione){
         t1 = cl1.getElapsedTime();
         n = (255*t1.asMilliseconds())/tempo_transizione;
-        trans.setFillColor(terrain->colore(tot_schermate, n));
+        trans.setFillColor(terrain->setColor(tot_schermate, n));
         this->src->getWindow()->clear();
         this->src->getWindow()->draw(screen);
         this->src->getWindow()->draw(trans);

@@ -31,6 +31,7 @@ protected:
     ContextSettings settings;
     RenderWindow window;
     Time time_per_frame;      // Determines how many fps
+    
     void loadTextures();
     void loadSounds();
     void loadFonts();
@@ -39,6 +40,7 @@ protected:
 public:
     
     SourceLoader();
+    
     int getHeight();
     int getLength();
     SoundBuffer *getSound(int n);

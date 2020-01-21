@@ -14,10 +14,11 @@ protected:
 public:
     
     Pulsante();
-    Pulsante(Vector2f posizione, int tx_nr, float scala, char nome[], Resources *src);
+    Pulsante(Vector2f position, int tx_nr, float scala, char nome[], Resources *s);
     
     char* getName();
     bool isSelected();
-    void disegna();
+    
+    void draw();
     bool handle();
 };

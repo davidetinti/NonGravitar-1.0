@@ -36,7 +36,7 @@ Fuels::Fuels(Terreno *terrain, Resources *src) {
             
             x = partial_x[i] + rand() % 140;
             
-            fuel it = fuel(x,terrain->get_Y(x),power);
+            fuel it = fuel(x,terrain->getTerrainY(x),power);
             spriteSetup(&it, power);
             fuel_list->push_back(it);
         }

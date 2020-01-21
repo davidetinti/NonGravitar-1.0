@@ -9,31 +9,31 @@ soil::soil(soil *n):
     }
 
 Terreno::Terreno(Resources *s){
-    this->src = s;
-    nr_schermate = 1;
+    src = s;
+    schermate_nr = 1;
     dx_coord = 0;
     sx_coord = 0;
     terrain_tx = nullptr;
     background_tx = s->getTexture(33);
     background.setTexture(*background_tx);
     head = nullptr;
-    minSizeHole = 0;
-    minSizeSoil = 0;
+    min_size_hole = 0;
+    min_size_soil = 0;
     
 }
 
-Terreno::Terreno(int sx_coord, int dx_coord, Resources *src, int tot_schermate){
-    this->src = src;
-    nr_schermate = tot_schermate;
+Terreno::Terreno(int sx_coord, int dx_coord, Resources *s, int tot_schermate){
+    src = s;
+    schermate_nr = tot_schermate;
     terrain_tx = src->getTexture(29);
     terrain_tx->setRepeated(true);
     background_tx = src->getTexture(13);
     background.setTexture(*background_tx);
     background.setPosition(0, 0);
-    background.setColor(colore(tot_schermate,128));
+    background.setColor(setColor(tot_schermate,128));
     this->dx_coord = dx_coord;
     this->sx_coord = sx_coord;
-    int nr = src->rand(4,23);   //elementi di soil
+    int nr = src->rand(4,23);   //poligoni del terreno
     float px = src->getLength()/nr;         //partial x
     int firstHeight = src->getHeight() - src->rand(0,99);   //altezza del terreno temporanea
     head = new soil(nullptr);
@@ -55,8 +55,8 @@ Terreno::Terreno(int sx_coord, int dx_coord, Resources *src, int tot_schermate){
     spriteSetup(Vector2f(px*(nr-1), src->getHeight()),Vector2f(px*(nr-1), heightLeft),
                 Vector2f(src->getLength(), dx_coord),Vector2f(src->getLength(), src->getHeight()),tmp);
 
-    minSizeHole = 400;
-    minSizeSoil = 30;
+    min_size_hole = 400;
+    min_size_soil = 30;
 }
 
 /// SETTERS & GETTERS
@@ -77,9 +77,7 @@ void Terreno::setSxCoord(int sx_coord){
     this->sx_coord = sx_coord;
 }
 
-/// FUNZIONI
-
-Color Terreno::colore(int tot_schermate, int transparency){
+Color Terreno::setColor(int tot_schermate, int transparency){
     switch (tot_schermate) {
         case 3:
             return Color::White;
@@ -102,6 +100,8 @@ Color Terreno::colore(int tot_schermate, int transparency){
     }
 }
 
+/// FUNZIONI
+
 void Terreno::drawAll(){
     src->getWindow()->draw(background);
     soil *tmp = head;
@@ -111,7 +111,7 @@ void Terreno::drawAll(){
     };
 }
 
-double Terreno::get_Y(double x){
+double Terreno::getTerrainY(double x){
     soil *tmp = head;
 	if (tmp != nullptr) {
 		while (tmp->element.getPoint(2).x <= x && tmp->next != nullptr) {//tmp->soil.getPoint(2).x < DxCoord){
@@ -134,13 +134,13 @@ void Terreno::spriteSetup(Vector2f p0, Vector2f p1, Vector2f p2, Vector2f p3, so
     p->element.setPoint(2,p2);
     p->element.setPoint(3,p3);
     p->element.setTexture(terrain_tx);
-    p->element.setFillColor(colore(nr_schermate,255));
+    p->element.setFillColor(setColor(schermate_nr,255));
 }
 
 int Terreno::prepareForHole(){
 	soil *tmp = head->next;
     Vector2f topRight = tmp->element.getPoint(3);  
-    while ((topRight.x - head->element.getPoint(3).x) < minSizeHole + 2 * minSizeSoil){ //delete all necessary soils until
+    while ((topRight.x - head->element.getPoint(3).x) < min_size_hole + 2 * min_size_soil){ //delete all necessary soils until
         tmp = tmp->next;              //hole can fit
         delete head->next;
         head->next = tmp;
@@ -148,13 +148,13 @@ int Terreno::prepareForHole(){
     }
 
     head->next = new soil(tmp);    //create first soil after hole
-    double last_x = tmp->element.getPoint(0).x - minSizeSoil;
+    double last_x = tmp->element.getPoint(0).x - min_size_soil;
     spriteSetup(Vector2f(last_x,src->getHeight()),Vector2f(last_x,src->getHeight()),
                 tmp->element.getPoint(1),tmp->element.getPoint(0),
                 head->next);
     tmp = head->next;
     head->next = new soil(tmp);     //create first soil before hole
-    last_x = tmp->element.getPoint(1).x - minSizeHole;
+    last_x = tmp->element.getPoint(1).x - min_size_hole;
     spriteSetup(head->element.getPoint(3),head->element.getPoint(2),
                 Vector2f(last_x,src->getHeight()),Vector2f(last_x,src->getHeight()),
                 head->next);
@@ -163,7 +163,7 @@ int Terreno::prepareForHole(){
 }
 
 void Terreno::prepareForBoss(Sprite *hole){
-    hole->setPosition(prepareForHole() + minSizeHole / 2, 700);
+    hole->setPosition(prepareForHole() + min_size_hole / 2, 700);
 }
 
 bool Terreno::isBoss(){

@@ -55,11 +55,11 @@ Bunker::Bunker(Resources *src, Terreno *terrain){
         //rotation or not
         p2=src->rand(0,1);
         
-        if(p>4) bunkers->push_front(bunkerlist(p2,(src->rand(2500,7500)),x,terrain->get_Y(x),
+        if(p>4) bunkers->push_front(bunkerlist(p2,(src->rand(2500,7500)),x,terrain->getTerrainY(x),
                                                100, new SingleStraightBullets(DEFAULT_TIME_BTW_SHOOT,
                                                DEFAULT_DAMAGE_SINGLE, DEFAULT_SPEED, 14, 0, true, src),
                                                bunker_tx2, explosion_tx));
-        else bunkers->push_front(bunkerlist(p2,(src->rand(2500,7500)),x,terrain->get_Y(x),
+        else bunkers->push_front(bunkerlist(p2,(src->rand(2500,7500)),x,terrain->getTerrainY(x),
                                             100, new TripleBullets(DEFAULT_TIME_BTW_SHOOT,
                                             DEFAULT_DAMAGE_TRIPLE, DEFAULT_SPEED, 14, 0,
                                             true, src),bunker_tx,explosion_tx));
