@@ -9,6 +9,14 @@ Highscore::Highscore(Resources *src){
     int i = 0;
     string line;
     file.open("./../resources/highscore", fstream::in | fstream::out);
+    if (!file.is_open()){
+        ofstream newfile {"./../resources/highscore"};
+        newfile << "#1" << endl << "---" << endl << 0 << endl
+                << "#2" << endl << "---" << endl << 0 << endl
+                << "#3" << endl << "---" << endl << 0 << endl;
+        newfile.close();
+        file.open("./../resources/highscore", fstream::in | fstream::out);
+    }
     getline(file,line);
     while (!file.eof()) {
         ScoreRow* row = new ScoreRow;
@@ -89,6 +97,7 @@ void Highscore::checkNewScore(Text* player, Text* score){
     while (!new_high && it != end){
         if (score_i > stoi((string)(*it)->score.getString())){
             new_high = true;
+            // TODO: remove cout << "DETECTED NEW HIGH SCORE";
             cout << "DETECTED NEW HIGH SCORE";
             i++;
         } else {

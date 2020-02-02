@@ -39,6 +39,7 @@ Game::Game(Resources *src){
     highscore_st.setTextPlayer(game_over->addText(Vector2f(880, 360), to_string(10000),
                                                   Color::White, Color::Black, 60, 1));
     active = home;
+    current_handled = nullptr;
 }
 
 void Game::handleStageControls(){
@@ -78,7 +79,10 @@ void Game::handleStageControls(){
         }
     }
     for (Slider* slider : *active->getSliderList()){
-        slider->logic();
+        if (slider == current_handled || current_handled == nullptr) {
+            current_handled = slider;
+            if (!slider->logic()) current_handled = nullptr;
+        }
         switch (*slider->getName()) {
                 // SETTINGS - A_acceleration
             case 'A':

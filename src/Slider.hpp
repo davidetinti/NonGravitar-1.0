@@ -5,30 +5,28 @@ class Slider{
     
     Resources *src;
     Sprite slider, axis;
-    float minValue;
-    float maxValue;
-    int xCord;
-    int yCord;
-    int axisWidth;
-    int axisHeight;
-    int sliderWidth;
-    int sliderHeight;
-    float sliderValue;
+    float min_value;
+    float max_value;
+    int x_coord;
+    int y_coord;
+    int axis_width;
+    int axis_height;
+    int slider_width;
+    int slider_height;
+    float slider_value;
     char name[20];
+    bool mouse_was_clicked;
     
 public:
     
     Slider();
     Slider(Vector2f position, float min, float max, char name[], Resources *src);
-    void create(float min, float max);
-    void logic();
-    float getSliderValue();
-    void setSliderValue(float newValue);
-    void setSliderPercentValue(float newPercentValue);
-    char *getName();
-    void draw();
-    void handle();
-    bool mouseWasClicked;
-    bool isHandled;
     
+    void setSliderPercentValue(float newPercentValue);
+    float getSliderValue();
+    char* getName();
+    
+    bool logic();
+    void draw();
+
 };

@@ -14,6 +14,7 @@ protected:
     Text* points;
     Highscore highscore_st;
     HUD hud;
+    Slider* current_handled;
     void handleStageControls();
     void updateScore();
     
