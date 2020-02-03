@@ -127,7 +127,6 @@ void Universe::handle(){
             if (contactPlanet(player.nave.getPosition(),&*it)){
                 active->pianeti.setCurrent(&*it);
                 it->interno.inizializza(it->tot_schermate, src);
-                //transizioni->inPlanet(it->interno.getHead()->terrain, it->tot_schermate);
                 player.setAtPlanet(true);
                 
                 player.braceForEntry(it->planet.getPosition());
