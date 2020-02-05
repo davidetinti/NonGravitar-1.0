@@ -43,7 +43,6 @@ public:
     void setHead(lista_schermate_pianeta *head);
     bool getIn_boss();
     
-    lista_schermate_pianeta *find(int n);
     void inizializza(int tot_schermate, Resources *src);
     void cambia_schermata(int n);
     void checkCollision(Nave *player);

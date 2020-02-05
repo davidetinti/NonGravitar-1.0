@@ -66,18 +66,6 @@ bool GPlanet::getIn_boss(){
 
 /// FUNZIONI
 
-lista_schermate_pianeta *GPlanet::find(int n){///???
-    lista_schermate_pianeta *tmp = head;
-    lista_schermate_pianeta *a = nullptr;
-    while (tmp != nullptr && a == nullptr){
-        if (tmp->nr_schermata == n) a = tmp;
-        tmp = tmp->next;
-    }
-    return a;
-}
- 
-
-
 void GPlanet::inizializza(int tot_schermate, Resources *src){
     lista_schermate_pianeta *tmp = nullptr;
     lista_schermate_pianeta *pre_tmp = nullptr;
