@@ -30,6 +30,7 @@ GPlanet::GPlanet(){
 	boss = Boss();
 	boss_unlocked = false;
     in_boss = false;
+    completed = false;
     
 }
 
@@ -78,15 +79,16 @@ lista_schermate_pianeta *GPlanet::find(int n){///???
 
 
 void GPlanet::inizializza(int tot_schermate, Resources *src){
-    this->src = src;
-    completed = false;
-    nr_schermate = tot_schermate;
     lista_schermate_pianeta *tmp = nullptr;
     lista_schermate_pianeta *pre_tmp = nullptr;
-    hole_tx = src->getTexture(31);
-	hole.setTexture(*hole_tx);
-	hole.setOrigin(hole_tx->getSize().x / 2, hole_tx->getSize().y / 2);
+
     if(head == nullptr){
+        hole_tx = src->getTexture(31);
+        hole.setTexture(*hole_tx);
+        hole.setOrigin(hole_tx->getSize().x / 2, hole_tx->getSize().y / 2);
+        this->src = src;
+        nr_schermate = tot_schermate;
+
         head = new lista_schermate_pianeta(
             new Terreno(random_height(), random_height(), src, tot_schermate),
             0, tot_schermate, src);
@@ -152,6 +154,7 @@ void GPlanet::handle(Nave *player){
     if (!boss_unlocked) updateBossLock();
     checkCollision(player);
     checkTerrain(player);
+    checkScreen(player);
     current->terrain->drawAll();
     if (!in_boss) {
         current->carb->gestisci();
@@ -254,5 +257,20 @@ void GPlanet::raggiotraente(Nave *player){
             it->fuel_sprite.setPosition(it->x, it->y);
             it++;
         }
+    }
+}
+
+void GPlanet::checkScreen(Nave *player){
+    if (player->nave.getPosition().x >= src->getLength()) {
+        player->nave.setPosition(0, player->nave.getPosition().y);
+        cambia_schermata(1);
+    }
+    if (player->nave.getPosition().x < 0) {
+        player->nave.setPosition(src->getLength(), player->nave.getPosition().y);
+        cambia_schermata(-1);
+    }
+    //only able to go down far enough after boss is unlocked
+    if (player->nave.getPosition().y > src->getHeight()){
+        enterBoss(player);
     }
 }

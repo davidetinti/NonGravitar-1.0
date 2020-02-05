@@ -1,7 +1,6 @@
 #pragma once
 #include "Fuels.hpp"
 #include "Boss.hpp"
-#include "Transitions.hpp"
 
 struct lista_schermate_pianeta {
     lista_schermate_pianeta* next;
@@ -54,6 +53,7 @@ public:
     void checkTerrain(Nave *player);
     void raggiotraente(Nave *player);
     bool getCompleted();
+    void checkScreen(Nave *player);
     
 protected:
     
