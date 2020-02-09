@@ -1,43 +1,42 @@
 #include "Nave.hpp"
 
-/// COSTRUTTORI
 
 Nave::Nave(){
     
 }
 
+
 Nave::Nave(Resources* src){
-    tractor_beam = nullptr;
     this->src = src;
-    raggiox = 0;
-    raggioy = 0;
-    raggio_tx = this->src->getTexture(17);
-    raggio.setScale(0.30, 0.80);
-    raggio.setTexture(*raggio_tx);
-    raggio.setColor(Color(255,255,255,160));
-    punti = 0;
-    X_planet = this->src->getLength()/2;
-    Y_planet = this->src->getHeight()/2;
+    ray_x = 0;
+    ray_y = 0;
+    ray_tx = this->src->getTexture(17);
+    ray.setScale(0.30, 0.80);
+    ray.setTexture(*ray_tx);
+    ray.setColor(Color(255,255,255,160));
+    points = 0;
+    planet_x = this->src->getLength()/2;
+    planet_y = this->src->getHeight()/2;
     life_left = TOTAL_LIFE;
     fuel_left = TOTAL_FUEL;
-    TopSpeed = 5;
-	CurrentSpeed = 0;
-	dx = 0; dy = 0;
-    SpaceshipAcceleration = 0.1;
-    AtPlanet = false;
-    IsDead = false;
+    top_speed = 5;
+	current_speed = 0;
+	direction_x = 0; direction_y = 0;
+    acceleration = 0.1;
+    at_planet = false;
+    is_dead = false;
     is_red = false;
-    Nave_tx = this->src->getTexture(4);
-    nave.setOrigin(Vector2f(Nave_tx->getSize().x/2, Nave_tx->getSize().y/2));
-    nave.setPosition(Vector2f(this->src->getLength() / 2, this->src->getHeight() / 2));
-    nave.setTexture(*Nave_tx);
-    nave.scale(Vector2f(0.2, 0.2));
-    nave.setRotation(0);
-    nave.setTextureRect(IntRect(0, 0, Nave_tx->getSize().x, Nave_tx->getSize().y));
-    SingleShot = new SingleStraightBullets(100, 100, 10, 0, 0, false, src);
+    spaceship_tx = this->src->getTexture(4);
+    spaceship.setOrigin(Vector2f(spaceship_tx->getSize().x/2, spaceship_tx->getSize().y/2));
+    spaceship.setPosition(Vector2f(this->src->getLength() / 2, this->src->getHeight() / 2));
+    spaceship.setTexture(*spaceship_tx);
+    spaceship.scale(Vector2f(0.2, 0.2));
+    spaceship.setRotation(0);
+    spaceship.setTextureRect(IntRect(0, 0, spaceship_tx->getSize().x, spaceship_tx->getSize().y));
+    SingleShot = new SingleStraightBullets(100, 50, 10, 0, 0, false, src);
     Laser = new SingleStraightBullets(5000, 200, 10, 1, 0, false, src);
-	Time_btw_hitS = 0.75;
-	Time_btw_pushesMS = 500;
+	time_btw_hit_S = 0.75;
+	time_btw_pushes_MS = 500;
 	thrust_tx = src->getTexture(30);
 	thrust.setTexture(*thrust_tx);
 	thrust.setScale(0.04, 0.04);
@@ -46,106 +45,116 @@ Nave::Nave(Resources* src){
     in_boss = false;
 }
 
-/// SETTERS & GETTERS
 
 bool Nave::getIsDead(){
-    return this->IsDead;
+    return this->is_dead;
 }
 
-void Nave::setIsDead(bool isdead){
-    this->IsDead = isdead;
-}
 
 bool Nave::getAtPlanet(){
-    return this->AtPlanet;
+    return this->at_planet;
 }
 
+
 void Nave::setAtPlanet(bool atplanet){
-    this->AtPlanet = atplanet;
+    this->at_planet = atplanet;
 }
+
 
 double Nave::getLifebar(){
     return this->life_left;
 }
 
+
 double Nave::getFuelbar(){
     return this->fuel_left;
 }
 
-void Nave::setFuelbar(double fuelbar){
-    if (fuelbar >= 100){
-        this->fuel_left = 100;
+
+void Nave::increaseFuel(double fuelbar){
+    if (fuel_left + fuelbar >= 100){
+        fuel_left = 100;
     } else {
-        this->fuel_left = fuelbar;
+        fuel_left = fuel_left + fuelbar;
     }
 }
 
+
 void Nave::setTopSpeed(double speed){
-    this->TopSpeed = speed;
+    this->top_speed = speed;
 }
+
 
 void Nave::setSpaceshipAcceleration(float acceleration){
-    this->SpaceshipAcceleration = acceleration;
+    this->acceleration = acceleration;
 }
+
 
 double Nave::getX_planet(){
-    return this->X_planet;
+    return this->planet_x;
 }
+
 
 double Nave::getY_planet(){
-    return this->Y_planet;
+    return this->planet_y;
 }
 
-int Nave::getPunti(){
-    return this->punti;
+
+int Nave::getPoints(){
+    return this->points;
 }
 
-void Nave::setPunti(int punti){
-    this->punti = punti;
+
+void Nave::incrasePoints(int new_points){
+    this->points = this->points + new_points * src->getDifficulty();
 }
+
 
 void Nave::setDxDy(double newDx, double newDy){
-	dx = newDx; dy = newDy;
+	direction_x = newDx; direction_y = newDy;
 }
 
+
 void Nave::addToDxDy(double offsetDx, double offsetDy){
-	dx = dx + offsetDx;
-	dy = dy + offsetDy;
+	direction_x = direction_x + offsetDx;
+	direction_y = direction_y + offsetDy;
 }
+
 
 double Nave::getAnglePlanet(){
 	return angle_entering_planet;
 }
+
 
 void Nave::decayThrustInt(){
 	if (thrust_int > 0) thrust_int=thrust_int - 10;
 	if (thrust_int < 0) thrust_int = 0;
 }
 
-/// FUNZIONI
 
 void Nave::armi(Terreno *terrain){
-    SingleShot->addSingleBullet(nave, Keyboard::Key::S);
-    Laser->addSingleBullet(nave, Keyboard::Key::L);
+    SingleShot->addSingleBullet(spaceship, Keyboard::Key::S);
+    Laser->addSingleBullet(spaceship, Keyboard::Key::L);
     SingleShot->handle(terrain);
     Laser->handle(terrain);
 }
 
+
 bool Nave::raggioTraente(){
     if (Keyboard::isKeyPressed(Keyboard::F)){
-        if (raggiox > 8){
-            raggioy++;
-            raggiox = 0;
+        if (ray_x > 8){
+            ray_y++;
+            ray_x = 0;
         }
-        if (raggioy > 8){
-            raggiox = 0;
-            raggioy = 0;
+        if (ray_y > 8){
+            ray_x = 0;
+            ray_y = 0;
         }
-        raggio.setTextureRect(IntRect(500*(int)raggiox,500*(int)raggioy,500,500));
-        raggio.setPosition(nave.getPosition());
-        raggio.setOrigin(250, 0);
-        raggiox = raggiox+0.2;
-        src->getWindow()->draw(raggio);
+        ray.setTextureRect(IntRect(500*(int)ray_x,500*(int)ray_y,500,500));
+        ray.setPosition(spaceship.getPosition());
+        ray.setOrigin(250, 0);
+        ray_x = ray_x+0.2;
+        src->getWindow()->draw(ray);
         return true;
     } else {
         return false;
@@ -153,85 +162,85 @@ bool Nave::raggioTraente(){
 } 
 
 //call with 1 to ignore clock
-void Nave::getHit(int damage, int hitType){
-    if ((!is_red || hitType == 1) && damage > 0){
+void Nave::getHit(int damage, int hit_type){
+    if ((!is_red || hit_type == 1) && damage > 0){
         is_red = true;
-        nave.setColor(Color::Red);
+        spaceship.setColor(Color::Red);
         last_hit.restart();
-        life_left = life_left - damage;
+        life_left = life_left - (src->getDifficulty() * damage);
     } else if (last_hit.getElapsedTime().asMilliseconds() > HIT_TIMER_MS){
-        nave.setColor(Color::White);
+        spaceship.setColor(Color::White);
         is_red = false;
     }
 }
 
 void Nave::push_back(int distance, int dir){
-	Time elapsed = PushClock.getElapsedTime();
+	Time elapsed = push_clock.getElapsedTime();
     static Vector2f centre = Vector2f(src->getLength()/2,src->getHeight()/2);
-	if (elapsed.asMilliseconds() > Time_btw_pushesMS) {
+	if (elapsed.asMilliseconds() > time_btw_pushes_MS) {
         switch (dir){
             case 0: 
-                nave.setRotation(180);
-		        dy = -10 * distance;
+                spaceship.setRotation(180);
+		        direction_y = -10 * distance;
                 break;
             case 1:
-                nave.setRotation(270 + atan2(centre.y-nave.getPosition().y, 
-                                        centre.x-nave.getPosition().x) * (180/M_PI));
-                dx = cos((nave.getRotation()-270) * M_PI / 180) * distance;
-                dy = sin((nave.getRotation()-270) * M_PI / 180) * distance;
+                spaceship.setRotation(270 + atan2(centre.y-spaceship.getPosition().y, 
+                                        centre.x-spaceship.getPosition().x) * (180/M_PI));
+                direction_x = cos((spaceship.getRotation()-270) * M_PI / 180) * distance;
+                direction_y = sin((spaceship.getRotation()-270) * M_PI / 180) * distance;
                 
                 break;
         }
 		
-		PushClock.restart();
+		push_clock.restart();
 	}
 }
 
 void Nave::gestisci(){
     movements();
-    if (life_left <= 0 || fuel_left <= 0) IsDead = true;
+    if (life_left <= 0 || fuel_left <= 0) is_dead = true;
 }
 
 void Nave::handleThrust(){
-    thrust.setRotation(nave.getRotation());
-	thrust.setPosition(nave.getPosition());
+    thrust.setRotation(spaceship.getRotation());
+	thrust.setPosition(spaceship.getPosition());
 	thrust.setColor(Color(255, 255, 255, thrust_int));
 }
 
 void Nave::movements(){
     if (Keyboard::isKeyPressed(Keyboard::Left)) {
-        nave.setRotation(nave.getRotation() - 3);
+        spaceship.setRotation(spaceship.getRotation() - 3);
     }
     if (Keyboard::isKeyPressed(Keyboard::Right)) {
-        nave.setRotation(nave.getRotation() + 3);
+        spaceship.setRotation(spaceship.getRotation() + 3);
     }
     if (Keyboard::isKeyPressed(Keyboard::Space)) {
-		addToDxDy(cos((nave.getRotation()-270) * M_PI / 180) * SpaceshipAcceleration, 
-                  sin((nave.getRotation()-270) * M_PI / 180) * SpaceshipAcceleration);
+		addToDxDy(cos((spaceship.getRotation()-270) * M_PI / 180) * acceleration, 
+                  sin((spaceship.getRotation()-270) * M_PI / 180) * acceleration);
 		thrust_int = 255;
 		if (fuel_left > 0 && !in_boss)
-            fuel_left = fuel_left - SpaceshipAcceleration/2;
+            fuel_left = fuel_left - src->getDifficulty() * acceleration/2;
     } else {
 		decayThrustInt();
-		if(AtPlanet)
-			setDxDy(dx*0.98, dy*0.98);
+		if(at_planet)
+			setDxDy(direction_x*0.98, direction_y*0.98);
     }
-	CurrentSpeed = sqrt(dx * dx + dy * dy);
-	if (CurrentSpeed > TopSpeed) {
-		setDxDy(dx * TopSpeed / CurrentSpeed, dy * TopSpeed / CurrentSpeed);
+	current_speed = sqrt(direction_x * direction_x + direction_y * direction_y);
+	if (current_speed > top_speed) {
+		setDxDy(direction_x * top_speed / current_speed, direction_y * top_speed / current_speed);
 	}
 
-	nave.move(dx * src->getTimePerFrame()->asMilliseconds() * 0.1,dy * src->getTimePerFrame()->asMilliseconds() * 0.1);
+	spaceship.move(direction_x * src->getTimePerFrame()->asMilliseconds() * 0.1,direction_y * src->getTimePerFrame()->asMilliseconds() * 0.1);
 }
 
 void Nave::braceForEntry(Vector2f planetPos){
-    nave.setPosition(src->getLength()/2, 0);
+    spaceship.setPosition(src->getLength()/2, 0);
     angle_entering_planet = 0;
-    X_planet = planetPos.x;
-    Y_planet = planetPos.y + 35;
-    nave.setRotation(0);
+    planet_x = planetPos.x;
+    planet_y = planetPos.y + 35;
+    spaceship.setRotation(0);
     setDxDy(0, 0.8);
-    CurrentSpeed = sqrt(dx * dx + dy * dy);
+    current_speed = sqrt(direction_x * direction_x + direction_y * direction_y);
 }
 
 void Nave::resetStats(){

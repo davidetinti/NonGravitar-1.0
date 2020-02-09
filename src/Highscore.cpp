@@ -1,8 +1,10 @@
 #include "Highscore.hpp"
 
+
 Highscore::Highscore(){
     
 }
+
 
 Highscore::Highscore(Resources *src){
     this->src = src;
@@ -53,13 +55,16 @@ Highscore::Highscore(Resources *src){
     file.close();
 }
 
+
 void Highscore::setTextPlayer(Text* text){
     player = text;
 }
 
+
 void Highscore::setTextScore(Text* text){
     score = text;
 }
+
 
 void Highscore::draw(){
     for (ScoreRow* row : scores){
@@ -68,6 +73,7 @@ void Highscore::draw(){
         src->getWindow()->draw(row->score);
     }
 }
+
 
 bool Highscore::insert(){
     int input = src->getLastInput();
@@ -88,6 +94,7 @@ bool Highscore::insert(){
     return false;
 }
 
+
 void Highscore::checkNewScore(Text* player, Text* score){
     list<ScoreRow*>::iterator it = scores.begin();
     list<ScoreRow*>::iterator end = scores.end();
@@ -97,8 +104,6 @@ void Highscore::checkNewScore(Text* player, Text* score){
     while (!new_high && it != end){
         if (score_i > stoi((string)(*it)->score.getString())){
             new_high = true;
-            // TODO: remove cout << "DETECTED NEW HIGH SCORE";
-            cout << "DETECTED NEW HIGH SCORE";
             i++;
         } else {
             i++;

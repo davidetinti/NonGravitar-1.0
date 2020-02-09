@@ -31,7 +31,6 @@ protected:
     
 public:
     
-    const int DAMAGEONCOLLISION = 5;    
     Clock bunkerDamage;
     
     // COSTRUTTORI ===================================
@@ -56,5 +55,4 @@ public:
 
 protected:
     void spriteSetup(bunkerlist *p);
-    virtual void updatePosition(double angle);
 };

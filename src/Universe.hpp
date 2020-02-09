@@ -2,17 +2,18 @@
 #include "Pianeti.hpp"
 #include "HUD.hpp"
 
-struct lista_schermate {
-    lista_schermate* dx;
-    lista_schermate* sx;
-    lista_schermate* up;
-    lista_schermate* dw;
+struct uni_screen {
+    uni_screen* dx;
+    uni_screen* sx;
+    uni_screen* up;
+    uni_screen* dw;
     int x;
     int y;
     Pianeti pianeti;
-    lista_schermate *next;
-    lista_schermate(int x_n, int y_n, Resources *src, lista_schermate *d=nullptr, lista_schermate *s=nullptr, 
-        lista_schermate *u=nullptr, lista_schermate *down=nullptr, lista_schermate *nxt=nullptr);
+    uni_screen *next;
+    uni_screen(int x_n, int y_n, Resources *src, uni_screen *d = nullptr,
+                    uni_screen *s = nullptr, uni_screen *u = nullptr,
+                    uni_screen *down = nullptr, uni_screen *nxt = nullptr);
 };
 
 
@@ -20,9 +21,9 @@ class Universe {
     
 protected:
     
-    lista_schermate *active;
-    lista_schermate *tail;
-    lista_schermate *head_list;
+    uni_screen *active;
+    uni_screen *tail;
+    uni_screen *head_list;
     Resources *src;
     
 public:
@@ -33,11 +34,11 @@ public:
     Universe();
     Universe(Resources *src);
     
-    lista_schermate *getActive();
-    lista_schermate *getTail();
-    lista_schermate *getHeadList();
+    uni_screen *getActive();
+    uni_screen *getTail();
+    uni_screen *getHeadList();
     
-    lista_schermate *find(int x, int y);
+    uni_screen *find(int x, int y);
     void move(int x, int y);
     void checkTerrain();
     void handle();
@@ -45,6 +46,6 @@ public:
 private:
     
     bool contactPlanet(Vector2f pos, SinglePlanet* p);
-    void addToList(lista_schermate *p);
+    void addToList(uni_screen *p);
     void exitPlanet();
 };

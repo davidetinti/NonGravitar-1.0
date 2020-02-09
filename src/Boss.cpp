@@ -1,6 +1,5 @@
 #include "Boss.hpp"
 
-/// COSTRUTTORI
 
 Boss::Boss(){
     
@@ -30,25 +29,26 @@ Boss::Boss(int life, int turrets_n, Resources *src_a){
 	collision_boundary.setFillColor(Color(0, 0, 0, 0));
 }
 
-/// SETTERS & GETTERS
 
 bool Boss::isDead(){
 	return !alive;
 }
 
+
 Vector2f Boss::getCenter(){
 	return centre;
 }
+
 
 double Boss::getRadius(){
 	return radius;
 }
 
+
 void Boss::setEnemies(BossBunker *boss_bunker_list){
 	turrets = boss_bunker_list;
 }
 
-/// FUNZIONI
 
 bool Boss::checkCollisionBoss(Bullets *weapon){
 	list<proiettile>::iterator it = weapon->bulletList->begin();
@@ -64,6 +64,7 @@ bool Boss::checkCollisionBoss(Bullets *weapon){
 	}
 	return hit;
 }
+
 
 bool Boss::checkCollisionBoss(Sprite *body){
 	if (pow(body->getPosition().x - centre.x, 2) + pow(body->getPosition().y - centre.y, 2) >= pow(radius, 2)) {
@@ -86,6 +87,7 @@ void Boss::getHit(int damage){
 	}
 }
 
+
 void Boss::draw(){
 	if (alive) {
 		src->getWindow()->draw(boss_sprite);
@@ -97,6 +99,7 @@ void Boss::draw(){
 	}
 }
 
+
 void Boss::handle(){
 	if(red && last_hit.getElapsedTime().asMilliseconds() > HIT_TIMER_MS){
 		red = false;
@@ -104,7 +107,7 @@ void Boss::handle(){
 	}
 
 	if (rotation.getElapsedTime().asMilliseconds() > 20 && !(dying  || !alive)) {
-		boss_sprite.setRotation(boss_sprite.getRotation() + Boss::ROTATION_STEP);	//make it dependent from timePerFrame
+        boss_sprite.setRotation(boss_sprite.getRotation() + Boss::ROTATION_STEP);
 		turrets->updatePosition(boss_sprite.getRotation() + Boss::ROTATION_STEP);
 		rotation.restart();
 	}
@@ -112,13 +115,11 @@ void Boss::handle(){
 		dying = true;
 		explode();
 	}
-	else if (dying && last_hit.getElapsedTime().asMilliseconds() < DEATH_TIMER_MS){
-		//if we want to add more explosions, this is where.
-	}
 	else if(dying && last_hit.getElapsedTime().asMilliseconds() > DEATH_TIMER_MS){
 		alive = false;
 	}
 }
+
 
 void Boss::explode(){
 	int offset = 360/EXPL_NR;

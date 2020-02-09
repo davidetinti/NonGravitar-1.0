@@ -1,9 +1,9 @@
 #include "BossBunker.hpp"
 
-/// COSTRUTTORI
 
 BossBunker::BossBunker(){
 }
+
 
 BossBunker::BossBunker(Resources *s, double r, Vector2f c){
     src = s;
@@ -24,7 +24,6 @@ BossBunker::BossBunker(Resources *s, double r, Vector2f c){
     }
 }
 
-/// FUNZIONI
 
 Vector2f BossBunker::newPosition(double angle){
     Vector2f *start = new Vector2f(radius, 0);
@@ -34,6 +33,7 @@ Vector2f BossBunker::newPosition(double angle){
     Vector2f *result = new Vector2f(finalx + centre.x,finaly + centre.y);
     return *result;
 }
+
 
 void BossBunker::updatePosition(double angle){
     list<bunkerlist>::iterator it = bunkers->begin();
@@ -52,6 +52,7 @@ void BossBunker::updatePosition(double angle){
     }
     updateRotation();
 }
+
 
 void BossBunker::updateRotation(){
     list<bunkerlist>::iterator iterator = bunkers->begin();

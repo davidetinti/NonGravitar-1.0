@@ -4,11 +4,9 @@
 struct proiettile{
     bool exist;
     Sprite bullet;
-    Sound bullet_sound;
     Clock invuln_clock;
     proiettile(double x, double y, double rotation, Texture *bullet_tx);
 };
-
 
 class Bullets{
     
@@ -23,8 +21,8 @@ protected:
     bool autoshoot;
     
 public:
+    
     list<proiettile> *bulletList;
-    SoundBuffer bullet_sb;
     Clock bullet_time;
     
     Bullets();

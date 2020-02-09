@@ -1,6 +1,5 @@
 #include "Bunker.hpp"
 
-/// COSTRUTTORI
 
 bunkerlist::bunkerlist(int type_n, int tempo_n, double x_n, double y_n, double life_n,
                        Bullets *weapon_n, Texture *b, Texture *e, double boss_bunker_offset) :
@@ -17,6 +16,7 @@ bunkerlist::bunkerlist(int type_n, int tempo_n, double x_n, double y_n, double l
         spriteSetup(b,e);
     }
 
+
 void bunkerlist::spriteSetup(Texture *bunker_tx, Texture *explosion_tx){
     this->bunker.setTexture(*bunker_tx);
     this->bunker.setOrigin(bunker_tx->getSize().x/2, 15);
@@ -29,9 +29,11 @@ void bunkerlist::spriteSetup(Texture *bunker_tx, Texture *explosion_tx){
     this->explosion.setOrigin(25, 25);
 }
 
+
 Bunker::Bunker(){
     bunkers = nullptr;
 }
+
  
 Bunker::Bunker(Resources *src, Terreno *terrain){
     int p;
@@ -66,11 +68,11 @@ Bunker::Bunker(Resources *src, Terreno *terrain){
     }
 }
 
-/// FUNZIONI
 
 bool Bunker::isEmpty(){
     return bunkers->empty();
 }
+
 
 void Bunker::armi(bunkerlist *tmp, Terreno *terrain){
     tmp->weapon->addSingleBullet(tmp->bunker, Keyboard::R);
@@ -82,25 +84,27 @@ void Bunker::hitBunker(int damage, list<bunkerlist>::iterator p){
 	p->life = p->life - damage;
 }
 
+
 list<bunkerlist>::iterator Bunker::deleteBunker(list<bunkerlist>::iterator it){
     src->addAnimation(it->bunker.getPosition().x, it->bunker.getPosition().y, 20, 1, 20, 3, 0.5);
 	return(bunkers->erase(it));
 }
  
+
 void Bunker::gestisci(Nave *player, Terreno *terrain, double angle){
     list<bunkerlist>::iterator it = bunkers->begin();
     //updatePosition(angle);
     while (it != bunkers->end()){
         if (it->exist){
             if (it->type == 1){
-                it->bunker.setRotation(270 + atan2((player->nave.getPosition().y-it->bunker.getPosition().y), 
-                                        (player->nave.getPosition().x-it->bunker.getPosition().x)) * 180/M_PI);
+                it->bunker.setRotation(270 + atan2((player->spaceship.getPosition().y-it->bunker.getPosition().y), 
+                                        (player->spaceship.getPosition().x-it->bunker.getPosition().x)) * 180/M_PI);
             }
             armi(&*it, terrain);
         }
         if (it->life <= 0) {
             it = deleteBunker(it);
-            player->setPunti(player->getPunti()+100);
+            player->incrasePoints(100);
         }
         if (it->exist == false){
         }
@@ -109,6 +113,7 @@ void Bunker::gestisci(Nave *player, Terreno *terrain, double angle){
     }
     drawAll();
 }
+
 
 //returns only the damage by the last detected bunker. see
 //comment on Bullets::checkCollision for reasoning
@@ -125,6 +130,7 @@ int Bunker::checkCollisionBBullets(FloatRect obj){
     }
     return hit;
 }
+
 
 bool Bunker::checkCollision(Bullets *b){
     list<proiettile>::iterator itB = b->bulletList->begin();
@@ -150,6 +156,7 @@ bool Bunker::checkCollision(Bullets *b){
     return hit;
 }
 
+
 bool Bunker::checkCollision(Sprite *p){
     list<bunkerlist>::iterator it = bunkers->begin();
     list<bunkerlist>::iterator end = bunkers->end();
@@ -162,6 +169,7 @@ bool Bunker::checkCollision(Sprite *p){
     }
     return hit;
 }
+
 
 bool Bunker::collidesWith(list<bunkerlist>::iterator p, sf::FloatRect q){
     return p->bunker.getGlobalBounds().intersects(q);
@@ -177,15 +185,11 @@ void Bunker::drawAll(){
     } 
 }
 
+
 void Bunker::restartTimers(){
     list<bunkerlist>::iterator it = bunkers->begin();
     while (it != bunkers->end()){
         it->weapon->bullet_time.restart();
         it++;
     } 
-}
-
-void Bunker::updatePosition(double angle){
-    //left it for completeness, if we want to implement moving bunkers. 
-    //makes it much cleaner in BossBunker :)
 }

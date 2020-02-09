@@ -8,6 +8,7 @@ struct soil{
     soil(soil *n);
 };
 
+
 class Terreno{
     
 protected:

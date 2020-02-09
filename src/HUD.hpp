@@ -14,6 +14,7 @@ public:
     
     HUD();
     HUD(Resources *src);
+    
     void gestisci(int point, float life, float fuel);
     
 };

@@ -3,6 +3,7 @@
 using namespace std;
 using namespace sf;
 
+
 SourceLoader::SourceLoader(){
     length = 1280;
     height = 720;
@@ -15,11 +16,13 @@ SourceLoader::SourceLoader(){
     loadFonts();
 }
 
+
 void SourceLoader::loadTextures(){
     for (int i = 0; i < sizeof(texture)/sizeof(texture[0]); i++){
         texture[i].loadFromFile(path + to_string(i) + ".png");
     }
 }
+
 
 void SourceLoader::loadSounds(){
     for (int i = 0; i < sizeof(sound)/sizeof(sound[0]); i++){
@@ -27,35 +30,43 @@ void SourceLoader::loadSounds(){
     }
 }
 
+
 void SourceLoader::loadFonts(){
     for (int i = 0; i < sizeof(font)/sizeof(font[0]); i++){
         font[i].loadFromFile(path + to_string(i) + ".ttf");
     }
 }
 
+
 int SourceLoader::getHeight(){
     return height;
 }
+
 
 int SourceLoader::getLength(){
     return length;
 }
 
+
 SoundBuffer *SourceLoader::getSound(int n){
     return &sound[n];
 }
+
 
 Texture *SourceLoader::getTexture(int n){
     return &texture[n];
 }
 
+
 Font *SourceLoader::getFont(int n){
     return &font[n];
 }
 
+
 RenderWindow *SourceLoader::getWindow(){
     return &window;
 }
+
 
 Time *SourceLoader::getTimePerFrame(){
     return &time_per_frame;

@@ -1,11 +1,17 @@
 #include "SingleStraightBullets.hpp"
 
-//tx_nr dovrebbe essere deciso qui invece che dal caller
-SingleStraightBullets::SingleStraightBullets(int time_btw_shoot, int damage, int speed, 
+
+SingleStraightBullets::SingleStraightBullets(){
+    
+}
+
+
+SingleStraightBullets::SingleStraightBullets(int time_btw_shoot, int damage, int speed,
                                 int tx_nr, int sd_nr, bool autoshoot, Resources *src):
 Bullets(time_btw_shoot,damage,speed,tx_nr,sd_nr,autoshoot,src){
     
 }
+
 
 void SingleStraightBullets::addSingleBullet(Sprite entity, Keyboard::Key pulsante){
     double x = entity.getPosition().x;
@@ -19,6 +25,7 @@ void SingleStraightBullets::addSingleBullet(Sprite entity, Keyboard::Key pulsant
     }
 }
 
+
 void SingleStraightBullets::renderBullet(){
     list<proiettile>::iterator it = bulletList->begin();
     list<proiettile>::iterator end = bulletList->end();
@@ -31,9 +38,6 @@ void SingleStraightBullets::renderBullet(){
     }
 }
 
-SingleStraightBullets::SingleStraightBullets(){
-    
-}
 
 void SingleStraightBullets::cleanup(Terreno *terrain){
     list<proiettile>::iterator iterator = bulletList->begin();

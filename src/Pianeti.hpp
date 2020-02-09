@@ -25,6 +25,7 @@ protected:
     Resources *src;
     
 public:
+    
     list<SinglePlanet> planetlist;
     
     Pianeti();
@@ -38,6 +39,8 @@ public:
     void handle(Nave *player);
     void deletePlanet(SinglePlanet* p);
     void draw();
+    
 private:
+    
     void spriteSetup(SinglePlanet* p);
 };

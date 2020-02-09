@@ -2,28 +2,30 @@
 #include "Fuels.hpp"
 #include "Boss.hpp"
 
-struct lista_schermate_pianeta {
-    lista_schermate_pianeta* next;
-    lista_schermate_pianeta* prev;
+#define BOSS_SCREEN 666
+#define STANDARD_PLANET_POINTS 500
+#define COLLISION_DAMAGE 10
+
+struct planet_screen {
+    
+    int screen_nr;
+    Fuels *carb;
     Bunker *enemies;
     Terreno *terrain;
-    Fuels *carb;
-    int nr_schermata;
-    lista_schermate_pianeta(Terreno *terrain_n, int n,
-                        int totale_schermate, Resources *src,
-                        lista_schermate_pianeta *next_n = nullptr,
-                        lista_schermate_pianeta *prev_n = nullptr);
-    lista_schermate_pianeta(Resources *src);
+    planet_screen* next;
+    planet_screen* prev;
+    planet_screen(Terreno *terrain_n, int n, Resources *src,
+                  planet_screen *next_n = nullptr, planet_screen *prev_n = nullptr);
+    planet_screen(Resources *src);
 };
 
 class GPlanet {
     
 protected:
     
-    static const int BOSS_POINTS = 1000;
     Resources *src;
     bool boss_unlocked,in_boss;
-    lista_schermate_pianeta *current, *head, *boss_screen;
+    planet_screen *current, *head, *boss_screen;
     Texture *hole_tx;
     Sprite hole;
     int nr_schermate;
@@ -36,11 +38,11 @@ public:
     GPlanet();
 
     bool getBoss_unlocked();
-    lista_schermate_pianeta *getCurrent();
-    lista_schermate_pianeta *getHead();
+    planet_screen *getCurrent();
+    planet_screen *getHead();
     void setBoss_unlocked(bool boss_unlocked);
-    void setCurrent(lista_schermate_pianeta *current);
-    void setHead(lista_schermate_pianeta *head);
+    void setCurrent(planet_screen *current);
+    void setHead(planet_screen *head);
     bool getIn_boss();
     
     void inizializza(int tot_schermate, Resources *src);

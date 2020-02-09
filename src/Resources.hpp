@@ -11,6 +11,7 @@ protected:
     list<Animation*> animationList;
     Event event;
     int last_input;
+    float difficulty;
     
 public:
     
@@ -20,6 +21,8 @@ public:
     int getLength();
     int getLastInput();
     void setLastInput(int value);
+    float getDifficulty();
+    void setDifficulty(float value);
     Time *getTimePerFrame();
     RenderWindow *getWindow();
     SoundBuffer *getSound(int n);

@@ -1,6 +1,5 @@
 #include "Pianeti.hpp"
 
-/// COSTRUTTORI
 
 SinglePlanet::SinglePlanet(bool ex, int rel_x, int rel_y, int gr_x,
                            int gr_y, int screens, Resources *s):
@@ -16,18 +15,11 @@ SinglePlanet::SinglePlanet(bool ex, int rel_x, int rel_y, int gr_x,
         spriteSetup(s);
     }
 
-void SinglePlanet::spriteSetup(Resources *src){
-    this->planet_tx = src->getTexture(this->tot_schermate + 2);
-    this->planet.setTexture(*planet_tx);
-    this->planet.setOrigin(Vector2f(planet_tx->getSize().x/2, planet_tx->getSize().y/2));
-    this->planet.setPosition(relative_x + grid_x, relative_y + grid_y);
-    this->planet.setTextureRect(IntRect(0, 0, planet_tx->getSize().x, planet_tx->getSize().y));
-    this->planet.scale(0.2, 0.2);
-}
 
 Pianeti::Pianeti(){
     
 }
+
 
 Pianeti::Pianeti(Resources *s){
     int str_l[] = {50,50,360,360,670,670,980,980};
@@ -47,25 +39,26 @@ Pianeti::Pianeti(Resources *s){
     explosion.setTexture(*explosion_tx);
 }
 
-/// SETTERS & GETTERS
 
 SinglePlanet* Pianeti::getHead(){
     return head;
 }
 
+
 void Pianeti::setHead(SinglePlanet* h){
     head = h;
 }
+
 
 SinglePlanet* Pianeti::getCurrent(){
     return current;
 }
 
+
 void Pianeti::setCurrent(SinglePlanet* h){
     current = h;
 }
 
-/// FUNZIONI
 
 void Pianeti::handle(Nave *player){
     current->interno.handle(player);
@@ -84,6 +77,7 @@ void Pianeti::deletePlanet(SinglePlanet* p){
     }
 }
 
+
 void Pianeti::draw(){
     list<SinglePlanet>::iterator it = planetlist.begin();
     list<SinglePlanet>::iterator end = planetlist.end();
@@ -91,4 +85,14 @@ void Pianeti::draw(){
         src->getWindow()->draw(it->planet);
         it++;
     }
+}
+
+
+void SinglePlanet::spriteSetup(Resources *src){
+    this->planet_tx = src->getTexture(this->tot_schermate + 2);
+    this->planet.setTexture(*planet_tx);
+    this->planet.setOrigin(Vector2f(planet_tx->getSize().x/2, planet_tx->getSize().y/2));
+    this->planet.setPosition(relative_x + grid_x, relative_y + grid_y);
+    this->planet.setTextureRect(IntRect(0, 0, planet_tx->getSize().x, planet_tx->getSize().y));
+    this->planet.scale(0.2, 0.2);
 }

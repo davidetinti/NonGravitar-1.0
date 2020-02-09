@@ -1,10 +1,10 @@
 #include "Animation.hpp"
 
-/// COSTRUTTORI
 
 Animation::Animation(){
     
 }
+
 
 Animation::Animation(int x, int y, int tx_nr, int rows, int columns,
                      float scale, SourceLoader *src_a, double image_speed){
@@ -22,13 +22,11 @@ Animation::Animation(int x, int y, int tx_nr, int rows, int columns,
     sprite.setOrigin(frame_width/2, frame_height/2);
 }
 
-/// GETTERS & SETTERS
 
 Sprite* Animation::getSprite(){
     return &sprite;
 }
 
-/// FUNZIONI
 
 bool Animation::isEnded(){
     if (current_y >= max_y){
@@ -37,13 +35,15 @@ bool Animation::isEnded(){
     return false;
 }
 
+
 void Animation::handle(){
     if (current_x >= max_x){
         current_y++;
         current_x = 0;
     }
-    sprite.setTextureRect(IntRect(frame_width * (int)current_x, frame_height * (int)current_y,
-                                  frame_width, frame_height));
+    int base_x = frame_width * (int)current_x;
+    int base_y = frame_height * (int)current_y;
+    sprite.setTextureRect(IntRect(base_x, base_y, frame_width, frame_height));
     src->getWindow()->draw(sprite);
     current_x = current_x + (1 * speed);
 }

@@ -1,7 +1,9 @@
 #include "HUD.hpp"
 
+
 HUD::HUD(){
 }
+
 
 HUD::HUD(Resources *src){
     this->src = src;
@@ -45,6 +47,7 @@ HUD::HUD(Resources *src){
     score.setOutlineThickness(1);
     score.setPosition((this->src->getLength() - score.getLocalBounds().width)/2, 40);
 }
+
 
 void HUD::gestisci(int point_f, float life_f, float fuel_f){
     if (life_f>0 && life_f<=100) lifebar_active.setTextureRect(IntRect(0, 31, 400*life_f/100, 32));

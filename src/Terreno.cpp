@@ -1,12 +1,12 @@
 #include "Terreno.hpp"
 
-/// COSTRUTTORI
 
 soil::soil(soil *n):
     next(n)
     {
         element = ConvexShape(4);
     }
+
 
 Terreno::Terreno(Resources *s){
     src = s;
@@ -21,6 +21,7 @@ Terreno::Terreno(Resources *s){
     min_size_soil = 0;
     
 }
+
 
 Terreno::Terreno(int sx_coord, int dx_coord, Resources *s, int tot_schermate){
     src = s;
@@ -59,23 +60,26 @@ Terreno::Terreno(int sx_coord, int dx_coord, Resources *s, int tot_schermate){
     min_size_soil = 30;
 }
 
-/// SETTERS & GETTERS
 
 int Terreno::getDxCoord(){
     return this->dx_coord;
 }
 
+
 int Terreno::getSxCoord(){
     return this->sx_coord;
 }
+
 
 void Terreno::setDxCoord(int dx_coord){
     this->dx_coord = dx_coord;
 }
 
+
 void Terreno::setSxCoord(int sx_coord){
     this->sx_coord = sx_coord;
 }
+
 
 Color Terreno::setColor(int tot_schermate, int transparency){
     switch (tot_schermate) {
@@ -100,7 +104,6 @@ Color Terreno::setColor(int tot_schermate, int transparency){
     }
 }
 
-/// FUNZIONI
 
 void Terreno::drawAll(){
     src->getWindow()->draw(background);
@@ -110,6 +113,7 @@ void Terreno::drawAll(){
         tmp = tmp->next;
     };
 }
+
 
 double Terreno::getTerrainY(double x){
     soil *tmp = head;
@@ -128,6 +132,7 @@ double Terreno::getTerrainY(double x){
 	else return 0;
 }
 
+
 void Terreno::spriteSetup(Vector2f p0, Vector2f p1, Vector2f p2, Vector2f p3, soil *p){
     p->element.setPoint(0,p0);
     p->element.setPoint(1,p1);
@@ -136,6 +141,7 @@ void Terreno::spriteSetup(Vector2f p0, Vector2f p1, Vector2f p2, Vector2f p3, so
     p->element.setTexture(terrain_tx);
     p->element.setFillColor(setColor(schermate_nr,255));
 }
+
 
 int Terreno::prepareForHole(){
 	soil *tmp = head->next;
@@ -162,9 +168,11 @@ int Terreno::prepareForHole(){
     return head->next->element.getPoint(2).x;    
 }
 
+
 void Terreno::prepareForBoss(Sprite *hole){
     hole->setPosition(prepareForHole() + min_size_hole / 2, 700);
 }
+
 
 bool Terreno::isBoss(){
     return head == nullptr

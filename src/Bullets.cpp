@@ -1,6 +1,5 @@
 #include "Bullets.hpp"
 
-/// COSTRUTTORI
 
 proiettile::proiettile(double x, double y, double rotation, Texture *bullet_tx){
     this->bullet.setTexture(*bullet_tx);
@@ -9,12 +8,13 @@ proiettile::proiettile(double x, double y, double rotation, Texture *bullet_tx){
     this->bullet.setRotation(rotation);
     this->bullet.setTextureRect(IntRect(0, 0, bullet_tx->getSize().x, bullet_tx->getSize().y));
     this->bullet.scale(1,1);
-    //p->bullet_sound.setBuffer(bullet_sb);
 }
+
 
 Bullets::Bullets(){
     
 }
+
 
 Bullets::Bullets(int time_btw_shoot,int damage, int speed, int tx_nr, int sd_nr, bool autoshoot, Resources *src){
     bulletList = new list<proiettile>;
@@ -24,17 +24,14 @@ Bullets::Bullets(int time_btw_shoot,int damage, int speed, int tx_nr, int sd_nr,
     this->damage = damage;
     this->speed = speed;
     this->bullet_tx = src->getTexture(tx_nr);
-    //this->bullet_sb = *src->caricaSuono(tx_nr);
 	this->invuln_time = 500;
 }
 
-/// SETTERS & GETTERS
 
 int Bullets::getDamage(){
     return damage;
 }
 
-/// FUNZIONI
 
 //returns bullets.damage if collision was detected, but deletes
 //all colliding bullets. this is done because only one bullet can
@@ -54,9 +51,11 @@ int Bullets::checkCollision(FloatRect p){
     return hit;
 }
 
+
 bool Bullets::collidesWith(list<proiettile>::iterator p, FloatRect obj){
     return p->bullet.getGlobalBounds().intersects(obj);
 }
+
 
 bool Bullets::outsideBounds(list<proiettile>::iterator p, Terreno *terrain){
     return p->bullet.getPosition().x < 0 ||
@@ -66,13 +65,15 @@ bool Bullets::outsideBounds(list<proiettile>::iterator p, Terreno *terrain){
 
 }
 
+
 bool Bullets::outsideBounds(list<proiettile>::iterator p){
     return p->bullet.getPosition().x < 0 ||
     p->bullet.getPosition().x > src->getLength() ||
     p->bullet.getPosition().y < 0 || p->bullet.getPosition().y > src->getHeight();
 }
 
-void Bullets::handle(Terreno *terrain){ //perFrame should be in Resources
+
+void Bullets::handle(Terreno *terrain){
     cleanup(terrain);
     renderBullet();
 }

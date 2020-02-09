@@ -1,12 +1,12 @@
 #include "Fuels.hpp"
 
-/// COSTRUTTORI
 
 fuel::fuel(double x_n, double y_n, int power_n):
     x(x_n),
     y(y_n),
     power(power_n){
 }
+
 
 Fuels::Fuels(){
     src = nullptr;
@@ -17,6 +17,7 @@ Fuels::Fuels(){
     }
     
 }
+
 
 Fuels::Fuels(Terreno *terrain, Resources *src) {
     double x;
@@ -43,25 +44,26 @@ Fuels::Fuels(Terreno *terrain, Resources *src) {
     }
 }
 
-/// SETTERS & GETTERS
 
 list<fuel>::iterator Fuels::getFuelListBegin(){
     return fuel_list->begin();
 }
 
+
 list<fuel>::iterator Fuels::getFuelListEnd(){
     return fuel_list->end();
 }
 
-/// FUNZIONI
 
 list<fuel>::iterator Fuels::delete_fuel(list<fuel>::iterator it){
     return fuel_list->erase(it);
 }
 
+
 int Fuels::getPower(list<fuel>::iterator it){
     return it->power;
 }
+
 
 void Fuels::gestisci(){
     list<fuel>::iterator it = fuel_list->begin();
@@ -71,6 +73,7 @@ void Fuels::gestisci(){
         it++;
     }
 }
+
 
 void Fuels::spriteSetup(fuel *tmp, int power){
     tmp->fuel_sprite.setTexture(*fuel_tx);
@@ -83,4 +86,3 @@ void Fuels::spriteSetup(fuel *tmp, int power){
         tmp->fuel_sprite.setColor(sf::Color::Green);
     }
 }
-

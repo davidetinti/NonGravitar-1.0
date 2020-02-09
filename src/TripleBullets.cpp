@@ -1,9 +1,12 @@
 #include "TripleBullets.hpp"
 
-TripleBullets::TripleBullets(){}
 
-//tx_nr dovrebbe essere deciso qui invece che dal caller
-TripleBullets::TripleBullets(int time_btw_shoot, int damage, int speed, 
+TripleBullets::TripleBullets(){
+    
+}
+
+
+TripleBullets::TripleBullets(int time_btw_shoot, int damage, int speed,
                                 int tx_nr, int sd_nr, bool autoshoot, Resources *src):
     Bullets(time_btw_shoot,damage,speed,tx_nr,sd_nr,autoshoot,src){
         left = SingleStraightBullets(time_btw_shoot,damage,speed,tx_nr,
@@ -14,6 +17,7 @@ TripleBullets::TripleBullets(int time_btw_shoot, int damage, int speed,
                                     sd_nr,autoshoot,src);
     }
 
+
 void TripleBullets::addSingleBullet(Sprite entity, Keyboard::Key pulsante){
     Sprite t = entity;
     centre.addSingleBullet(t,pulsante);
@@ -23,15 +27,18 @@ void TripleBullets::addSingleBullet(Sprite entity, Keyboard::Key pulsante){
     right.addSingleBullet(t,pulsante);
 }
 
+
 void TripleBullets::renderBullet(){
     left.renderBullet();
     centre.renderBullet();
     right.renderBullet();
 }
 
+
 int TripleBullets::checkCollision(FloatRect p){
     return left.checkCollision(p) + right.checkCollision(p) + centre.checkCollision(p);
 }
+
 
 void TripleBullets::cleanup(Terreno *terrain){
     left.cleanup(terrain);

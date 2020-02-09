@@ -1,8 +1,10 @@
 #include "Slider.hpp"
 
+
 Slider::Slider(){
     
 }
+
 
 Slider::Slider(Vector2f position, float min, float max, char nome[], Resources *src){
     this->src = src;
@@ -28,21 +30,25 @@ Slider::Slider(Vector2f position, float min, float max, char nome[], Resources *
     this->setSliderPercentValue(50);
 }
 
+
 void Slider::setSliderPercentValue(float newPercentValue){
     if (newPercentValue >= 0 && newPercentValue <= 100)
     {
-        slider_value = newPercentValue / 100 * max_value;
-        slider.setPosition(x_coord + (axis_width*newPercentValue / 100), y_coord);
+        slider_value = min_value + newPercentValue / 100 * (max_value - min_value);
+        slider.setPosition(x_coord + (axis_width * newPercentValue / 100), y_coord);
     }
 }
+
 
 float Slider::getSliderValue(){
     return slider_value;
 }
 
+
 char* Slider::getName(){
     return name;
 }
+
 
 bool Slider::logic(){
     if ((slider.getGlobalBounds().contains(Mouse::getPosition(*src->getWindow()).x, Mouse::getPosition(*src->getWindow()).y) && Mouse::isButtonPressed(Mouse::Button::Left)) || mouse_was_clicked){
@@ -55,6 +61,7 @@ bool Slider::logic(){
     }
     return mouse_was_clicked;
 }
+
 
 void Slider::draw(){
     src->getWindow()->draw(axis);

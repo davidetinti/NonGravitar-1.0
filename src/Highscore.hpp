@@ -17,40 +17,40 @@ protected:
 public:
     
     /**
-     Default constructor.
-    */
+     Costruttore semplice
+     */
     Highscore();
     
     /**
-     Main constructor.
+     Costruttore avanzato
 
-     @param src pointer to main game's Resources class.
+     @param src puntatore alla classe risorse di gioco
     */
     Highscore(Resources *src);
     
     /**
-     Set the player text string.
+     Imposta il nome del giocatore
 
-     @param text string to replace.
+     @param text stringa da sostituire
     */
     void setTextPlayer(Text* text);
     
     /**
-     Set the score text string.
+     Imposta il punteggio del giocatore
 
-     @param text string to replace.
+     @param text stringa da sostituire
     */
     void setTextScore(Text* text);
     
     /**
-     Draw the highscore grid in the highscore scene.
+     Visualizza la griglia dei 3 migliori punteggi,
     */
     void draw();
     
     /**
-     Handle the player text insertion, verify if the new score is an highscore.
+     Gestisce l'inserimento di testo nella schermata Game Over e verifica se il nuovo punteggio va inserito tra i migliori
 
-     @return true if Key::Enter is pressed, else false.
+     @return true se viene premuto il tasto Invio (Keyboard::Key::Enter), false altrimenti
     */
     bool insert();
     

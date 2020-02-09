@@ -1,9 +1,8 @@
 #include "Universe.hpp"
 
-/// COSTRUTTORI
 
-lista_schermate::lista_schermate(int x_n, int y_n, Resources *src, lista_schermate *d, lista_schermate *s, 
-        lista_schermate *u, lista_schermate *down, lista_schermate *nxt) :
+uni_screen::uni_screen(int x_n, int y_n, Resources *src, uni_screen *d, uni_screen *s, 
+        uni_screen *u, uni_screen *down, uni_screen *nxt) :
     dx(d),
     sx(s),
     up(u),
@@ -15,36 +14,38 @@ lista_schermate::lista_schermate(int x_n, int y_n, Resources *src, lista_scherma
         pianeti = Pianeti(src);
     }
 
+
 Universe::Universe(){
     
 } 
 
+
 Universe::Universe(Resources *src){
     this->src = src;
     this->player = Nave(this->src);
-    this->active = new lista_schermate(0, 0, this->src);
+    this->active = new uni_screen(0, 0, this->src);
     this->head_list = active;
     this->tail = head_list;
 }
 
-/// SETTERS & GETTERS
 
-lista_schermate *Universe::getActive(){
+uni_screen *Universe::getActive(){
     return  this->active;
 }
 
-lista_schermate *Universe::getTail(){
+
+uni_screen *Universe::getTail(){
     return  this->tail;
 }
 
-lista_schermate *Universe::getHeadList(){
+
+uni_screen *Universe::getHeadList(){
     return  this->head_list;
 }
 
-/// FUNZIONI
 
-lista_schermate *Universe::find(int x, int y){
-    lista_schermate *b = head_list;
+uni_screen *Universe::find(int x, int y){
+    uni_screen *b = head_list;
     bool found = false;
     while (b != nullptr && !found) {
         if (x == b->x && y == b->y) {
@@ -56,31 +57,32 @@ lista_schermate *Universe::find(int x, int y){
     return b;
 }
 
+
 void Universe::move(int x, int y){
     if (x == 1 && y == 0) {
         if (active->dx == nullptr) {
-            active->dx = new lista_schermate(active->x + x,active->y + y,src);
+            active->dx = new uni_screen(active->x + x,active->y + y,src);
             addToList(active->dx);
         }
         active = active->dx;
     }
     if (x == 0 && y == 1) {
         if (active->up == nullptr) {
-            active->up = new lista_schermate(active->x + x, active->y + y,src);
+            active->up = new uni_screen(active->x + x, active->y + y,src);
             addToList(active->up);
         }
         active = active->up;
     }
     if (x == -1 && y == 0) {
         if (active->sx == nullptr) {
-            active->sx = new lista_schermate(active->x+x,active->y+y,src);
+            active->sx = new uni_screen(active->x+x,active->y+y,src);
             addToList(active->sx);
         }
         active = active->sx;
     }
     if (x == 0 && y == -1) {
         if (active->dw == nullptr) {
-            active->dw = new lista_schermate(active->x+x,active->y+y,src);
+            active->dw = new uni_screen(active->x+x,active->y+y,src);
             addToList(active->dw);
         }
         active = active->dw;
@@ -90,6 +92,7 @@ void Universe::move(int x, int y){
     active->up = find(active->x, (active->y + 1));
     active->dw = find(active->x, (active->y - 1));
 }
+
 
 void Universe::handle(){
 
@@ -104,27 +107,27 @@ void Universe::handle(){
         active->pianeti.draw();
 
         //verify if out of bounds
-        if (player.nave.getPosition().x >= src->getLength()) {
-            player.nave.setPosition(0, player.nave.getPosition().y);
+        if (player.spaceship.getPosition().x >= src->getLength()) {
+            player.spaceship.setPosition(0, player.spaceship.getPosition().y);
             move(1, 0);
         }
-        if (player.nave.getPosition().y >= src->getHeight()) {
-            player.nave.setPosition(player.nave.getPosition().x, 0);
+        if (player.spaceship.getPosition().y >= src->getHeight()) {
+            player.spaceship.setPosition(player.spaceship.getPosition().x, 0);
             move(0, 1);
         }
-        if (player.nave.getPosition().x < 0) {
-            player.nave.setPosition(src->getLength(), player.nave.getPosition().y);
+        if (player.spaceship.getPosition().x < 0) {
+            player.spaceship.setPosition(src->getLength(), player.spaceship.getPosition().y);
             move(-1, 0);
         }
-        if (player.nave.getPosition().y < 0) {
-            player.nave.setPosition(player.nave.getPosition().x, src->getHeight());
+        if (player.spaceship.getPosition().y < 0) {
+            player.spaceship.setPosition(player.spaceship.getPosition().x, src->getHeight());
             move(0, -1);
         }
         
         list<SinglePlanet>::iterator it = active->pianeti.planetlist.begin();
         list<SinglePlanet>::iterator end = active->pianeti.planetlist.end();
         while (it != end && !player.getAtPlanet()){
-            if (contactPlanet(player.nave.getPosition(),&*it)){
+            if (contactPlanet(player.spaceship.getPosition(),&*it)){
                 active->pianeti.setCurrent(&*it);
                 it->interno.inizializza(it->tot_schermate, src);
                 player.setAtPlanet(true);
@@ -137,7 +140,7 @@ void Universe::handle(){
     if (player.getAtPlanet()){
         getActive()->pianeti.handle(&player);
 
-        if (player.nave.getPosition().y < 0) {
+        if (player.spaceship.getPosition().y < 0) {
             exitPlanet();
         }
 
@@ -152,7 +155,7 @@ void Universe::handle(){
         }
     }
     src->getWindow()->draw(player.thrust);
-    src->getWindow()->draw(player.nave);
+    src->getWindow()->draw(player.spaceship);
 }
 
 
@@ -162,16 +165,18 @@ bool Universe::contactPlanet(Vector2f pos, SinglePlanet* p){
              p->exist ;
 }
 
-void Universe::addToList(lista_schermate *p){
+
+void Universe::addToList(uni_screen *p){
     if(p != nullptr){
         tail->next = p;
         tail = tail->next;
     }
 }
 
+
 void Universe::exitPlanet(){
-    player.nave.setPosition(player.getX_planet(), player.getY_planet());
-    player.nave.setRotation(player.getAnglePlanet());
+    player.spaceship.setPosition(player.getX_planet(), player.getY_planet());
+    player.spaceship.setRotation(player.getAnglePlanet());
     player.setDxDy(0, 0.1);
     player.setAtPlanet(false);
 }

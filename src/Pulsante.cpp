@@ -1,10 +1,10 @@
 #include "Pulsante.hpp"
 
-/// COSTRUTTORI
 
 Pulsante::Pulsante(){
     
 }
+
 
 Pulsante::Pulsante(Vector2f position, int tx_nr, float scale, char name_a[], Resources *s){
     src = s;
@@ -18,11 +18,11 @@ Pulsante::Pulsante(Vector2f position, int tx_nr, float scale, char name_a[], Res
     strncpy(name, name_a, 20);
 }
 
-/// GETTERS & SETTERS
 
 char* Pulsante::getName(){
     return name;
 }
+
 
 bool Pulsante::isSelected(){
     if (button.getGlobalBounds().contains(Mouse::getPosition(*src->getWindow()).x,
@@ -33,7 +33,6 @@ bool Pulsante::isSelected(){
     }
 }
 
-/// FUNZIONI
 
 void Pulsante::draw(){
     if (isSelected()){
@@ -44,6 +43,7 @@ void Pulsante::draw(){
         src->getWindow()->draw(button);
     }
 }
+
 
 bool Pulsante::handle(){
     draw();

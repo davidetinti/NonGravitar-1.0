@@ -30,7 +30,7 @@ protected:
     Font font[FONT_NR];
     ContextSettings settings;
     RenderWindow window;
-    Time time_per_frame;      // Determines how many fps
+    Time time_per_frame;      // Stabilisce gli FPS
     
     void loadTextures();
     void loadSounds();

@@ -1,8 +1,10 @@
 #include "Game.hpp"
 
+
 Game::Game(){
     
 }
+
 
 Game::Game(Resources *src){
     this->src = src;
@@ -24,7 +26,7 @@ Game::Game(Resources *src){
     settings->addButton(Vector2f(640,650), 24, 0.25, (char*)"5_back");
     settings->addSlider(Vector2f(364, 290), 0.025, 0.1, (char*)"A_acceleration");
     settings->addSlider(Vector2f(364, 421), 3, 7, (char*)"B_max_speed");
-    settings->addSlider(Vector2f(363, 552), 0, 0, (char*)"C_difficulty");
+    settings->addSlider(Vector2f(363, 552), 0.5, 1.5, (char*)"C_difficulty");
     String str_credits = String("DEVELOPED BY:\n\n- DAVIDE TINTI\n- PAOLO MARZOLO\n- MATTEO FEROLI");
     credits->addText(Vector2f(430,250), str_credits, Color::Black, Color::White, 40, 1);
     credits->addButton(Vector2f(640,650), 24, 0.25, (char*)"5_back");
@@ -41,6 +43,7 @@ Game::Game(Resources *src){
     active = home;
     current_handled = nullptr;
 }
+
 
 void Game::handleStageControls(){
     for (Pulsante* button : *active->getButtonsList()){
@@ -94,7 +97,7 @@ void Game::handleStageControls(){
                 break;
                 // SETTINGS - C_difficulty
             case 'C':
-                //... TODO
+                src->setDifficulty(slider->getSliderValue());
                 break;
             default:
                 break;
@@ -102,10 +105,12 @@ void Game::handleStageControls(){
     }
 }
 
+
 void Game::updateScore(){
-    points->setString(to_string(universe->player.getPunti()));
+    points->setString(to_string(universe->player.getPoints()));
     points->setPosition(370 - points->getLocalBounds().width/2, 360);
 }
+
 
 void Game::handle(){
     active->drawBackground();
@@ -113,7 +118,7 @@ void Game::handle(){
     if (active == game){
         if (!universe->player.getIsDead()){
             universe->handle();
-            hud.gestisci(universe->player.getPunti(),
+            hud.gestisci(universe->player.getPoints(),
                          universe->player.getLifebar(),
                          universe->player.getFuelbar());
         } else {
