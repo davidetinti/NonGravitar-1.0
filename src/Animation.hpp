@@ -1,6 +1,15 @@
 #pragma once
 #include "SourceLoader.hpp"
 
+/**
+ Animazione realizzata tramite una Sprite dinamica, la quale viene aggiornata in base
+ al contenuto della Texture associata, preventivamente predisposta a questo utilizzo.
+ Al momento della creazione, la Texture scelta è divisa in una tabella di frame in base
+ ai valori di rows e columns.
+ Ad ogni ciclo di gioco il frame visualizzato si aggiorna passando al successivo scorrendo
+ in orizzontale la propria texture, fino al raggiungimento dell'ultimo frame terminando.
+ */
+
 class Animation {
     
 protected:
@@ -18,11 +27,11 @@ public:
     Animation();
     
     /**
-     Costruttore avanzato
+     Costruttore avanzato.
      
      @param x coordinata x dell'animazione da generare
      @param y coordinata y dell'animazione da generare
-     @param tx_nr indice texture aminazione
+     @param tx_nr indice della texture dell'animazione
      @param rows righe dello spritesheet dell'animazione
      @param columns colonne dello spritesheet dell'animazione
      @param scale fattore di scala
@@ -32,12 +41,12 @@ public:
     Animation(int x, int y, int tx_nr, int rows, int columns, float scale, SourceLoader *src, double image_speed = 1);
     
     /**
-     Ritorna la sprite dell'animazione corrente
+     @return sprite dell'animazione corrente
      */
     Sprite* getSprite();
     
     /**
-     True se l'animazione è terminata
+     @return true se l'animazione è terminata, false altrimenti
      */
     bool isEnded();
     
