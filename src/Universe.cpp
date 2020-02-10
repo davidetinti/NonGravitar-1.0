@@ -97,7 +97,7 @@ void Universe::move(int x, int y){
 void Universe::handle(){
 
     //TODO: throughout code, keep logic and drawing separate, maybe. i think it would look cleaner
-    player.gestisci();
+    player.handle();
     player.handleThrust();
     
 
@@ -129,7 +129,7 @@ void Universe::handle(){
         while (it != end && !player.getAtPlanet()){
             if (contactPlanet(player.spaceship.getPosition(),&*it)){
                 active->pianeti.setCurrent(&*it);
-                it->interno.inizializza(it->tot_schermate, src);
+                it->interno.initialize(it->tot_schermate, src);
                 player.setAtPlanet(true);
                 
                 player.braceForEntry(it->planet.getPosition());

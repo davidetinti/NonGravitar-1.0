@@ -18,8 +18,7 @@ planet_screen::planet_screen(Resources *s) :
     prev(nullptr),
     terrain(nullptr),
     screen_nr(BOSS_SCREEN){
-        // TODO: complete this
-        //carb = BossFuel(...);
+
     }
 
 
@@ -69,7 +68,7 @@ bool GPlanet::getIn_boss(){
 }
 
 
-void GPlanet::inizializza(int tot_schermate, Resources *src){
+void GPlanet::initialize(int tot_screen, Resources *src){
     planet_screen *tmp = nullptr;
     planet_screen *pre_tmp = nullptr;
 
@@ -78,14 +77,14 @@ void GPlanet::inizializza(int tot_schermate, Resources *src){
         hole.setTexture(*hole_tx);
         hole.setOrigin(hole_tx->getSize().x / 2, hole_tx->getSize().y / 2);
         this->src = src;
-        nr_schermate = tot_schermate;
+        screen_nr = tot_screen;
 
         head = new planet_screen(
-            new Terreno(random_height(), random_height(), src, tot_schermate), 0, src);
+            new Terreno(random_height(), random_height(), src, tot_screen), 0, src);
         pre_tmp = head;
-        for (int i = 1; i < tot_schermate; i++){
+        for (int i = 1; i < tot_screen; i++){
             tmp = new planet_screen(
-                new Terreno(random_height(), pre_tmp->terrain->getSxCoord(),src,tot_schermate),
+                new Terreno(random_height(), pre_tmp->terrain->getSxCoord(),src,tot_screen),
                                               i, src, nullptr, pre_tmp);
             pre_tmp->next = tmp;
             pre_tmp = tmp;
@@ -157,11 +156,11 @@ void GPlanet::handle(Nave *player){
 		boss.draw();
     }
 	current->enemies->handle(player, current->terrain);
-    player->armi(current->terrain);
+    player->weapons(current->terrain);
     
     if(boss.isDead()){
         completed = true;
-        player->incrasePoints(STANDARD_PLANET_POINTS + 100 * nr_schermate);
+        player->incrasePoints(STANDARD_PLANET_POINTS + 100 * screen_nr);
     }
 }
 
@@ -209,7 +208,7 @@ void GPlanet::updateBossLock(){
     bool no_bunkers = true;
     int i = 0;
     planet_screen *iterator = head;
-    while (iterator != nullptr && no_bunkers && i < nr_schermate) {
+    while (iterator != nullptr && no_bunkers && i < screen_nr) {
         no_bunkers = no_bunkers && (iterator->enemies->isEmpty());
         iterator = iterator->next;
         i++;
@@ -229,7 +228,7 @@ bool GPlanet::getCompleted(){
 void GPlanet::raggiotraente(Nave *player){
     list<fuel>::iterator it = current->carb->getFuelListBegin();
     list<fuel>::iterator end = current->carb->getFuelListEnd();
-    if (player->raggioTraente()){
+    if (player->tractorRay()){
         while(it != end){
             if(player->ray.getGlobalBounds().intersects(it->fuel_sprite.getGlobalBounds())){
                 double temp_x = player->spaceship.getPosition().x - it->fuel_sprite.getPosition().x;

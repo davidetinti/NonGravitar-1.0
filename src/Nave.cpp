@@ -127,12 +127,12 @@ double Nave::getAnglePlanet(){
 
 
 void Nave::decayThrustInt(){
-	if (thrust_int > 0) thrust_int=thrust_int - 10;
+	if (thrust_int > 0) thrust_int = thrust_int - 10;
 	if (thrust_int < 0) thrust_int = 0;
 }
 
 
-void Nave::armi(Terreno *terrain){
+void Nave::weapons(Terreno *terrain){
     SingleShot->addSingleBullet(spaceship, Keyboard::Key::S);
     Laser->addSingleBullet(spaceship, Keyboard::Key::L);
     SingleShot->handle(terrain);
@@ -140,7 +140,7 @@ void Nave::armi(Terreno *terrain){
 }
 
 
-bool Nave::raggioTraente(){
+bool Nave::tractorRay(){
     if (Keyboard::isKeyPressed(Keyboard::F)){
         if (ray_x > 8){
             ray_y++;
@@ -196,7 +196,7 @@ void Nave::push_back(int distance, int dir){
 	}
 }
 
-void Nave::gestisci(){
+void Nave::handle(){
     movements();
     if (life_left <= 0 || fuel_left <= 0) is_dead = true;
 }
@@ -208,6 +208,7 @@ void Nave::handleThrust(){
 }
 
 void Nave::movements(){
+    //MOVIMENTI
     if (Keyboard::isKeyPressed(Keyboard::Left)) {
         spaceship.setRotation(spaceship.getRotation() - 3);
     }
@@ -218,6 +219,7 @@ void Nave::movements(){
 		addToDxDy(cos((spaceship.getRotation()-270) * M_PI / 180) * acceleration, 
                   sin((spaceship.getRotation()-270) * M_PI / 180) * acceleration);
 		thrust_int = 255;
+        //CARBURANTE
 		if (fuel_left > 0 && !in_boss)
             fuel_left = fuel_left - src->getDifficulty() * acceleration/2;
     } else {
@@ -225,6 +227,7 @@ void Nave::movements(){
 		if(at_planet)
 			setDxDy(direction_x*0.98, direction_y*0.98);
     }
+    //AUMENTO DI VELOCITA'
 	current_speed = sqrt(direction_x * direction_x + direction_y * direction_y);
 	if (current_speed > top_speed) {
 		setDxDy(direction_x * top_speed / current_speed, direction_y * top_speed / current_speed);
