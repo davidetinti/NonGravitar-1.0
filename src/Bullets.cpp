@@ -16,7 +16,7 @@ Bullets::Bullets(){
 }
 
 
-Bullets::Bullets(int time_btw_shoot,int damage, int speed, int tx_nr, int sd_nr, bool autoshoot, Resources *src){
+Bullets::Bullets(int time_btw_shoot,int damage, int speed, int tx_nr, bool autoshoot, Resources *src){
     bulletList = new list<proiettile>;
     this->src = src;
     this->autoshoot = autoshoot;
@@ -33,9 +33,6 @@ int Bullets::getDamage(){
 }
 
 
-//returns bullets.damage if collision was detected, but deletes
-//all colliding bullets. this is done because only one bullet can
-//hit the player at once.
 int Bullets::checkCollision(FloatRect p){
     list<proiettile>::iterator it = bulletList->begin();
     list<proiettile>::iterator end = bulletList->end();

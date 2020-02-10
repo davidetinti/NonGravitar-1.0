@@ -65,7 +65,7 @@ int Fuels::getPower(list<fuel>::iterator it){
 }
 
 
-void Fuels::gestisci(){
+void Fuels::draw(){
     list<fuel>::iterator it = fuel_list->begin();
     list<fuel>::iterator end = fuel_list->end();
     while (it != end){
@@ -75,14 +75,14 @@ void Fuels::gestisci(){
 }
 
 
-void Fuels::spriteSetup(fuel *tmp, int power){
-    tmp->fuel_sprite.setTexture(*fuel_tx);
-    tmp->fuel_sprite.setOrigin(fuel_tx->getSize().x/2, fuel_tx->getSize().y - 10);
-    tmp->fuel_sprite.setPosition(tmp->x, tmp->y);
-    tmp->fuel_sprite.setTextureRect(IntRect(0, 0, fuel_tx->getSize().x, fuel_tx->getSize().y));
-    tmp->fuel_sprite.setScale(0.5, 0.5);
+void Fuels::spriteSetup(fuel *f, int power){
+    f->fuel_sprite.setTexture(*fuel_tx);
+    f->fuel_sprite.setOrigin(fuel_tx->getSize().x/2, fuel_tx->getSize().y - 10);
+    f->fuel_sprite.setPosition(f->x, f->y);
+    f->fuel_sprite.setTextureRect(IntRect(0, 0, fuel_tx->getSize().x, fuel_tx->getSize().y));
+    f->fuel_sprite.setScale(0.5, 0.5);
     
     if(power == 25){
-        tmp->fuel_sprite.setColor(sf::Color::Green);
+        f->fuel_sprite.setColor(sf::Color::Green);
     }
 }

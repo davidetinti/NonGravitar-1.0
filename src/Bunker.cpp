@@ -1,7 +1,7 @@
 #include "Bunker.hpp"
 
 
-bunkerlist::bunkerlist(int type_n, int tempo_n, double x_n, double y_n, double life_n,
+bunkerlist::bunkerlist(int type_n, double x_n, double y_n, double life_n,
                        Bullets *weapon_n, Texture *b, Texture *e, double boss_bunker_offset) :
     type(type_n),
     x(x_n),
@@ -57,11 +57,11 @@ Bunker::Bunker(Resources *src, Terreno *terrain){
         //rotation or not
         p2=src->rand(0,1);
         
-        if(p>4) bunkers->push_front(bunkerlist(p2,(src->rand(2500,7500)),x,terrain->getTerrainY(x),
+        if(p>4) bunkers->push_front(bunkerlist(p2,x,terrain->getTerrainY(x),
                                                100, new SingleStraightBullets(DEFAULT_TIME_BTW_SHOOT,
                                                DEFAULT_DAMAGE_SINGLE, DEFAULT_SPEED, 14, 0, true, src),
                                                bunker_tx2, explosion_tx));
-        else bunkers->push_front(bunkerlist(p2,(src->rand(2500,7500)),x,terrain->getTerrainY(x),
+        else bunkers->push_front(bunkerlist(p2,x,terrain->getTerrainY(x),
                                             100, new TripleBullets(DEFAULT_TIME_BTW_SHOOT,
                                             DEFAULT_DAMAGE_TRIPLE, DEFAULT_SPEED, 14, 0,
                                             true, src),bunker_tx,explosion_tx));
@@ -74,7 +74,7 @@ bool Bunker::isEmpty(){
 }
 
 
-void Bunker::armi(bunkerlist *tmp, Terreno *terrain){
+void Bunker::handleWeapons(bunkerlist *tmp, Terreno *terrain){
     tmp->weapon->addSingleBullet(tmp->bunker, Keyboard::R);
     tmp->weapon->handle(terrain);
 }
@@ -91,16 +91,16 @@ list<bunkerlist>::iterator Bunker::deleteBunker(list<bunkerlist>::iterator it){
 }
  
 
-void Bunker::gestisci(Nave *player, Terreno *terrain, double angle){
+void Bunker::handle(Nave *player, Terreno *terrain){
     list<bunkerlist>::iterator it = bunkers->begin();
-    //updatePosition(angle);
-    while (it != bunkers->end()){
+    list<bunkerlist>::iterator end = bunkers->end();
+    while (it != end){
         if (it->exist){
             if (it->type == 1){
                 it->bunker.setRotation(270 + atan2((player->spaceship.getPosition().y-it->bunker.getPosition().y), 
                                         (player->spaceship.getPosition().x-it->bunker.getPosition().x)) * 180/M_PI);
             }
-            armi(&*it, terrain);
+            handleWeapons(&*it, terrain);
         }
         if (it->life <= 0) {
             it = deleteBunker(it);
@@ -108,7 +108,7 @@ void Bunker::gestisci(Nave *player, Terreno *terrain, double angle){
         }
         if (it->exist == false){
         }
-        if (it != bunkers->end()) 
+        if (it != end)
             it++;
     }
     drawAll();
@@ -120,9 +120,10 @@ void Bunker::gestisci(Nave *player, Terreno *terrain, double angle){
 //it still verifies no other bullets are hitting the player
 int Bunker::checkCollisionBBullets(FloatRect obj){
     list<bunkerlist>::iterator it = bunkers->begin();
+    list<bunkerlist>::iterator end = bunkers->end();
     int hit = 0;
     int tmp_damage = 0;
-    while (it != bunkers->end()){
+    while (it != end){
         tmp_damage = it->weapon->checkCollision(obj);
         if(tmp_damage > hit) 
             hit = tmp_damage;
@@ -178,7 +179,8 @@ bool Bunker::collidesWith(list<bunkerlist>::iterator p, sf::FloatRect q){
 
 void Bunker::drawAll(){
     list<bunkerlist>::iterator it = bunkers->begin();
-    while (it != bunkers->end()){
+    list<bunkerlist>::iterator end = bunkers->end();
+    while (it != end){
         if(it->exist)
             src->getWindow()->draw(it->bunker);
         it++;
@@ -188,7 +190,8 @@ void Bunker::drawAll(){
 
 void Bunker::restartTimers(){
     list<bunkerlist>::iterator it = bunkers->begin();
-    while (it != bunkers->end()){
+    list<bunkerlist>::iterator end = bunkers->end();
+    while (it != end){
         it->weapon->bullet_time.restart();
         it++;
     } 

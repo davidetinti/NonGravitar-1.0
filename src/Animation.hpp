@@ -7,7 +7,7 @@
  Al momento della creazione, la Texture scelta è divisa in una tabella di frame in base
  ai valori di rows e columns.
  Ad ogni ciclo di gioco il frame visualizzato si aggiorna passando al successivo scorrendo
- in orizzontale la propria texture, fino al raggiungimento dell'ultimo frame terminando.
+ in orizzontale la propria texture, fino al raggiungimento dell'ultimo, terminando.
  */
 
 class Animation {
@@ -22,12 +22,12 @@ protected:
 public:
     
     /**
-     Costruttore semplice
+     Costruttore base
      */
     Animation();
     
     /**
-     Costruttore avanzato.
+     Costruttore avanzato
      
      @param x coordinata x dell'animazione da generare
      @param y coordinata y dell'animazione da generare

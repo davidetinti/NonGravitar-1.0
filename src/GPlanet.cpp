@@ -148,7 +148,7 @@ void GPlanet::handle(Nave *player){
     checkScreen(player);
     current->terrain->drawAll();
     if (!in_boss) {
-        current->carb->gestisci();
+        current->carb->draw();
         raggiotraente(player);
 	}
 	if (boss_unlocked && current == head) src->getWindow()->draw(hole);
@@ -156,7 +156,7 @@ void GPlanet::handle(Nave *player){
         boss.handle();
 		boss.draw();
     }
-	current->enemies->gestisci(player, current->terrain);
+	current->enemies->handle(player, current->terrain);
     player->armi(current->terrain);
     
     if(boss.isDead()){
