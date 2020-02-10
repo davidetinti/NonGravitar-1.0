@@ -9,16 +9,16 @@ Boss::Boss(){
 Boss::Boss(int life, int turrets_n, Resources *src_a){
     hp_left = life;
     turrets_left = turrets_n;
-    radius = boss_tx->getSize().x/2 - 350;
     red = false;
 	alive = true;
     dying = false;
     src = src_a;
-    centre = boss_sprite.getPosition();
-	boss_tx = src->getTexture(32);
+    boss_tx = src->getTexture(32);
+    radius = boss_tx->getSize().x/2 - 350;
 	boss_sprite.setTexture(*boss_tx);
 	boss_sprite.setOrigin(Vector2f(boss_tx->getSize().x/2, boss_tx->getSize().y/2));
 	boss_sprite.setPosition(src->getLength()/2, src->getHeight()/2);
+    centre = boss_sprite.getPosition();
 	turrets = nullptr;
 	collision_boundary = CircleShape(radius, 30);
 	collision_boundary.setOrigin(Vector2f(radius, radius));
