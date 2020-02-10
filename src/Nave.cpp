@@ -33,8 +33,8 @@ Nave::Nave(Resources* src){
     spaceship.scale(Vector2f(0.2, 0.2));
     spaceship.setRotation(0);
     spaceship.setTextureRect(IntRect(0, 0, spaceship_tx->getSize().x, spaceship_tx->getSize().y));
-    SingleShot = new SingleStraightBullets(100, 50, 10, 0, 0, false, src);
-    Laser = new SingleStraightBullets(5000, 200, 10, 1, 0, false, src);
+    SingleShot = new SingleStraightBullets(100, 50, 10, 0, false, src);
+    Laser = new SingleStraightBullets(5000, 200, 10, 1, false, src);
 	time_btw_hit_S = 0.75;
 	time_btw_pushes_MS = 500;
 	thrust_tx = src->getTexture(30);

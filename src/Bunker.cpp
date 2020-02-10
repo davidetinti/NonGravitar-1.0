@@ -59,11 +59,11 @@ Bunker::Bunker(Resources *src, Terreno *terrain){
         
         if(p>4) bunkers->push_front(bunkerlist(p2,x,terrain->getTerrainY(x),
                                                100, new SingleStraightBullets(DEFAULT_TIME_BTW_SHOOT,
-                                               DEFAULT_DAMAGE_SINGLE, DEFAULT_SPEED, 14, 0, true, src),
+                                               DEFAULT_DAMAGE_SINGLE, DEFAULT_SPEED, 14, true, src),
                                                bunker_tx2, explosion_tx));
         else bunkers->push_front(bunkerlist(p2,x,terrain->getTerrainY(x),
                                             100, new TripleBullets(DEFAULT_TIME_BTW_SHOOT,
-                                            DEFAULT_DAMAGE_TRIPLE, DEFAULT_SPEED, 14, 0,
+                                            DEFAULT_DAMAGE_TRIPLE, DEFAULT_SPEED, 14,
                                             true, src),bunker_tx,explosion_tx));
     }
 }

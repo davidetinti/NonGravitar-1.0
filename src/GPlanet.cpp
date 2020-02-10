@@ -94,7 +94,7 @@ void GPlanet::inizializza(int tot_schermate, Resources *src){
         head->prev = tmp;
         boss_screen = new planet_screen(src);
         boss = Boss(1000, 3, src);
-        boss_screen->enemies = new BossBunker(src,boss.getRadius(),boss.getCenter());
+        boss_screen->enemies = new BossBunker(src,boss.getRadius());
         boss_screen->terrain = new Terreno(src);
         boss.setEnemies((BossBunker *)boss_screen->enemies);
         boss_unlocked = false;
