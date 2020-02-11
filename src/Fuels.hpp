@@ -1,5 +1,5 @@
 #pragma once
-#include "Terreno.hpp"
+#include "Terrain.hpp"
 
 /**
  Singola tanica di carburante
@@ -36,7 +36,7 @@ public:
      @param terrain puntatore al terreno della schermata corrente
      @param src puntatore all'utility class Resources
      */
-    Fuels(Terreno *terrain,Resources *src);
+    Fuels(Terrain *terrain,Resources *src);
     
     /**
      Ritorna l'inizio della lista contentente il carburante

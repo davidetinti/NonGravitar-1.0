@@ -37,7 +37,7 @@ int TripleBullets::checkCollision(FloatRect p){
 }
 
 
-void TripleBullets::cleanup(Terreno *terrain){
+void TripleBullets::cleanup(Terrain *terrain){
     left.cleanup(terrain);
     centre.cleanup(terrain);
     right.cleanup(terrain);

@@ -9,7 +9,7 @@ struct uni_screen {
     uni_screen* dw;
     int x;
     int y;
-    Pianeti pianeti;
+    Pianeti planets;
     uni_screen *next;
     
     /**
@@ -18,10 +18,10 @@ struct uni_screen {
         @param x_n coordinata x della posizione
         @param y_n coordinta y della posizione
         @param src puntatore all'utility class Resources
-        @param d puntatore alla schermata sotto a quella corrente
-        @param s puntatore alla schermata sinistra rispetto a quella corrente
-        @param u puntatore alla schermata sopra a quella corrente
-        @param d puntatore alla schermata destra ripsetto a quella corrente
+        @param d puntatore alla schermata graficamente sotto la corrente
+        @param s puntatore alla schermata graficamente a sinistra della corrente
+        @param u puntatore alla schermata graficamente sopra la corrente
+        @param down puntatore alla schermata graficamente a destra della corrente
         @param nxt puntatore alla schermata successiva
         */
      
@@ -52,7 +52,7 @@ public:
     
     /**
     Costruttore avanzato.
-    Genera la schermata dell'universo giusta.
+    Inizializza il giocatore, e la prima schermata di pianeti
     
     @param src puntatore all'utility class Resources
     */
@@ -97,15 +97,15 @@ public:
 private:
     
     /**
-    Controlla se il giocatore si scontra con un pianeta
+    Controlla se il giocatore è in entrata su di un pianeta
     
     @param pos posizione del giocatore
-    @param p puntatore ad un pianeta
+    @param p puntatore al pianeta del quale verificare il contatto
     */
     bool contactPlanet(Vector2f pos, SinglePlanet* p);
     
     /**
-    Aggiunge una nuova schermata di dell'universo alla lista di schermate
+    Aggiunge una nuova schermata dell'universo alla lista di schermate
     
     @param p puntatore alla lista di schermate
     */

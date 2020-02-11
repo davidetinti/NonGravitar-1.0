@@ -54,7 +54,7 @@ bool Bullets::collidesWith(list<proiettile>::iterator p, FloatRect obj){
 }
 
 
-bool Bullets::outsideBounds(list<proiettile>::iterator p, Terreno *terrain){
+bool Bullets::outsideBounds(list<proiettile>::iterator p, Terrain *terrain){
     return p->bullet.getPosition().x < 0 ||
      p->bullet.getPosition().x > src->getLength() ||
       p->bullet.getPosition().y < 0 ||
@@ -70,7 +70,7 @@ bool Bullets::outsideBounds(list<proiettile>::iterator p){
 }
 
 
-void Bullets::handle(Terreno *terrain){
+void Bullets::handle(Terrain *terrain){
     cleanup(terrain);
     renderBullet();
 }

@@ -11,7 +11,7 @@ uni_screen::uni_screen(int x_n, int y_n, Resources *src, uni_screen *d, uni_scre
     y(y_n),
     next(nxt)
     {
-        pianeti = Pianeti(src);
+        planets = Pianeti(src);
     }
 
 
@@ -96,17 +96,12 @@ void Universe::move(int x, int y){
 
 void Universe::handle(){
 
-    //TODO: throughout code, keep logic and drawing separate, maybe. i think it would look cleaner
     player.handle();
     player.handleThrust();
-    
 
-    //TODO: collapse these if's somehow. useless lines of code.
     if (!player.getAtPlanet()){
-        //src->getWindow()->draw(background);
-        active->pianeti.draw();
+        active->planets.draw();
 
-        //verify if out of bounds
         if (player.spaceship.getPosition().x >= src->getLength()) {
             player.spaceship.setPosition(0, player.spaceship.getPosition().y);
             move(1, 0);
@@ -124,11 +119,11 @@ void Universe::handle(){
             move(0, -1);
         }
         
-        list<SinglePlanet>::iterator it = active->pianeti.planetlist.begin();
-        list<SinglePlanet>::iterator end = active->pianeti.planetlist.end();
+        list<SinglePlanet>::iterator it = active->planets.planetlist.begin();
+        list<SinglePlanet>::iterator end = active->planets.planetlist.end();
         while (it != end && !player.getAtPlanet()){
             if (contactPlanet(player.spaceship.getPosition(),&*it)){
-                active->pianeti.setCurrent(&*it);
+                active->planets.setCurrent(&*it);
                 it->interno.initialize(it->tot_schermate, src);
                 player.setAtPlanet(true);
                 
@@ -138,19 +133,19 @@ void Universe::handle(){
         }
     }
     if (player.getAtPlanet()){
-        getActive()->pianeti.handle(&player);
+        getActive()->planets.handle(&player);
 
         if (player.spaceship.getPosition().y < 0) {
             exitPlanet();
         }
 
-        if(active->pianeti.getCurrent()->interno.getCompleted()){
+        if(active->planets.getCurrent()->interno.getCompleted()){
             exitPlanet();
-            src->addAnimation(active->pianeti.getCurrent()->planet.getPosition().x,
-                              active->pianeti.getCurrent()->planet.getPosition().y,
+            src->addAnimation(active->planets.getCurrent()->planet.getPosition().x,
+                              active->planets.getCurrent()->planet.getPosition().y,
                               20, 1, 20, 3, 0.5);
-            active->pianeti.deletePlanet(active->pianeti.getCurrent());
-            active->pianeti.setCurrent(nullptr);
+            active->planets.deletePlanet(active->planets.getCurrent());
+            active->planets.setCurrent(nullptr);
             player.resetStats();
         }
     }
@@ -179,4 +174,6 @@ void Universe::exitPlanet(){
     player.spaceship.setRotation(player.getAnglePlanet());
     player.setDxDy(0, 0.1);
     player.setAtPlanet(false);
+    player.setIsRed(false);
+    player.spaceship.setColor(Color::White);
 }

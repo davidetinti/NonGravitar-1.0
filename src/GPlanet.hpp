@@ -13,11 +13,11 @@ struct planet_screen {
     
     int screen_nr;
     Fuels *carb;
-    Bunker *enemies;
-    Terreno *terrain;
+    Bunkers *enemies;
+    Terrain *terrain;
     planet_screen* next;
     planet_screen* prev;
-    planet_screen(Terreno *terrain_n, int n, Resources *src,
+    planet_screen(Terrain *terrain_n, int n, Resources *src,
                   planet_screen *next_n = nullptr, planet_screen *prev_n = nullptr);
     planet_screen(Resources *src);
 };

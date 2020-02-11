@@ -14,10 +14,10 @@ BossBunker::BossBunker(Resources *s, double r){
     Vector2f newPos;
     radius = r + 50;
     centre = Vector2f(src->getLength()/2, src->getHeight()/2);
-    bunkers = new list<bunkerlist>;
+    bunkers = new list<bunker>;
     newPos = Vector2f(centre.x+radius,centre.y);
     for(int i = 0; i < BUNKER_NR; i++){
-        bunkers->push_front(bunkerlist(0,newPos.x, newPos.y,10,
+        bunkers->push_front(bunker(0,newPos.x, newPos.y,10,
                           new SingleStraightBullets(1500, 100, 2, 14, true, src),bunker_tx,explosion_tx,angle));
         angle = angle + offset;
         newPos = newPosition(angle);
@@ -36,8 +36,8 @@ Vector2f BossBunker::newPosition(double angle){
 
 
 void BossBunker::updatePosition(double angle){
-    list<bunkerlist>::iterator it = bunkers->begin();
-    list<bunkerlist>::iterator end = bunkers->end();
+    list<bunker>::iterator it = bunkers->begin();
+    list<bunker>::iterator end = bunkers->end();
     double newAng = 0;
     int i = 0;
     Vector2f newPos;
@@ -46,7 +46,7 @@ void BossBunker::updatePosition(double angle){
         newPos = newPosition(newAng);
         it->x = newPos.x;
         it->y = newPos.y;
-        it->bunker.setPosition(it->x, it->y);
+        it->bunker_sprite.setPosition(it->x, it->y);
         it++;
         i++;
     }
@@ -55,11 +55,11 @@ void BossBunker::updatePosition(double angle){
 
 
 void BossBunker::updateRotation(){
-    list<bunkerlist>::iterator iterator = bunkers->begin();
-    list<bunkerlist>::iterator end = bunkers->end();
+    list<bunker>::iterator iterator = bunkers->begin();
+    list<bunker>::iterator end = bunkers->end();
     while(iterator != end){
-        iterator->bunker.setRotation(270 + atan2(centre.y-iterator->bunker.getPosition().y, 
-                                        centre.x-iterator->bunker.getPosition().x) * (180/M_PI));
+        iterator->bunker_sprite.setRotation(270 + atan2(centre.y-iterator->bunker_sprite.getPosition().y, 
+                                        centre.x-iterator->bunker_sprite.getPosition().x) * (180/M_PI));
         iterator++;
     }
 }

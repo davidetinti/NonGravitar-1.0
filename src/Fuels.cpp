@@ -19,7 +19,7 @@ Fuels::Fuels(){
 }
 
 
-Fuels::Fuels(Terreno *terrain, Resources *src) {
+Fuels::Fuels(Terrain *terrain, Resources *src) {
     double x;
     int power;
     this->src = src;

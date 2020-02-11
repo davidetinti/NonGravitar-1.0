@@ -39,7 +39,7 @@ void SingleStraightBullets::renderBullet(){
 }
 
 
-void SingleStraightBullets::cleanup(Terreno *terrain){
+void SingleStraightBullets::cleanup(Terrain *terrain){
     list<proiettile>::iterator iterator = bulletList->begin();
     list<proiettile>::iterator end = bulletList->end();
     Time elapsed;

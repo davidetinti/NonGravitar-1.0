@@ -1,5 +1,5 @@
 #pragma once
-#include "Terreno.hpp"
+#include "Terrain.hpp"
 
 
 struct proiettile{
@@ -78,18 +78,18 @@ public:
      
      @param terrain terreno della schermata corrente, se presente
      */
-    void handle(Terreno *terrain = nullptr);
+    void handle(Terrain *terrain = nullptr);
     
     /**
      Elimina i proiettili in collisione o fuori dal campo visivo
      
      @param terrain terreno della schermata corrente, se presente
      */
-    virtual void cleanup(Terreno *terrain) = 0;
+    virtual void cleanup(Terrain *terrain) = 0;
 
 protected:
 
     bool collidesWith(list<proiettile>::iterator p, FloatRect obj);
-    bool outsideBounds(list<proiettile>::iterator p, Terreno *terrain);
+    bool outsideBounds(list<proiettile>::iterator p, Terrain *terrain);
     bool outsideBounds(list<proiettile>::iterator p);
 };

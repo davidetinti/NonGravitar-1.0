@@ -13,7 +13,7 @@ public:
     /**
     Costruttore avanzato
      
-     @param time_btw_shot tempo che c'è fra uno sparo e l'altro
+     @param time_btw_shoot tempo che c'è fra uno sparo e l'altro
      @param damage danno dei proiettili
      @param speed velocità dei proiettili
      @param tx_nr texture dei proiettili
@@ -41,6 +41,6 @@ public:
     
     @param terrain terreno della schermata corrente, se presente
     */
-    void cleanup(Terreno *terrain);
+    void cleanup(Terrain *terrain);
 }; 
 

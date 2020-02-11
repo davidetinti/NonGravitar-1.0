@@ -71,6 +71,11 @@ double Nave::getFuelbar(){
 }
 
 
+void Nave::setIsRed(bool red){
+    is_red = red;
+}
+
+
 void Nave::increaseFuel(double fuelbar){
     if (fuel_left + fuelbar >= 100){
         fuel_left = 100;
@@ -132,7 +137,7 @@ void Nave::decayThrustInt(){
 }
 
 
-void Nave::weapons(Terreno *terrain){
+void Nave::weapons(Terrain *terrain){
     SingleShot->addSingleBullet(spaceship, Keyboard::Key::S);
     Laser->addSingleBullet(spaceship, Keyboard::Key::L);
     SingleShot->handle(terrain);

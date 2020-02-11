@@ -1,14 +1,14 @@
 #include "GPlanet.hpp"
 
 
-planet_screen::planet_screen(Terreno *terrain_n, int n, Resources *src,
+planet_screen::planet_screen(Terrain *terrain_n, int n, Resources *src,
                              planet_screen *next_n, planet_screen *prev_n):
     next(next_n),
     prev(prev_n),
     terrain(terrain_n),
     screen_nr(n)
     {
-        enemies = new Bunker(src,terrain);
+        enemies = new Bunkers(src,terrain);
         carb = new Fuels(terrain,src);
     }
 
@@ -80,11 +80,11 @@ void GPlanet::initialize(int tot_screen, Resources *src){
         screen_nr = tot_screen;
 
         head = new planet_screen(
-            new Terreno(random_height(), random_height(), src, tot_screen), 0, src);
+            new Terrain(random_height(), random_height(), src, tot_screen), 0, src);
         pre_tmp = head;
         for (int i = 1; i < tot_screen; i++){
             tmp = new planet_screen(
-                new Terreno(random_height(), pre_tmp->terrain->getSxCoord(),src,tot_screen),
+                new Terrain(random_height(), pre_tmp->terrain->getSxCoord(),src,tot_screen),
                                               i, src, nullptr, pre_tmp);
             pre_tmp->next = tmp;
             pre_tmp = tmp;
@@ -94,7 +94,7 @@ void GPlanet::initialize(int tot_screen, Resources *src){
         boss_screen = new planet_screen(src);
         boss = Boss(1000, 3, src);
         boss_screen->enemies = new BossBunker(src,boss.getRadius());
-        boss_screen->terrain = new Terreno(src);
+        boss_screen->terrain = new Terrain(src);
         boss.setEnemies((BossBunker *)boss_screen->enemies);
         boss_unlocked = false;
         in_boss = false;

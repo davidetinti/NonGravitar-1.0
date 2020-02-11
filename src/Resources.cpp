@@ -102,9 +102,7 @@ void Resources::handleEvents(){
 }
 
 
-//TODO: DESCRIPTION NEEDED
 int Resources::rand(int min, int max){
-    //need to include checks on input
     static default_random_engine dre(chrono::steady_clock::now().time_since_epoch().count());
     uniform_int_distribution<int> uid (min,max);
     return uid(dre);

@@ -92,6 +92,13 @@ public:
     double getFuelbar();
     
     /**
+     Imposta il valore di is_red
+     
+     @param red nuovo valore di is_red
+     */
+    void setIsRed(bool red);
+
+    /**
      Aumenta il valore di fuel_left della quantità fuelbal
     
      @param fuelbar incremento di carburante
@@ -173,7 +180,7 @@ public:
      
      @param terrain terreno della schermata in cui si trova la navicella
      */
-    void weapons(Terreno *terrain);
+    void weapons(Terrain *terrain);
     
     /**
      Mostra il raggio traente premendo il pulsante associato.

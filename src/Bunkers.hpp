@@ -1,7 +1,7 @@
 #pragma once
 #include "Nave.hpp"
 
-struct bunkerlist{
+struct bunker{
     int type;
     int damage;
     double x;
@@ -10,9 +10,11 @@ struct bunkerlist{
     double explosion_x;  //posizione del frame nell'animazione dell'esplosione
     double boss_bunker_offset;
     bool exist;
-    Sprite bunker;
+    bool is_red;
+    Sprite bunker_sprite;
     Sprite explosion;
     Bullets *weapon;
+    Clock last_hit;
     
     /**
      Costruttore della lista di bunker per la schermata corrrente.
@@ -26,7 +28,7 @@ struct bunkerlist{
      @param e texture dell'esplosione
      @param boss_bunker_offset offset per il posizionamento sul boss
      */
-    bunkerlist(int type_n, double x_n, double y_n, double life_n,
+    bunker(int type_n, double x_n, double y_n, double life_n,
                Bullets *weapon_n, Texture *b, Texture *e, double boss_bunker_offset = 0);
     
     /**
@@ -38,7 +40,7 @@ struct bunkerlist{
     void spriteSetup(Texture *bunker_tx,Texture *explosion_tx);
 };
 
-class Bunker{
+class Bunkers{
 
 protected:
     
@@ -46,13 +48,14 @@ protected:
     int const DEFAULT_DAMAGE_SINGLE = 30;
     int const DEFAULT_DAMAGE_TRIPLE = 20;
     int const DEFAULT_SPEED = 3;
+    int const HIT_TIMER_MS = 100;
     
     double partial_x[4]; // coordinate per la griglia dei bunker
     Resources *src;
     Texture *bunker_tx;
     Texture *explosion_tx;
     Texture *bunker_tx2;
-    list<bunkerlist>* bunkers;
+    list<bunker>* bunkers;
     
 public:
     
@@ -61,7 +64,7 @@ public:
     /**
      Costruttore base.
      */
-    Bunker();
+    Bunkers();
     
     /**
      Costruttore avanzato.
@@ -70,7 +73,7 @@ public:
      @param src puntatore all'utility class Resources
      @param terrain puntatore al terreno della schermata corrente
      */
-    Bunker(Resources *src, Terreno *terrain);
+    Bunkers(Resources *src, Terrain *terrain);
       
     /**
      @return true se la lista di bunker è vuota, false altrimenti
@@ -83,7 +86,7 @@ public:
      @param tmp bunker del quale gestire le armi
      @param terrain terreno della schermata corrente
      */
-    void handleWeapons(bunkerlist *tmp, Terreno *terrain);
+    void handleWeapons(bunker *tmp, Terrain *terrain);
 	
     /**
      Infligge danno al bunker passato come argomento.
@@ -91,7 +94,7 @@ public:
      @param damage quantità danno inflitto
      @param p bunker al quale infliggere danno
      */
-    void hitBunker(int damage, list<bunkerlist>::iterator p);
+    void hitBunker(int damage, list<bunker>::iterator p);
 	
     /**
      Elimina il bunker dalla lista e genera un animazione al suo posto.
@@ -100,7 +103,7 @@ public:
      
      @return bunker successivo a quello eliminato nella lista
      */
-    list<bunkerlist>::iterator deleteBunker(list<bunkerlist>::iterator it);
+    list<bunker>::iterator deleteBunker(list<bunker>::iterator it);
 	
     /**
      Gestione globale della lista di bunker, ne vengono gestiti i movimenti, punti salute e proiettili.
@@ -108,11 +111,8 @@ public:
      @param player puntatore al giocatore
      @param terrain puntatore al terreno della schermata
      */
-    void handle(Nave *player, Terreno *terrain);
+    void handle(Nave *player, Terrain *terrain);
     
-    /**
-     TODO: comment
-     */
     int checkCollisionBBullets(FloatRect obj);
     
     /**
@@ -141,7 +141,7 @@ public:
      
      @return true se collidono, false altrimenti
      */
-    bool collidesWith(list<bunkerlist>::iterator p, FloatRect q);
+    bool collidesWith(list<bunker>::iterator p, FloatRect q);
     
     /**
      Mostra i bunker a schermo.

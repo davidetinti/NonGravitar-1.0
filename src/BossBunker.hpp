@@ -1,11 +1,11 @@
 #pragma once
-#include "Bunker.hpp"
+#include "Bunkers.hpp"
 
 /**
  Bunker posizionati sul Boss.
  Differenziano della classe Bunker il movimento, mentre mantengono inalterate le altre funzionalità.
  */
-class BossBunker: public Bunker{
+class BossBunker: public Bunkers{
     
 protected:
     

@@ -1,4 +1,4 @@
-#include "Terreno.hpp"
+#include "Terrain.hpp"
 
 
 soil::soil(soil *n):
@@ -8,9 +8,9 @@ soil::soil(soil *n):
     }
 
 
-Terreno::Terreno(Resources *s){
+Terrain::Terrain(Resources *s){
     src = s;
-    schermate_nr = 1;
+    screens_nr = 1;
     dx_coord = 0;
     sx_coord = 0;
     terrain_tx = nullptr;
@@ -23,9 +23,9 @@ Terreno::Terreno(Resources *s){
 }
 
 
-Terreno::Terreno(int sx_coord, int dx_coord, Resources *s, int tot_schermate){
+Terrain::Terrain(int sx_coord, int dx_coord, Resources *s, int tot_schermate){
     src = s;
-    schermate_nr = tot_schermate;
+    screens_nr = tot_schermate;
     terrain_tx = src->getTexture(29);
     terrain_tx->setRepeated(true);
     background_tx = src->getTexture(13);
@@ -61,28 +61,28 @@ Terreno::Terreno(int sx_coord, int dx_coord, Resources *s, int tot_schermate){
 }
 
 
-int Terreno::getDxCoord(){
+int Terrain::getDxCoord(){
     return this->dx_coord;
 }
 
 
-int Terreno::getSxCoord(){
+int Terrain::getSxCoord(){
     return this->sx_coord;
 }
 
 
-void Terreno::setDxCoord(int dx_coord){
+void Terrain::setDxCoord(int dx_coord){
     this->dx_coord = dx_coord;
 }
 
 
-void Terreno::setSxCoord(int sx_coord){
+void Terrain::setSxCoord(int sx_coord){
     this->sx_coord = sx_coord;
 }
 
 
-Color Terreno::setColor(int tot_schermate, int transparency){
-    switch (tot_schermate) {
+Color Terrain::setColor(int tot_screens, int transparency){
+    switch (tot_screens) {
         case 3:
             return Color::White;
         case 4:
@@ -105,7 +105,7 @@ Color Terreno::setColor(int tot_schermate, int transparency){
 }
 
 
-void Terreno::drawAll(){
+void Terrain::drawAll(){
     src->getWindow()->draw(background);
     soil *tmp = head;
     while (tmp != nullptr){
@@ -115,7 +115,7 @@ void Terreno::drawAll(){
 }
 
 
-double Terreno::getTerrainY(double x){
+double Terrain::getTerrainY(double x){
     soil *tmp = head;
 	if (tmp != nullptr) {
 		while (tmp->element.getPoint(2).x <= x && tmp->next != nullptr) {//tmp->soil.getPoint(2).x < DxCoord){
@@ -133,17 +133,17 @@ double Terreno::getTerrainY(double x){
 }
 
 
-void Terreno::spriteSetup(Vector2f p0, Vector2f p1, Vector2f p2, Vector2f p3, soil *p){
+void Terrain::spriteSetup(Vector2f p0, Vector2f p1, Vector2f p2, Vector2f p3, soil *p){
     p->element.setPoint(0,p0);
     p->element.setPoint(1,p1);
     p->element.setPoint(2,p2);
     p->element.setPoint(3,p3);
     p->element.setTexture(terrain_tx);
-    p->element.setFillColor(setColor(schermate_nr,255));
+    p->element.setFillColor(setColor(screens_nr,255));
 }
 
 
-int Terreno::prepareForHole(){
+int Terrain::prepareForHole(){
 	soil *tmp = head->next;
     Vector2f topRight = tmp->element.getPoint(3);  
     while ((topRight.x - head->element.getPoint(3).x) < min_size_hole + 2 * min_size_soil){ //delete all necessary soils until
@@ -169,12 +169,12 @@ int Terreno::prepareForHole(){
 }
 
 
-void Terreno::prepareForBoss(Sprite *hole){
+void Terrain::prepareForBoss(Sprite *hole){
     hole->setPosition(prepareForHole() + min_size_hole / 2, 700);
 }
 
 
-bool Terreno::isBoss(){
+bool Terrain::isBoss(){
     return head == nullptr
     && terrain_tx == nullptr;
 }
