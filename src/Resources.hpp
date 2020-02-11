@@ -25,7 +25,6 @@ public:
     void setDifficulty(float value);
     Time *getTimePerFrame();
     RenderWindow *getWindow();
-    SoundBuffer *getSound(int n);
     Texture *getTexture(int n);
     Font *getFont(int n);
     

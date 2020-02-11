@@ -3,9 +3,6 @@
 #include <list>
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
-#include <SFML/Audio.hpp>
-#include <SFML/Network.hpp>
 #include <cstring>
 #include <fstream>
 
@@ -16,7 +13,6 @@ class SourceLoader{
     
 private:
     
-    static const int SOUND_NR = 3;
     static const int TEXTURE_NR = 44;
     static const int FONT_NR = 2;
     
@@ -25,7 +21,6 @@ protected:
     int height;
     int length;
     String path;
-    SoundBuffer sound[SOUND_NR];
     Texture texture[TEXTURE_NR];
     Font font[FONT_NR];
     ContextSettings settings;
@@ -33,7 +28,6 @@ protected:
     Time time_per_frame;      // Stabilisce gli FPS
     
     void loadTextures();
-    void loadSounds();
     void loadFonts();
     String *getPath();
     
@@ -43,7 +37,6 @@ public:
     
     int getHeight();
     int getLength();
-    SoundBuffer *getSound(int n);
     Texture *getTexture(int n);
     Font *getFont(int n);
     RenderWindow *getWindow();
@@ -51,12 +44,7 @@ public:
 };
 
 /*
- 
- SOUNDS:
- 0.ogg - player bullet
- 1.ogg - button pushed
- 2.ogg - button selected
- 
+
  FONTS:
  0.ttf - Text
  1.ttf - Demonized

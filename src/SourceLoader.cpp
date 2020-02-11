@@ -12,7 +12,6 @@ SourceLoader::SourceLoader(){
     window.create(VideoMode(length, height), "Non Gravitar", (Style::Titlebar | Style::Close | Style::Resize), settings);
     path = "./../resources/";
     loadTextures();
-    loadSounds();
     loadFonts();
 }
 
@@ -20,13 +19,6 @@ SourceLoader::SourceLoader(){
 void SourceLoader::loadTextures(){
     for (int i = 0; i < sizeof(texture)/sizeof(texture[0]); i++){
         texture[i].loadFromFile(path + to_string(i) + ".png");
-    }
-}
-
-
-void SourceLoader::loadSounds(){
-    for (int i = 0; i < sizeof(sound)/sizeof(sound[0]); i++){
-        sound[i].loadFromFile(path + to_string(i) + ".ogg");
     }
 }
 
@@ -45,11 +37,6 @@ int SourceLoader::getHeight(){
 
 int SourceLoader::getLength(){
     return length;
-}
-
-
-SoundBuffer *SourceLoader::getSound(int n){
-    return &sound[n];
 }
 
 

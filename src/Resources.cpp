@@ -49,11 +49,6 @@ RenderWindow* Resources::getWindow(){
 }
 
 
-SoundBuffer* Resources::getSound(int n){
-    return sourceLoader->getSound(n);
-}
-
-
 Texture* Resources::getTexture(int n){
     return sourceLoader->getTexture(n);
 }
