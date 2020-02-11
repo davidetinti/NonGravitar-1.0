@@ -167,7 +167,7 @@ public:
      
      @param player puntatore alla classe del giocatore
      */
-    void raggiotraente(Nave *player);
+    void tractorRay(Nave *player);
     
     /**
      Verifica lo stato i completamento del pianeta

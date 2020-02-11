@@ -148,7 +148,7 @@ void GPlanet::handle(Nave *player){
     current->terrain->drawAll();
     if (!in_boss) {
         current->carb->draw();
-        raggiotraente(player);
+        tractorRay(player);
 	}
 	if (boss_unlocked && current == head) src->getWindow()->draw(hole);
 	if (in_boss){
@@ -225,7 +225,7 @@ bool GPlanet::getCompleted(){
 }
 
 
-void GPlanet::raggiotraente(Nave *player){
+void GPlanet::tractorRay(Nave *player){
     list<fuel>::iterator it = current->carb->getFuelListBegin();
     list<fuel>::iterator end = current->carb->getFuelListEnd();
     if (player->tractorRay()){

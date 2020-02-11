@@ -124,7 +124,7 @@ void Universe::handle(){
         while (it != end && !player.getAtPlanet()){
             if (contactPlanet(player.spaceship.getPosition(),&*it)){
                 active->planets.setCurrent(&*it);
-                it->interno.initialize(it->tot_schermate, src);
+                it->inside.initialize(it->tot_screen, src);
                 player.setAtPlanet(true);
                 
                 player.braceForEntry(it->planet.getPosition());
@@ -139,7 +139,7 @@ void Universe::handle(){
             exitPlanet();
         }
 
-        if(active->planets.getCurrent()->interno.getCompleted()){
+        if(active->planets.getCurrent()->inside.getCompleted()){
             exitPlanet();
             src->addAnimation(active->planets.getCurrent()->planet.getPosition().x,
                               active->planets.getCurrent()->planet.getPosition().y,

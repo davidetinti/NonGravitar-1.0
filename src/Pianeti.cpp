@@ -8,9 +8,9 @@ SinglePlanet::SinglePlanet(bool ex, int rel_x, int rel_y, int gr_x,
     relative_y(rel_y),
     grid_x(gr_x),
     grid_y(gr_y),
-    tot_schermate(screens)
+    tot_screen(screens)
     {
-        interno = GPlanet();
+        inside = GPlanet();
         diameter = 32;
         spriteSetup(s);
     }
@@ -40,16 +40,6 @@ Pianeti::Pianeti(Resources *s){
 }
 
 
-SinglePlanet* Pianeti::getHead(){
-    return head;
-}
-
-
-void Pianeti::setHead(SinglePlanet* h){
-    head = h;
-}
-
-
 SinglePlanet* Pianeti::getCurrent(){
     return current;
 }
@@ -61,7 +51,7 @@ void Pianeti::setCurrent(SinglePlanet* h){
 
 
 void Pianeti::handle(Nave *player){
-    current->interno.handle(player);
+    current->inside.handle(player);
 }
 
 
@@ -89,7 +79,7 @@ void Pianeti::draw(){
 
 
 void SinglePlanet::spriteSetup(Resources *src){
-    this->planet_tx = src->getTexture(this->tot_schermate + 2);
+    this->planet_tx = src->getTexture(this->tot_screen + 2);
     this->planet.setTexture(*planet_tx);
     this->planet.setOrigin(Vector2f(planet_tx->getSize().x/2, planet_tx->getSize().y/2));
     this->planet.setPosition(relative_x + grid_x, relative_y + grid_y);

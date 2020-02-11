@@ -86,7 +86,7 @@ public:
     void drawBackground();
     
     /**
-     Disegna tutti i punsanti, testi e slider
+     Disegna tutti i pulsanti, testi e slider
     */
     void drawObjects();
 };
