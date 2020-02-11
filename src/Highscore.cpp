@@ -89,6 +89,7 @@ bool Highscore::insert(){
     player->setPosition(880 - player->getLocalBounds().width/2, 360);
     if (Keyboard::isKeyPressed(Keyboard::Key::Return)){
         checkNewScore(player,score);
+        while (player_name.size() > 0) player_name.pop_back();
         return true;
     }
     return false;
