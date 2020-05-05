@@ -1,42 +1,41 @@
 CXX = g++
-
-# HIGHLY RECOMMENDED flags
+BIN_NAME = nongravitar
+ODIR  = .\obj
 CXXFLAGS += -Wall -Wextra -g -ggdb
 
-PROG = nongravitar
 
-ODIR  = ../obj
-
-# required for SFML programs
-LD := $(shell pkg-config sfml-all --libs)
-LDFLAGS := -g -ggdb
-
-# The rest will turn any source file ending in .cpp
-# into a program of the same name
+BIN := $(BIN_NAME).exe
 
 SRC := $(wildcard *.cpp)
-OBJS = $(addprefix $(ODIR)/,$(SRC:.cpp=.o))
-DEPS = $(OBJ:%.o=%.d)
+OBJS = $(SRC:.cpp=.o)
+# edit to point to SFML install dir
+SFML_DIR = C:\Users\Paolo\ Marzolo\Downloads\SFML-2.5.1
+# add to the next line all dependencies we need, "-s" means static version
+LIBS = -lsfml-graphics -lsfml-graphics -lsfml-window -lsfml-audio -lsfml-network -lsfml-system 
+
+SFML_INC = -I $(SFML_DIR)\include
+SFML_LIB = -L $(SFML_DIR)\lib
+
 
 $(ODIR)/%.o: %.cpp
 
-	mkdir -p $(ODIR)
-
-	$(CXX) -MMD -c -o $@ $^ $(LDFLAGS)
+	$(CXX) -MMD -c -o $@ $^ $(SFML_INC)
 
 -include $(DEP)
 
+#$(ODIR)\%.hpp: %.cpp
+$(BIN): $(OBJS)
+	$(CXX) -o $(BIN) $^ $(CXXFLAGS) $(SFML_INC) -I . $(SFML_LIB) $(LIBS)
 
-$(PROG): $(OBJS)
+info:
+	@echo " Info..."
+	@echo " SOURCES = $(SRC)"
+	@echo " OBJECTS = $(OBJS)"
 
-	$(CXX) -o $(PROG) $^ $(CXXFLAGS) $(LD) $(LDFLAGS)
+#	$(CXX) -c $< -o $@ 
 
 
 
 clean:
 
-	rm -f -r $(ODIR) nongravitar
-
-	
-
-.PHONY: clean
+	rm $(BIN)
