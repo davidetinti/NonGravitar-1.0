@@ -21,8 +21,6 @@ SFML_LIB = -L $(SFML_DIR)\lib
 
 	$(CXX) -MMD -c -o $@ $^ $(SFML_INC)
 
--include $(DEP)
-
 #$(ODIR)\%.hpp: %.cpp
 $(BIN): $(OBJS)
 	$(CXX) -o $(BIN) $^ $(CXXFLAGS) $(SFML_INC) -I . $(SFML_LIB) $(LIBS)
@@ -37,5 +35,4 @@ info:
 
 
 clean:
-	
-	rm $(BIN)
+	del $(BIN) $(OBJS) *.d
