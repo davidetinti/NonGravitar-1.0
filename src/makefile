@@ -17,7 +17,7 @@ SFML_INC = -I $(SFML_DIR)\include
 SFML_LIB = -L $(SFML_DIR)\lib
 
 
-$(ODIR)/%.o: %.cpp
+%.o: %.cpp
 
 	$(CXX) -MMD -c -o $@ $^ $(SFML_INC)
 
@@ -37,5 +37,5 @@ info:
 
 
 clean:
-
+	
 	rm $(BIN)
