@@ -1,2 +1,5 @@
 Non_Gravitar.xcodeproj/*
 .DS_Store
+obj
+src/nongravitar
+.vscode
