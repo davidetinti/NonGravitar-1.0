@@ -29,7 +29,7 @@ GPlanet::GPlanet(){
 	boss_unlocked = false;
     in_boss = false;
     completed = false;
-    
+
 }
 
 
@@ -125,8 +125,6 @@ void GPlanet::checkCollision(Nave *player) {
     if (current->enemies->checkCollision(&player->spaceship) > 0){
         if (current->screen_nr == BOSS_SCREEN){
             player->push_back(5, current->screen_nr == BOSS_SCREEN);
-        } else {
-            player->push_back(5, current->screen_nr == BOSS_SCREEN);
         }
         player->getHit(COLLISION_DAMAGE);
     }
@@ -134,11 +132,11 @@ void GPlanet::checkCollision(Nave *player) {
         boss.checkCollisionBoss(player->SingleShot);
         boss.checkCollisionBoss(player->Laser);
     }
-    
+
     int damage = current->enemies->checkCollisionBBullets(player->spaceship.getGlobalBounds());
     player->getHit(damage, 0);
 }
- 
+
 
 void GPlanet::handle(Nave *player){
     if (!boss_unlocked) updateBossLock();
@@ -157,7 +155,7 @@ void GPlanet::handle(Nave *player){
     }
 	current->enemies->handle(player, current->terrain);
     player->weapons(current->terrain);
-    
+
     if(boss.isDead()){
         completed = true;
         player->incrasePoints(STANDARD_PLANET_POINTS + 100 * screen_nr);
@@ -188,8 +186,6 @@ void GPlanet::checkTerrain(Nave *player){
             player->getHit(COLLISION_DAMAGE);
             player->push_back(5, current->screen_nr == BOSS_SCREEN);
         }
-                
-        
     } else {
         if(boss.checkCollisionBoss(&player->spaceship)) {
             player->getHit(COLLISION_DAMAGE);

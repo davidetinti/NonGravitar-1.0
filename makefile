@@ -7,7 +7,7 @@ BIN := $(BIN_NAME).exe
 BUILD_DIR = build
 SRC_DIR = src
 # edit to point to SFML install dir
-SFML_DIR = E:/Desktop/SFML-2.5.1
+SFML_DIR = /Users/davidetinti/Desktop/SFML-2.5.1
 SFML_INC = -I $(SFML_DIR)/include
 SFML_LIB = -L $(SFML_DIR)/lib
 
