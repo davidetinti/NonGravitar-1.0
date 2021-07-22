@@ -1,13 +1,13 @@
 ## Variables
 CXX = g++
-BIN_NAME = NonGravitar
-BIN := $(BIN_NAME).exe
+BIN_NAME = nongravitar
+BIN := $(BIN_NAME)
 
 ## Paths
 BUILD_DIR = build
 SRC_DIR = src
 # edit to point to SFML install dir
-SFML_DIR = /Users/davidetinti/Desktop/SFML-2.5.1
+SFML_DIR = /home/user/sfml
 SFML_INC = -I $(SFML_DIR)/include
 SFML_LIB = -L $(SFML_DIR)/lib
 
@@ -30,7 +30,8 @@ $(BUILD_DIR):
 	mkdir $@
 
 $(BIN): $(OBJS)
-	$(CXX) -o $(SRC_DIR)/$(BIN) $(subst $(SRC_DIR),$(BUILD_DIR),$^) $(CXXFLAGS) $(SFML_INC) -I . $(SFML_LIB) $(LIBS)
+	$(CXX) -o $(BUILD_DIR)/$(BIN) $(subst $(SRC_DIR),$(BUILD_DIR),$^) $(CXXFLAGS) $(SFML_INC) -I . $(SFML_LIB) $(LIBS)
+	@echo "Executable is in build directory!"
 
 %.o: %.cpp
 	$(CXX) -MMD -c -o $(subst $(SRC_DIR),$(BUILD_DIR),$@) $^ $(SFML_INC)
@@ -41,4 +42,4 @@ info:
 	@echo " OBJECTS = $(OBJS)"
 
 clean:
-	del $(BUILD_DIR)
+	rm -rf $(BUILD_DIR) || true
